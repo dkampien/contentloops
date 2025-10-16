@@ -1,0 +1,37 @@
+{
+  "paths": {
+    "csvInput": "./data/bquxjob_696709f0_199c894db50.csv",
+    "outputDir": "./output",
+    "videosDir": "./output/videos",
+    "scriptsDir": "./output/scripts",
+    "stateFile": "./output/state.json",
+    "finalOutput": "./output/final-output.json"
+  },
+  "pipeline": {
+    "categories": ["Anxiety or fear", "Finances or provision"],
+    "templates": ["direct-to-camera", "text-visuals"],
+    "scenesPerVideo": 3,
+    "variationsPerCombo": 1,
+    "execution": "sequential"
+  },
+  "apis": {
+    "openai": {
+      "apiKey": "${OPENAI_API_KEY}",
+      "model": "gpt-4o-mini",
+      "temperature": 0.7,
+      "maxTokens": 2000
+    },
+    "replicate": {
+      "apiKey": "${REPLICATE_API_TOKEN}",
+      "model": "google/veo-3",
+      "pollingInterval": 5000,
+      "maxRetries": 3
+    }
+  },
+  "videoGeneration": {
+    "aspectRatio": "9:16",
+    "duration": 8,
+    "resolution": "720p",
+    "generateAudio": true
+  }
+}
