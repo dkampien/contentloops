@@ -9,8 +9,10 @@ yarn-error.log*
 .env.local
 .env.*.local
 
-# Output directories
-output/
+# Output directories - exclude videos and state, keep scripts/dry-run for reference
+output/videos/
+output/state.json
+output/**/*.mp4
 dist/
 build/
 

@@ -1,0 +1,27 @@
+{
+  "id": "anxiety-or-fear_text-visuals",
+  "category": "Anxiety or fear",
+  "template": "text-visuals",
+  "timestamp": "2025-10-16T15:06:25.525Z",
+  "overallScript": "This reflective video invites viewers to find solace amidst the chaos of financial struggles, marital tensions, work pressures, and parenting challenges. Each scene unfolds in serene natural environments, guiding the audience through a journey of contemplation and hope. The text overlays serve as gentle reminders that peace can be found even in the most turbulent times, encouraging viewers to embrace their struggles with grace and resilience.",
+  "scenes": [
+    {
+      "sceneNumber": 1,
+      "content": "\"In the storm of financial worries, pause and breathe.\"",
+      "prompt": "Gentle sway of tall grass in a tranquil meadow, soft rain falling in the background, muted gray clouds parting to reveal hints of blue sky, serene atmosphere, droplets glistening on blades of grass, calming and reflective mood, slow pan across the landscape, inviting a sense of peace and stillness.",
+      "status": "pending"
+    },
+    {
+      "sceneNumber": 2,
+      "content": "\"Amidst the noise of work and family, find your quiet space.\"",
+      "prompt": "Tranquil forest glade with dappled sunlight filtering through lush green leaves, gentle breeze rustling the branches, soft carpet of moss underfoot, serene atmosphere with birds softly chirping in the background, slow pan across sunlit patches of wildflowers swaying delicately, evoking a sense of peace and solitude.",
+      "status": "pending"
+    },
+    {
+      "sceneNumber": 3,
+      "content": "\"Remember, even the darkest clouds will part to reveal the light.\"",
+      "prompt": "Wide shot of a dramatic sky filled with dark, swirling clouds gradually parting to reveal soft beams of sunlight breaking through, casting a warm glow on a tranquil landscape below, gentle breeze rustling through tall grass, serene and uplifting atmosphere, soothing colors of blue and gold blending harmoniously.",
+      "status": "pending"
+    }
+  ]
+}

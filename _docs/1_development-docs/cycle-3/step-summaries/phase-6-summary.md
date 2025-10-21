@@ -23,7 +23,11 @@ node dist/index.js generate --help
 
 ### Test 3: Dry-Run Mode with Limit
 ```bash
+# Via direct execution (recommended)
 node dist/index.js generate --dry-run --limit=1
+
+# OR via npm (requires --)
+npm start -- generate --dry-run --limit=1
 ```
 
 **Result**: ✅ PASS

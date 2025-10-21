@@ -1,0 +1,27 @@
+{
+  "id": "anxiety-or-fear_text-visuals",
+  "category": "Anxiety or fear",
+  "template": "text-visuals",
+  "timestamp": "2025-10-20T11:17:22.109Z",
+  "overallScript": "This reflective video gently guides viewers through the turbulent emotions associated with financial struggles, marriage, work, and children. Through serene visuals and calming text overlays, the journey encourages contemplation and resilience, reminding us that it is okay to feel overwhelmed and that support can be found in the stillness of nature. Each scene offers a moment of reflection, allowing viewers to connect with their feelings and find solace in the beauty around them.",
+  "scenes": [
+    {
+      "sceneNumber": 1,
+      "content": "\"In the midst of chaos, breathe and pause.\"",
+      "prompt": "Soothing close-up of a tranquil forest glade, dappled sunlight filtering through lush green leaves, gentle breeze causing soft rustling sounds, serene atmosphere enveloped in nature's calm, delicate wildflowers swaying lightly, creating a peaceful backdrop for quiet reflection.",
+      "status": "pending"
+    },
+    {
+      "sceneNumber": 2,
+      "content": "\"Every storm eventually passes; trust the process.\"",
+      "prompt": "Wide shot of a tranquil forest clearing after rain, droplets glistening on lush green leaves, soft sunlight filtering through the trees creating dappled light patterns on the ground, gentle breeze rustling branches, serene atmosphere, mist rising softly from the ground, evoking a sense of calm and renewal.",
+      "status": "pending"
+    },
+    {
+      "sceneNumber": 3,
+      "content": "\"Hope blossoms in the silence; embrace the journey.\"",
+      "prompt": "Close-up of delicate wildflowers swaying gently in a soft breeze, sunlight filtering through lush green leaves, creating dappled light patterns on the ground, serene atmosphere, subtle movements evoke a sense of tranquility, warm golden hour light enveloping the scene, soft background of blurred nature, fostering a peaceful connection with the environment.",
+      "status": "pending"
+    }
+  ]
+}

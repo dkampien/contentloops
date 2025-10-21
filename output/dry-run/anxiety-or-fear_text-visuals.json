@@ -1,0 +1,44 @@
+{
+  "videoId": "anxiety-or-fear_text-visuals",
+  "userProblem": "Financial struggles, marriage, work, children",
+  "category": "Anxiety or fear",
+  "template": "text-visuals",
+  "scenes": [
+    {
+      "sceneNumber": 1,
+      "content": "\"In the depths of uncertainty, we often feel lost.\"",
+      "prompt": "Gentle aerial view of a tranquil forest shrouded in morning mist, soft rays of sunlight filtering through the dense canopy, creating a soothing dappled light effect on the forest floor, serene atmosphere, slow-moving camera gliding over lush greenery, evoking a sense of calm and introspection.",
+      "veoParams": {
+        "prompt": "Gentle aerial view of a tranquil forest shrouded in morning mist, soft rays of sunlight filtering through the dense canopy, creating a soothing dappled light effect on the forest floor, serene atmosphere, slow-moving camera gliding over lush greenery, evoking a sense of calm and introspection.",
+        "duration": 8,
+        "aspect_ratio": "9:16",
+        "generate_audio": true,
+        "resolution": "720p"
+      }
+    },
+    {
+      "sceneNumber": 2,
+      "content": "\"Yet, remember: storms do not last forever.\"",
+      "prompt": "Wide shot of a tranquil lake surrounded by lush green trees, soft ripples on the water's surface reflecting a clearing sky after a storm, gentle mist rising from the lake, warm sunlight breaking through clouds, creating a serene and calming atmosphere, soothing sounds of nature in the background, inviting a sense of peace and renewal.",
+      "veoParams": {
+        "prompt": "Wide shot of a tranquil lake surrounded by lush green trees, soft ripples on the water's surface reflecting a clearing sky after a storm, gentle mist rising from the lake, warm sunlight breaking through clouds, creating a serene and calming atmosphere, soothing sounds of nature in the background, inviting a sense of peace and renewal.",
+        "duration": 8,
+        "aspect_ratio": "9:16",
+        "generate_audio": true,
+        "resolution": "720p"
+      }
+    },
+    {
+      "sceneNumber": 3,
+      "content": "\"Breathe deeply, embrace the calm, and let hope guide you forward.\"",
+      "prompt": "Soft aerial view of a tranquil forest clearing, dappled sunlight filtering through lush green leaves, gentle breeze causing leaves to rustle, serene atmosphere, vibrant wildflowers swaying lightly, warm golden light creating a soothing ambiance, inviting calm and peacefulness, slow motion capture of nature's beauty, evoking a sense of hope and tranquility.",
+      "veoParams": {
+        "prompt": "Soft aerial view of a tranquil forest clearing, dappled sunlight filtering through lush green leaves, gentle breeze causing leaves to rustle, serene atmosphere, vibrant wildflowers swaying lightly, warm golden light creating a soothing ambiance, inviting calm and peacefulness, slow motion capture of nature's beauty, evoking a sense of hope and tranquility.",
+        "duration": 8,
+        "aspect_ratio": "9:16",
+        "generate_audio": true,
+        "resolution": "720p"
+      }
+    }
+  ]
+}

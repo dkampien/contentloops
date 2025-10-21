@@ -1,0 +1,27 @@
+{
+  "id": "anxiety-or-fear_direct-to-camera",
+  "category": "Anxiety or fear",
+  "template": "direct-to-camera",
+  "timestamp": "2025-10-16T15:02:52.833Z",
+  "overallScript": "This video takes the viewer on an emotional journey through the complexities of managing financial struggles while balancing the demands of marriage, work, and children. It starts with an acknowledgment of feeling overwhelmed and anxious, followed by a shift towards understanding that these challenges can be faced together, as a family. Finally, it offers a message of hope and unity, emphasizing that support, open communication, and small steps can lead to a brighter future.",
+  "scenes": [
+    {
+      "sceneNumber": 1,
+      "content": "The scene opens in a cozy living room, softly lit by natural light filtering through a window. You are seated on a comfortable couch, looking contemplative but slightly anxious. \"I know you’re feeling overwhelmed right now, juggling financial struggles with everything else. It’s okay to feel this way; life can be really tough sometimes.\" You lean forward slightly, your brow furrowed, conveying empathy and understanding. The camera is a medium close-up, focusing on your face to capture the sincerity of your message.",
+      "prompt": "Medium close-up of a contemplative person seated on a comfortable couch in a cozy living room, softly lit by natural light from a window, actively speaking: \"I know you’re feeling overwhelmed right now, juggling financial struggles with everything else. It’s okay to feel this way; life can be really tough sometimes.\" Leaning forward slightly, with a furrowed brow, expressing empathy and understanding, intimate framing to capture the sincerity of the message.",
+      "status": "pending"
+    },
+    {
+      "sceneNumber": 2,
+      "content": "The setting remains the same, but the lighting becomes a bit warmer, suggesting a shift in mood. You now sit with a slight smile, hands resting calmly in your lap. \"But you’re not alone in this. Remember, it’s okay to lean on each other, to talk about your worries and hopes as a family. Communication can be a powerful tool to find solutions together.\" You gesture gently with your hands, inviting the viewer into the conversation. The camera moves in for a close-up to highlight your reassuring expression.",
+      "prompt": "Close-up of a warm, reassuring person sitting in a cozy living room with a slight smile, hands resting calmly in their lap, saying: 'But you’re not alone in this. Remember, it’s okay to lean on each other, to talk about your worries and hopes as a family. Communication can be a powerful tool to find solutions together.' Gentle hand gestures inviting the viewer into the conversation, warm lighting enhancing the mood, emphasizing their comforting expression.",
+      "status": "pending"
+    },
+    {
+      "sceneNumber": 3,
+      "content": "In this final scene, the atmosphere is bright and hopeful, with the sunlight streaming in more brightly. You are standing now, looking directly into the camera with a warm smile. \"Take it one step at a time. Celebrate the small victories, and know that you’re doing your best. Together, you can navigate these challenges and create a future filled with love and support.\" Your posture is open, arms slightly spread as if embracing the viewer. The camera is wide, capturing the inviting space around you, reinforcing the sense of community and hope.",
+      "prompt": "Wide shot of a bright and hopeful atmosphere, sunlight streaming in. You stand smiling warmly, looking directly into the camera, saying: \"Take it one step at a time. Celebrate the small victories, and know that you’re doing your best. Together, you can navigate these challenges and create a future filled with love and support.\" Your open posture, with arms slightly spread as if embracing the viewer, enhances the inviting space around you, reinforcing community and hope.",
+      "status": "pending"
+    }
+  ]
+}

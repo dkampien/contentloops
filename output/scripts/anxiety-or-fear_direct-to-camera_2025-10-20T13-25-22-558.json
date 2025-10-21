@@ -1,0 +1,27 @@
+{
+  "id": "anxiety-or-fear_direct-to-camera",
+  "category": "Anxiety or fear",
+  "template": "direct-to-camera",
+  "timestamp": "2025-10-20T13:25:22.557Z",
+  "overallScript": "This video gently guides the viewer through the overwhelming feelings of anxiety that arise from financial struggles, particularly in the context of marriage and family. It starts by acknowledging those feelings, validating the viewer's experience, and then progresses to emphasize the importance of communication and support in a relationship. The final scene offers reassurance that it’s okay to seek help and that these challenges can be faced together, fostering a sense of hope and connection.",
+  "scenes": [
+    {
+      "sceneNumber": 1,
+      "content": "The scene opens in a cozy living room with soft, warm lighting. The speaker sits on a comfortable couch, a mug of tea in hand, looking directly into the camera with a gentle expression. \"You know, it’s completely normal to feel overwhelmed when financial struggles hit, especially when there are so many people relying on you. It’s okay to feel anxious about how to keep everything afloat.\" They lean slightly forward, conveying empathy and understanding, with a sincere look in their eyes. The camera is framed in a medium shot, capturing their warm presence.",
+      "prompt": "Medium shot of a cozy living room with soft, warm lighting. A gentle person sits on a comfortable couch, holding a mug of tea, looking directly into the camera, saying: \"You know, it’s completely normal to feel overwhelmed when financial struggles hit, especially when there are so many people relying on you. It’s okay to feel anxious about how to keep everything afloat.\" They lean slightly forward, conveying empathy and understanding, with a sincere expression in their eyes.",
+      "status": "pending"
+    },
+    {
+      "sceneNumber": 2,
+      "content": "The setting remains the same, but the speaker now looks a bit more serious, their hands resting on their knees. The lighting is still soft, creating a comforting atmosphere. \"When you’re married and have children, the pressure can feel even heavier. It’s important to talk openly with your partner about these worries. You’re in this together, and sharing your fears can lighten that burden.\" They nod slightly as they speak, showing solidarity, and the camera zooms in for a close-up, emphasizing their sincerity.",
+      "prompt": "Close-up of a serious yet empathetic person in a cozy living room, hands resting on their knees, softly lit for a comforting atmosphere, saying: 'When you’re married and have children, the pressure can feel even heavier. It’s important to talk openly with your partner about these worries. You’re in this together, and sharing your fears can lighten that burden.' Nodding slightly to show solidarity, conveying sincerity through their expression.",
+      "status": "pending"
+    },
+    {
+      "sceneNumber": 3,
+      "content": "In this final scene, the speaker smiles warmly, their posture more relaxed as they sit back in the couch, creating a sense of ease. The lighting remains inviting, enhancing the feeling of safety. \"Remember, it’s okay to ask for help. Whether it’s from friends, family, or professionals, you don’t have to face this alone. Together, you can find a way through these challenges. You’ve got this!\" They give a reassuring nod, and the camera captures a soft fade out, leaving the viewer feeling uplifted.",
+      "prompt": "Close-up of a warm, relaxed speaker sitting back on a cozy couch, smiling gently, saying: \"Remember, it’s okay to ask for help. Whether it’s from friends, family, or professionals, you don’t have to face this alone. Together, you can find a way through these challenges. You’ve got this!\" Their posture is at ease, with a reassuring nod, in inviting lighting that enhances a feeling of safety. The scene softly fades out, leaving viewers uplifted.",
+      "status": "pending"
+    }
+  ]
+}

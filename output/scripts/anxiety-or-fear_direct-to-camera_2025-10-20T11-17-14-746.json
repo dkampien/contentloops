@@ -1,0 +1,27 @@
+{
+  "id": "anxiety-or-fear_direct-to-camera",
+  "category": "Anxiety or fear",
+  "template": "direct-to-camera",
+  "timestamp": "2025-10-20T11:17:14.745Z",
+  "overallScript": "This video aims to provide comfort and understanding for individuals grappling with the overwhelming weight of financial struggles, particularly as they impact marriage, work, and family life. It will begin by acknowledging the fear and anxiety that accompany financial instability, then transition to reassurance and empowerment, ending on a hopeful note that emphasizes the strength found in unity and resilience. Throughout the scenes, the viewer will feel a sense of connection and support, guiding them toward a more positive outlook.",
+  "scenes": [
+    {
+      "sceneNumber": 1,
+      "content": "In a softly lit living room, a person sits on a cozy couch, surrounded by family photos, displaying a warm and inviting atmosphere. \"I know that financial struggles can feel like an endless weight on your shoulders, especially when they impact your marriage, work, and children. It's okay to feel overwhelmed; you're not alone in this fight.\" The person looks directly into the camera, their expression earnest and empathetic, with a slight nod of understanding. The camera is framed in a medium shot, capturing the warmth of the setting.",
+      "prompt": "Medium shot of a warm, inviting person sitting on a cozy couch in a softly lit living room, surrounded by family photos. They look directly into the camera, mouth moving actively as they say: 'I know that financial struggles can feel like an endless weight on your shoulders, especially when they impact your marriage, work, and children. It's okay to feel overwhelmed; you're not alone in this fight.' Their expression is earnest and empathetic, with a slight nod of understanding, enhancing the comforting atmosphere.",
+      "status": "pending"
+    },
+    {
+      "sceneNumber": 2,
+      "content": "The scene shifts to a kitchen, where the same person leans against the counter, holding a cup of tea. Sunlight filters through the window, casting a gentle glow. \"But remember, it's in these moments of hardship that our true strength and resilience shine through. Talk to your partner, share your worries—together, you can face these challenges head-on. You are a team, and teamwork can lighten any load.\" They lean slightly forward, showing engagement and connection, with a reassuring smile. The camera focuses on a close-up shot, emphasizing the sincerity in their eyes.",
+      "prompt": "Close-up of a warm, reassuring person in their 30s leaning against a kitchen counter, holding a cup of tea. Sunlight filters through the window, creating a gentle glow. They actively speak with a sincere expression, saying: 'But remember, it's in these moments of hardship that our true strength and resilience shine through. Talk to your partner, share your worries—together, you can face these challenges head-on. You are a team, and teamwork can lighten any load.' Leaning slightly forward, their eyes convey engagement and connection.",
+      "status": "pending"
+    },
+    {
+      "sceneNumber": 3,
+      "content": "In a bright, open park, the person stands, basking in natural light with trees swaying gently in the background. \"Take a deep breath. Every step you take today is a step toward a brighter tomorrow. You're building a life with your family that is worth fighting for, and together, you can create a future filled with hope and love, despite the struggles. Just keep moving forward, one day at a time.\" Their posture is open, and they gesture gently as if inviting the viewer to join them on this journey. The camera captures a wide shot, showcasing the beauty of the park, symbolizing growth and possibility.",
+      "prompt": "Wide shot of a bright, open park with swaying trees in the background. A person stands confidently, basking in natural light, actively speaking with an open posture and gentle gestures, saying: \"Take a deep breath. Every step you take today is a step toward a brighter tomorrow. You're building a life with your family that is worth fighting for, and together, you can create a future filled with hope and love, despite the struggles. Just keep moving forward, one day at a time.\" The scene radiates growth and possibility.",
+      "status": "pending"
+    }
+  ]
+}

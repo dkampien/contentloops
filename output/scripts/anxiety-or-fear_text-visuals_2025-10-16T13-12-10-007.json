@@ -1,0 +1,27 @@
+{
+  "id": "anxiety-or-fear_text-visuals",
+  "category": "Anxiety or fear",
+  "template": "text-visuals",
+  "timestamp": "2025-10-16T13:12:10.007Z",
+  "overallScript": "This reflective video journey aims to provide solace and inspiration to those grappling with the weight of anxiety related to financial struggles, marriage, work, and children. Through calming visuals of nature and powerful text overlays, viewers will be gently reminded of resilience, hope, and the importance of taking one step at a time. Each scene is designed to evoke a sense of peace and contemplation, encouraging viewers to find strength within themselves amidst their challenges.",
+  "scenes": [
+    {
+      "sceneNumber": 1,
+      "content": "\"In the midst of chaos, breathe deeply. Your worries are not your identity.\"",
+      "prompt": "Gentle breeze swaying tall grass in a tranquil meadow, soft sunlight filtering through leafy trees, creating dappled patterns on the ground, serene atmosphere filled with the sound of rustling leaves, warm golden hues in the afternoon light, inviting calmness and peace, slow motion capture of nature's movement.",
+      "status": "pending"
+    },
+    {
+      "sceneNumber": 2,
+      "content": "\"Every storm passes; trust that brighter days are ahead. Hold onto hope.\"",
+      "prompt": "Wide shot of a tranquil forest after a summer rainstorm, droplets glistening on vibrant green leaves, soft sunlight filtering through the trees, creating warm dappled light on the forest floor, gentle rustling of leaves in a light breeze, serene and hopeful atmosphere, colors gradually brightening as clouds disperse.",
+      "status": "pending"
+    },
+    {
+      "sceneNumber": 3,
+      "content": "\"You are not alone in this journey. Together, we rise stronger than before.\"",
+      "prompt": "Gentle panoramic view of a lush green valley at dawn, soft mist hovering above dew-kissed grass, warm golden light breaking through the clouds, tranquil river winding quietly through the landscape, serene atmosphere, slow-moving clouds and rustling leaves, evoking a sense of comfort and unity in nature.",
+      "status": "pending"
+    }
+  ]
+}

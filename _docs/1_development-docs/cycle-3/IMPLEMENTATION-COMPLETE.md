@@ -76,7 +76,11 @@ Successfully implemented dry-run mode for the video generation pipeline, enablin
 
 ### Basic Dry-Run
 ```bash
-npm start generate --dry-run --limit=1
+# Via direct execution (recommended)
+node dist/index.js generate --dry-run --limit=1
+
+# OR via npm (requires -- to pass flags)
+npm start -- generate --dry-run --limit=1
 ```
 
 ### Output Location
@@ -120,12 +124,16 @@ output/
 
 ### All Tests Passed ✅
 
+**Test command used**: `node dist/index.js generate --dry-run --limit=1`
+
 1. **Compilation** - No TypeScript errors
 2. **CLI flags** - Both flags work correctly
 3. **Dry-run execution** - Scripts generated, no videos
 4. **File output** - Correct structure and format
 5. **State management** - No state.json modification
 6. **Cost** - $0.008 per test (vs $6-12 with video generation)
+
+**Note**: When using `npm start`, you must include `--` to pass flags: `npm start -- generate --dry-run --limit=1`
 
 ---
 
