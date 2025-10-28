@@ -46,11 +46,13 @@ export interface PipelineState {
 
 // Video state
 export interface VideoState {
-  id: string;
+  id: string;                // Logical ID (e.g., "anxiety-or-fear_direct-to-camera")
+  videoFolderName: string;   // Timestamped folder name (e.g., "anxiety-or-fear_direct-to-camera_2025-10-24...")
   category: ProblemCategory;
   template: TemplateType;
   status: VideoStatus;
-  scriptPath?: string;
+  manifestPath?: string;     // Path to manifest file (timestamped)
+  finalVideoPath?: string;   // Path to combined video
   scenes: SceneState[];
   error?: string;
 }

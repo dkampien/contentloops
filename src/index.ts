@@ -15,7 +15,7 @@ import { ScriptGenerator } from './lib/script-generator';
 import { VideoGenerator } from './lib/video-generator';
 import { StateManager } from './lib/state-manager';
 import { OutputAssembler } from './lib/output-assembler';
-import { DryRunAssembler } from './lib/dry-run-assembler';
+import { ManifestCreator } from './lib/manifest-creator';
 import { logger } from './utils/logger';
 import { generateVideoId } from './utils/helpers';
 
@@ -33,7 +33,8 @@ program
   .option('--resume', 'Resume from last saved state', false)
   .option('--clean', 'Clean output directory before starting', false)
   .option('--dry-run', 'Generate scripts only without video generation', false)
-  .option('--limit <number>', 'Limit number of videos to generate', parseInt)
+  .option('--limit <number>', 'Limit absolute number of videos to generate', parseInt)
+  .option('--template <template>', 'Filter to specific template (e.g., direct-to-camera)')
   .action(async (options) => {
     await runPipeline(options);
   });
@@ -44,6 +45,7 @@ async function runPipeline(options: {
   clean: boolean;
   dryRun: boolean;
   limit?: number;
+  template?: string;
 }) {
   const startTime = Date.now();
 
@@ -56,6 +58,13 @@ async function runPipeline(options: {
     // Load configuration
     logger.info('Loading configuration...');
     const config = await loadConfig(options.config);
+
+    // Apply CLI template filter to override config
+    if (options.template) {
+      config.pipeline.templates = [options.template];
+      logger.info(`✓ Template filter applied: ${options.template}`);
+    }
+
     logger.info(`✓ Config loaded: ${config.pipeline.categories.length} categories, ${config.pipeline.templates.length} templates`);
 
     // Dry-run mode setup
@@ -103,14 +112,16 @@ async function runPipeline(options: {
     logger.info('Processing CSV data...');
     const dataProcessor = new DataProcessor(config.paths.csvInput);
     const problems = await dataProcessor.extractProblems(config.pipeline.categories);
+    logger.success(`✓ Extracted ${problems.length} problems from CSV`);
 
-    // Apply limit if specified
-    let processProblems = problems;
+    // Calculate expected video count (problems × templates)
+    const expectedVideoCount = problems.length * config.pipeline.templates.length;
+
     if (options.limit && options.limit > 0) {
-      processProblems = problems.slice(0, options.limit);
-      logger.info(`✓ Limiting to ${options.limit} problem(s)`);
+      logger.info(`✓ Video limit set: ${options.limit} (will stop after generating ${options.limit} videos)`);
+    } else {
+      logger.info(`✓ Will generate ${expectedVideoCount} videos (${problems.length} problems × ${config.pipeline.templates.length} templates)`);
     }
-    logger.success(`✓ Extracted ${processProblems.length} problems to process`);
 
     // Initialize generators
     const templates = new Map();
@@ -119,9 +130,7 @@ async function runPipeline(options: {
     }
     const scriptGenerator = new ScriptGenerator(config, templates);
     const videoGenerator = new VideoGenerator(config);
-
-    // Initialize dry-run assembler if in dry-run mode
-    const dryRunAssembler = options.dryRun ? new DryRunAssembler(config) : null;
+    const manifestCreator = new ManifestCreator(config);
 
     // Update state (skip in dry-run mode)
     if (!options.dryRun) {
@@ -136,8 +145,17 @@ async function runPipeline(options: {
     logger.info('='.repeat(60));
     logger.info('');
 
-    for (const userProblem of processProblems) {
+    let videosGenerated = 0;
+
+    outerLoop: for (const userProblem of problems) {
       for (const templateId of config.pipeline.templates) {
+        // Check if we've hit the limit
+        if (options.limit && videosGenerated >= options.limit) {
+          logger.info('');
+          logger.info(`✓ Reached video limit (${options.limit}), stopping generation`);
+          break outerLoop;
+        }
+
         const videoId = generateVideoId(userProblem.category, templateId as any);
 
         // Skip if already completed (skip check in dry-run mode)
@@ -166,23 +184,44 @@ async function runPipeline(options: {
           // Generate script
           logger.info('   Step 1/2: Generating script...');
           const script = await scriptGenerator.generateScript(userProblem, templateId as any);
-
-          if (!options.dryRun) {
-            stateManager.updateVideoStatus(state, videoId, 'video-generation', script.id);
-            await stateManager.saveState(state);
-          }
           logger.success(`   ✓ Script generated`);
+
+          // Create manifest immediately after script generation
+          if (!options.dryRun) {
+            logger.info('   Creating manifest...');
+            const manifestPath = await manifestCreator.createManifest(
+              script,
+              userProblem,
+              'script-generated',
+              null  // No finalVideoPath yet
+            );
+            stateManager.updateVideoManifestPath(state, videoId, manifestPath);
+            stateManager.updateVideoStatus(state, videoId, 'video-generation');
+            await stateManager.saveState(state);
+            logger.success(`   ✓ Manifest created`);
+          }
 
           // Handle dry-run vs normal execution
           if (options.dryRun) {
-            // Dry-run: Output prompts and params
-            if (dryRunAssembler) {
-              await dryRunAssembler.assembleDryRunOutput(script, userProblem);
-            }
+            // Dry-run: Create manifest with dry-run status
+            logger.info('   Creating dry-run manifest...');
+            await manifestCreator.createManifest(
+              script,
+              userProblem,
+              'dry-run',
+              null  // No finalVideoPath for dry-runs
+            );
+            logger.success(`   ✓ Dry-run manifest created`);
             logger.success(`   ✓ Dry-run complete: ${videoId}`);
           } else {
             // Normal: Generate videos for each scene
             logger.info(`   Step 2/2: Generating ${script.scenes.length} video clips...`);
+
+            let previousFramePath: string | undefined;
+
+            // Get video folder name from state
+            const videoState = state.videos.find(v => v.id === videoId);
+            const videoFolderName = videoState?.videoFolderName || videoId;
 
             for (const scene of script.scenes) {
               // Skip if scene already completed
@@ -201,8 +240,8 @@ async function runPipeline(options: {
 
                 logger.info(`      Scene ${scene.sceneNumber}: Generating...`);
 
-                // Generate video clip
-                const result = await videoGenerator.generateVideoClip(scene, videoId);
+                // Generate video clip (with frame chaining for scenes 2-3)
+                const result = await videoGenerator.generateVideoClip(scene, videoFolderName, previousFramePath);
 
                 // Update scene status
                 stateManager.updateSceneStatus(state, videoId, scene.sceneNumber, {
@@ -213,6 +252,15 @@ async function runPipeline(options: {
                 await stateManager.saveState(state);
 
                 logger.success(`      ✓ Scene ${scene.sceneNumber}: Complete`);
+
+                // Extract last frame for next scene (scenes 1-2 only)
+                if (scene.sceneNumber < 3) {
+                  previousFramePath = await videoGenerator.extractLastFrame(
+                    result.videoPath,
+                    videoFolderName,
+                    scene.sceneNumber
+                  );
+                }
 
                 // Show progress
                 const percentage = stateManager.getProgressPercentage(state);
@@ -234,6 +282,23 @@ async function runPipeline(options: {
               }
             }
 
+            // Combine all scenes into final video
+            logger.info('   Combining scenes...');
+            const finalVideoPath = await videoGenerator.combineScenes(videoFolderName);
+            logger.success(`   ✓ Final video created: ${path.basename(finalVideoPath)}`);
+
+            // Update state with combined video path
+            stateManager.updateVideoFinalPath(state, videoId, finalVideoPath);
+            await stateManager.saveState(state);
+
+            // Update manifest with final video path
+            logger.info('   Updating manifest...');
+            const video = state.videos.find(v => v.id === videoId);
+            if (video?.manifestPath) {
+              await manifestCreator.updateManifest(video.manifestPath, finalVideoPath, 'completed');
+              logger.success(`   ✓ Manifest updated`);
+            }
+
             // Mark video as completed
             stateManager.updateVideoStatus(state, videoId, 'completed');
             await stateManager.saveState(state, true);
@@ -245,11 +310,14 @@ async function runPipeline(options: {
           logger.error(`   ✗ ${options.dryRun ? 'Script generation' : 'Video'} failed: ${errorMsg}`);
 
           if (!options.dryRun) {
-            stateManager.updateVideoStatus(state, videoId, 'failed', undefined, errorMsg);
+            stateManager.updateVideoStatus(state, videoId, 'failed', errorMsg);
             stateManager.logError(state, 'script-generation', errorMsg, { videoId });
             await stateManager.saveState(state);
           }
         }
+
+        // Increment video counter (counts both successful and failed videos)
+        videosGenerated++;
       }
     }
 

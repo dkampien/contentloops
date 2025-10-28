@@ -32,7 +32,8 @@ export class VideoGenerator {
    */
   async generateVideoClip(
     scene: Scene,
-    videoId: string
+    videoFolderName: string,
+    previousFramePath?: string
   ): Promise<{ videoPath: string; predictionId: string; predictTime?: number }> {
     try {
       logger.info(`Generating video clip: Scene ${scene.sceneNumber}`);
@@ -40,7 +41,7 @@ export class VideoGenerator {
 
       // Generate with retry logic
       const result = await withRetry(
-        async () => await this.createAndWaitForVideo(scene),
+        async () => await this.createAndWaitForVideo(scene, previousFramePath),
         {
           maxRetries: this.config.apis.replicate.maxRetries,
           backoff: 'exponential',
@@ -54,7 +55,7 @@ export class VideoGenerator {
       // Generate output path
       const clipPath = generateClipPath(
         this.config.paths.videosDir,
-        videoId,
+        videoFolderName,
         scene.sceneNumber
       );
 
@@ -83,17 +84,24 @@ export class VideoGenerator {
    * Create prediction and wait for completion
    */
   private async createAndWaitForVideo(
-    scene: Scene
+    scene: Scene,
+    previousFramePath?: string
   ): Promise<{ videoUrl: string; predictionId: string; predictTime?: number }> {
     try {
       logger.debug('Creating Replicate prediction...');
 
-      // Create prediction with Veo 3 parameters
+      // Create prediction with Veo 3.1 parameters
       const input: any = {
         prompt: scene.prompt,
         aspect_ratio: this.config.videoGeneration.aspectRatio,
         duration: this.config.videoGeneration.duration
       };
+
+      // Add frame chaining if previous frame provided (Scene 2 or 3)
+      if (previousFramePath && scene.sceneNumber > 1) {
+        input.image = previousFramePath;
+        logger.debug(`Using frame chaining with: ${previousFramePath}`);
+      }
 
       // Add optional parameters if configured
       if (this.config.videoGeneration.resolution) {
@@ -101,6 +109,9 @@ export class VideoGenerator {
       }
       if (this.config.videoGeneration.generateAudio !== undefined) {
         input.generate_audio = this.config.videoGeneration.generateAudio;
+      }
+      if (this.config.videoGeneration.negativePrompt) {
+        input.negative_prompt = this.config.videoGeneration.negativePrompt;
       }
 
       const prediction = await this.client.predictions.create({
@@ -246,6 +257,131 @@ export class VideoGenerator {
     } catch (error) {
       logger.warn(`Failed to cancel prediction ${predictionId}:`, error);
       // Don't throw - cancellation failures are not critical
+    }
+  }
+
+  /**
+   * Extract last frame from video for frame chaining
+   * Returns a data URL for use with Replicate API
+   */
+  async extractLastFrame(
+    videoPath: string,
+    videoFolderName: string,
+    sceneNumber: number
+  ): Promise<string> {
+    try {
+      const framesDir = path.join(
+        this.config.paths.videosDir,
+        videoFolderName,
+        'frames'
+      );
+      await fs.mkdir(framesDir, { recursive: true });
+
+      const outputPath = path.join(framesDir, `scene${sceneNumber}_last.jpg`);
+
+      // Frame 191 = last frame of 8s @ 24fps video (0-indexed)
+      const command = `ffmpeg -i "${videoPath}" -vf "select='eq(n,191)'" -frames:v 1 "${outputPath}"`;
+
+      logger.debug(`Extracting last frame: ${command}`);
+
+      await this.executeFFmpeg(command);
+
+      logger.debug(`Frame extracted: ${outputPath}`);
+
+      // Read frame file and convert to data URL for Replicate API
+      logger.debug(`Reading frame file: ${outputPath}`);
+      const frameBuffer = await fs.readFile(outputPath);
+      logger.debug(`Frame file read successfully, size: ${frameBuffer.length} bytes`);
+
+      const base64Frame = frameBuffer.toString('base64');
+      logger.debug(`Frame converted to base64`);
+
+      const dataUrl = `data:image/jpeg;base64,${base64Frame}`;
+
+      // Log data URL size for debugging
+      const sizeKB = (base64Frame.length / 1024).toFixed(2);
+      logger.debug(`Frame converted to data URL: ${sizeKB} KB (base64)`);
+
+      return dataUrl;
+    } catch (error) {
+      throw new VideoGenerationError(
+        `Failed to extract last frame: ${error instanceof Error ? error.message : String(error)}`,
+        { videoPath, videoFolderName, sceneNumber }
+      );
+    }
+  }
+
+  /**
+   * Combine scene videos into final video
+   */
+  async combineScenes(videoFolderName: string): Promise<string> {
+    try {
+      const videoDir = path.join(this.config.paths.videosDir, videoFolderName);
+      const concatFile = path.join(videoDir, 'concat.txt');
+      const outputPath = path.join(videoDir, 'final.mp4');
+
+      logger.debug(`Combining scenes for video: ${videoFolderName}`);
+      logger.debug(`Video directory: ${videoDir}`);
+
+      // Get scene paths using the helper
+      const scenePaths = [1, 2, 3].map(n =>
+        generateClipPath(this.config.paths.videosDir, videoFolderName, n)
+      );
+
+      logger.debug(`Scene paths: ${JSON.stringify(scenePaths)}`);
+
+      // Create concat file with relative paths
+      const concatContent = scenePaths
+        .map(p => `file '${path.relative(videoDir, p)}'`)
+        .join('\n');
+
+      logger.debug(`Concat file content:\n${concatContent}`);
+
+      await fs.writeFile(concatFile, concatContent);
+      logger.debug(`Created concat file: ${concatFile}`);
+
+      // Run ffmpeg concat
+      const command = `ffmpeg -f concat -safe 0 -i "${concatFile}" -c copy "${outputPath}"`;
+      logger.debug(`FFmpeg command: ${command}`);
+
+      logger.info('Combining scenes...');
+      await this.executeFFmpeg(command);
+
+      logger.success(`Combined video created: ${outputPath}`);
+      return outputPath;
+    } catch (error) {
+      throw new VideoGenerationError(
+        `Failed to combine scenes: ${error instanceof Error ? error.message : String(error)}`,
+        { videoFolderName }
+      );
+    }
+  }
+
+  /**
+   * Execute ffmpeg command with error handling and retry
+   */
+  private async executeFFmpeg(command: string, retries: number = 1): Promise<void> {
+    const { exec } = await import('child_process');
+    const { promisify } = await import('util');
+    const execAsync = promisify(exec);
+
+    for (let attempt = 0; attempt <= retries; attempt++) {
+      try {
+        const { stderr } = await execAsync(command);
+        if (stderr && !stderr.includes('frame=')) {
+          logger.debug(`ffmpeg stderr: ${stderr}`);
+        }
+        return;
+      } catch (error) {
+        if (attempt === retries) {
+          throw new VideoGenerationError(
+            `ffmpeg command failed: ${error instanceof Error ? error.message : String(error)}`,
+            { command }
+          );
+        }
+        logger.warn(`ffmpeg attempt ${attempt + 1} failed, retrying...`);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
     }
   }
 }

@@ -92,25 +92,30 @@ export class DataProcessor {
 
       logger.info(`Using ${filteredCategories.length} categories for generation`);
 
-      // For each category, find one sample problem
+      // For each category, find ALL problems (not just first)
       const problems: UserProblem[] = [];
 
       for (const category of filteredCategories) {
-        // Find first row with this category that has a problem
-        const row = rows.find(r =>
+        // Find all rows with this category that have a problem
+        const matchingRows = rows.filter(r =>
           r.lifeChallengeOption?.replace(/^"+|"+$/g, '').trim() === category &&
           r.onboardingV7_lifeChallenge?.trim()
         );
 
-        if (row && row.onboardingV7_lifeChallenge) {
-          problems.push({
-            category,
-            problem: row.onboardingV7_lifeChallenge.trim()
-          });
-          logger.debug(`  - ${category}: "${row.onboardingV7_lifeChallenge.trim().substring(0, 50)}..."`);
+        if (matchingRows.length > 0) {
+          // Add all matching problems
+          for (const row of matchingRows) {
+            if (row.onboardingV7_lifeChallenge) {
+              problems.push({
+                category,
+                problem: row.onboardingV7_lifeChallenge.trim()
+              });
+            }
+          }
+          logger.debug(`  - ${category}: ${matchingRows.length} problems`);
         } else {
-          // Fallback: use category as problem if no specific problem found
-          logger.warn(`No specific problem found for category: ${category}, using generic`);
+          // Fallback: use category as problem if no specific problems found
+          logger.warn(`No specific problems found for category: ${category}, using generic`);
           problems.push({
             category,
             problem: `Struggling with ${category.toLowerCase()}`

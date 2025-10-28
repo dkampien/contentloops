@@ -57,7 +57,7 @@ export class OutputAssembler {
             clips.push({
               sceneNumber: sceneState.sceneNumber,
               videoPath: sceneState.videoPath,
-              prompt: await this.getScenePrompt(videoState.scriptPath!, sceneState.sceneNumber),
+              prompt: await this.getScenePrompt(videoState.manifestPath, sceneState.sceneNumber),
               duration,
               metadata: {
                 predictionId: sceneState.predictionId || 'unknown',
@@ -73,7 +73,6 @@ export class OutputAssembler {
           id: videoState.id,
           category: videoState.category,
           template: videoState.template,
-          scriptPath: videoState.scriptPath || '',
           clips
         });
       }
@@ -113,12 +112,12 @@ export class OutputAssembler {
     logger.debug('Validating assets...');
 
     for (const video of this.state.videos) {
-      // Check script file
-      if (video.scriptPath) {
+      // Check manifest file
+      if (video.manifestPath) {
         try {
-          await fs.access(video.scriptPath);
+          await fs.access(video.manifestPath);
         } catch {
-          logger.warn(`Script file missing: ${video.scriptPath}`);
+          logger.warn(`Manifest file missing: ${video.id}`);
         }
       }
 
@@ -152,14 +151,18 @@ export class OutputAssembler {
   }
 
   /**
-   * Get scene prompt from script file
+   * Get scene prompt from manifest file
    */
-  private async getScenePrompt(scriptPath: string, sceneNumber: number): Promise<string> {
-    try {
-      const content = await fs.readFile(scriptPath, 'utf-8');
-      const script = JSON.parse(content);
+  private async getScenePrompt(manifestPath: string | undefined, sceneNumber: number): Promise<string> {
+    if (!manifestPath) {
+      return '';
+    }
 
-      const scene = script.scenes?.find((s: any) => s.sceneNumber === sceneNumber);
+    try {
+      const content = await fs.readFile(manifestPath, 'utf-8');
+      const manifest = JSON.parse(content);
+
+      const scene = manifest.scenes?.find((s: any) => s.sceneNumber === sceneNumber);
       return scene?.prompt || '';
     } catch {
       return '';

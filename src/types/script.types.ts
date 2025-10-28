@@ -32,7 +32,6 @@ export type SceneStatus = "pending" | "generating" | "completed" | "failed";
 // Scene interface
 export interface Scene {
   sceneNumber: number;            // 1, 2, or 3
-  content: string;                // Scene-specific narrative/text
   prompt: string;                 // Cinematography prompt for Veo 3
   videoClipPath?: string;         // Filled after generation
   predictionId?: string;          // Replicate prediction ID
@@ -46,7 +45,8 @@ export interface VideoScript {
   category: ProblemCategory;
   template: TemplateType;
   timestamp: string;              // ISO 8601
-  overallScript: string;          // Full narrative
+  videoScript: string;            // Scene 1 visual baseline (renamed from overallScript)
+  voiceScript: string;            // Full dialogue for all scenes (NEW FIELD)
   scenes: Scene[];
 }
 
@@ -77,15 +77,15 @@ export interface PromptRules {
 // Zod schemas for OpenAI structured output
 
 export const SceneSchema = z.object({
-  sceneNumber: z.number().int().min(1).max(3),
-  content: z.string().min(10),
-  prompt: z.string().min(20),
+  sceneNumber: z.number().int(),
+  prompt: z.string(),
 });
 
 export const VideoScriptSchema = z.object({
   category: z.string(),
   template: z.enum(["direct-to-camera", "text-visuals"]),
-  overallScript: z.string().min(50),
+  videoScript: z.string().describe("Full visual description of Scene 1 - the baseline"),
+  voiceScript: z.string().describe("50-60 words of dialogue"),
   scenes: z.array(SceneSchema).length(3),
 });
 

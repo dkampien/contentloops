@@ -9,7 +9,7 @@ export interface Config {
     csvInput: string;           // Path to CSV file
     outputDir: string;          // Base output directory
     videosDir: string;          // Video clips directory
-    scriptsDir: string;         // Generated scripts directory
+    manifestsDir: string;       // Per-video manifests directory
     stateFile: string;          // State JSON file
     finalOutput: string;        // Final output JSON
   };
@@ -39,11 +39,12 @@ export interface Config {
     };
   };
 
-  // Veo 3 specific parameters
+  // Veo 3.1 specific parameters
   videoGeneration: {
     aspectRatio: "9:16" | "16:9";   // Video aspect ratio
     duration: 4 | 6 | 8;            // Video duration in seconds (Veo 3 only supports 4, 6, 8)
     resolution?: "720p" | "1080p";  // Optional resolution
     generateAudio?: boolean;        // Optional audio generation
+    negativePrompt?: string;        // Veo 3.1: Elements to exclude from video
   };
 }

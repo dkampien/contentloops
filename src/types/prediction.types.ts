@@ -22,6 +22,12 @@ export interface Prediction {
     prompt: string;
     aspect_ratio?: string;
     duration?: number;
+    generate_audio?: boolean;
+    resolution?: string;
+    negative_prompt?: string;    // NEW: Veo 3.1
+    image?: string;              // NEW: Veo 3.1 (starting frame for chaining)
+    last_frame?: string;         // NEW: Veo 3.1 (ending frame control)
+    seed?: number;
   };
   output?: string | string[];      // Video URL(s)
   error?: unknown;

@@ -115,7 +115,7 @@ export function createDefaultConfig(): Config {
       csvInput: './data/bquxjob_696709f0_199c894db50.csv',
       outputDir: './output',
       videosDir: './output/videos',
-      scriptsDir: './output/scripts',
+      manifestsDir: './output/manifests',
       stateFile: './output/state.json',
       finalOutput: './output/final-output.json'
     },

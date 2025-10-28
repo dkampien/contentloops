@@ -1059,3 +1059,170 @@ anxiety-or-fear_direct-to-camera_scene2_20250115T143456Z.mp4
 Example:
 anxiety-or-fear_direct-to-camera
 ```
+
+---
+
+## Appendix C: Cycle 4 Updates & Enhancements
+
+### Frame Chaining (Character Consistency)
+
+**Implementation**: Base64 data URLs for image parameter
+
+**Flow**:
+1. Scene 1 generates fresh (no image parameter)
+2. Extract last frame (frame 191 @ 24fps) from Scene 1
+3. Convert JPEG to base64 data URL: `data:image/jpeg;base64,{base64string}`
+4. Pass data URL to Scene 2's `image` parameter
+5. Extract last frame from Scene 2, convert to data URL
+6. Pass to Scene 3's `image` parameter
+
+**Technical Details**:
+- Frame extraction: `ffmpeg -i "{video}" -vf "select='eq(n,191)'" -frames:v 1 "{output}"`
+- Frame size: ~50-150KB (well within 256KB data URL limit)
+- Storage: Frames saved to `videos/{videoId}_{timestamp}/frames/`
+
+**Files**: `src/lib/video-generator.ts` - `extractLastFrame()` method
+
+---
+
+### Unified Manifest System
+
+**Purpose**: Single JSON format for dry-runs and full runs
+
+**Naming Convention**:
+- Full runs: `{videoId}_{timestamp}.json`
+- Dry-runs: `dry-run_{videoId}_{timestamp}.json`
+
+**Example**:
+```
+manifests/anxiety-or-fear_direct-to-camera_2025-10-27T14-32-15-123Z.json
+manifests/dry-run_anxiety-or-fear_direct-to-camera_2025-10-27T14-32-15-123Z.json
+```
+
+**Status Field**:
+```typescript
+type ManifestStatus =
+  | "dry-run"           // Script only
+  | "script-generated"  // Videos pending
+  | "completed"         // Videos done
+  | "failed";           // Generation failed
+```
+
+**Lifecycle**:
+1. Create manifest after script generation (status: "script-generated" or "dry-run")
+2. Generate videos (if not dry-run)
+3. Update manifest after videos complete (status: "completed", add finalVideoPath)
+
+**Files**: See [Manifest Schema](../../2_reference-docs/manifest-schema.md)
+
+---
+
+### Timestamped Output Structure
+
+**Updated Directory Structure**:
+```
+output/
+├── manifests/
+│   ├── dry-run_{videoId}_{timestamp}.json
+│   └── {videoId}_{timestamp}.json
+└── videos/
+    └── {videoId}_{timestamp}/
+        ├── scenes/
+        │   ├── scene1.mp4
+        │   ├── scene2.mp4
+        │   └── scene3.mp4
+        ├── frames/
+        │   ├── scene1_last.jpg
+        │   └── scene2_last.jpg
+        └── final.mp4
+```
+
+**Benefits**:
+- No overwrites (each generation preserved)
+- Clear history tracking
+- Easy to identify which generation
+- Matches manifest timestamps
+
+**Files**: See [Output Structure](../../2_reference-docs/output-structure.md)
+
+---
+
+### Zod Schema Approach
+
+**Philosophy**: Trust OpenAI, guide with descriptions (not hard constraints)
+
+**Call 1 Schema** (Content Generation):
+```typescript
+const ContentSchema = z.object({
+  videoScript: z.string().describe("Full visual description of Scene 1 - the baseline"),
+  voiceScript: z.string().describe("50-60 words of dialogue")
+});
+```
+
+**Call 2 Schema** (Prompt Optimization):
+```typescript
+const PromptsSchema = z.object({
+  scenes: z.array(z.object({
+    sceneNumber: z.number().int(),
+    prompt: z.string()
+  })).length(3)
+});
+```
+
+**Key Changes**:
+- Removed arbitrary `.min()` and `.max()` constraints
+- Added `.describe()` for natural LLM guidance
+- Trust OpenAI to determine appropriate lengths
+- Matches successful playground testing
+
+**Files**: See [Zod Schemas](../../2_reference-docs/zod-schemas.md)
+
+---
+
+### State Tracking Enhancements
+
+**New Fields in VideoState**:
+```typescript
+interface VideoState {
+  id: string;                // Logical ID
+  videoFolderName: string;   // Timestamped folder name
+  manifestPath?: string;     // Path to manifest file
+  finalVideoPath?: string;   // Path to combined video
+  // ... other fields
+}
+```
+
+**Purpose**:
+- Track timestamped folder names separately from logical IDs
+- Link state to specific manifest files
+- Support resume functionality with timestamped outputs
+
+---
+
+### Model Upgrades
+
+**LLM**: gpt-5-mini
+- Better reasoning capabilities
+- Uses ~2000 reasoning tokens + ~1000 output tokens
+- `max_completion_tokens: 4000` to accommodate reasoning
+
+**Video**: Veo 3.1
+- Frame chaining support via `image` parameter
+- `negative_prompt` support: "background music"
+- Improved character consistency
+
+---
+
+### Removed Components
+
+**DryRunAssembler**: Merged into ManifestCreator
+- Dry-runs now create manifests (not separate JSON)
+- Single format for all outputs
+
+**"generating" Status**: Removed from ManifestStatus
+- Never used in actual implementation
+- Simplified to: dry-run → script-generated → completed/failed
+
+**Arbitrary Zod Constraints**: Removed
+- No more `.min(50)`, `.max(400)`, etc.
+- Trust LLM with description-based guidance

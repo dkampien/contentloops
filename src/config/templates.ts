@@ -11,67 +11,61 @@ const directToCameraTemplate: Template = {
   name: "Direct-to-Camera",
   description: "Person speaking directly to viewer with empathetic progression",
 
-  systemPromptCall1: `You are creating a comforting video script for someone struggling with a specific problem.
+  systemPromptCall1: `You are creating a comfort video. A person speaks directly to camera in a warm home setting.
 
-Format: Direct-to-camera speaking style
-Tone: Empathetic, conversational, warm
-Structure: 3 scenes showing emotional progression
+Generate TWO fields:
 
-You will receive:
-- Category: The general problem area (e.g., "Anxiety or fear")
-- Problem: A specific user problem (e.g., "Being scared that the guy I'm falling for is going to leave me")
+1. videoScript - Describe Scene 1 visuals in simple terms:
+   - The person (age, clothing, expression)
+   - The setting (home basics)
+   - Body language and mood
+   Keep it natural and simple. No technical camera/lighting jargon.
 
-Your task:
-1. Generate an "overallScript" - a prose description of the video concept
-   - Write in clear, professional prose (no arrows, no shorthand)
-   - Describe the emotional journey: what the video will say and how it progresses
-   - Do NOT include template names or technical details
-   - 2-4 sentences
+2. voiceScript - 50-60 words of dialogue with this structure:
+   - First ~20 words: Acknowledge their specific struggle
+   - Next ~20 words: Reassure them they're not alone, it's okay to feel this way
+   - Final ~20 words: Gently invite them to try BibleChat for support
 
-2. Generate 3 scenes with "content" field (DOP-style instructions)
-   - Each scene should include:
-     * Visual description (setting, subject, framing, lighting)
-     * The dialogue the person speaks (in quotes)
-     * Body language and expression
-     * Camera details (close-up, framing, etc.)
-   - Keep it short but comprehensive (2-3 sentences)
-   - Make sure dialogue is natural, conversational, and speaks directly to the viewer
+Tone: Warm, conversational, empathetic. Speak directly to "you."`,
 
-Guidelines:
-- Use second person ("you") in dialogue
-- Each scene should be ~10 seconds of spoken content
-- Show emotional progression across the 3 scenes
-- Ensure consistent person and setting across all scenes
-- The person should be warm, relatable, and compassionate`,
+  systemPromptCall2: `You are optimizing visual descriptions for Veo 3.1 video generation.
 
-  systemPromptCall2: `You are optimizing scene descriptions for Veo 3 text-to-video generation.
+Input:
+- videoScript (Scene 1 baseline description)
+- voiceScript (50-60 words continuous dialogue)
 
-Your task:
-Given a scene description (DOP-style instructions), create a Veo 3-optimized prompt.
+Generate 3 scene prompts following this strategy:
 
-Requirements:
-1. Extract the dialogue from the scene description
-2. Format it using Veo 3's dialogue syntax: person saying "exact dialogue here"
-3. Include visual details: setting, lighting, framing, expression
-4. Emphasize that the person is ACTIVELY SPEAKING with mouth moving
-5. Keep it concise but vivid (50-100 words)
-6. Ensure the dialogue in the prompt matches the dialogue in the content (do not invent or modify)
+Scene 1 - Full descriptive prompt:
+- Use videoScript as foundation
+- Simplify: Remove overly specific props (no "wedding photo" or "spreadsheet on laptop")
+- Keep: Person, setting type, mood, expression, body language, lighting quality
+- Add: "actively speaking to camera"
+- Add first ~20 words from voiceScript in format 'saying: "[dialogue]"'
+- Format for Veo: Natural language, 40-80 words
 
-Example:
-Input content: "Person in 30s, warm living room, facing camera. Speaks with concerned expression: 'I know the fear of losing someone feels overwhelming.' Body language open. Window light. Close-up."
+Scene 2 - Minimal continuation:
+- Do NOT describe setting (image parameter handles this)
+- Only: Expression/emotion shift from Scene 1
+- Add middle ~20 words from voiceScript
+- Format: "Person continues speaking with [expression change], saying: '[dialogue]'"
+- 10-30 words maximum
 
-Output prompt: "Close-up of warm, empathetic person in their 30s sitting in cozy living room, facing camera, saying: 'I know the fear of losing someone feels overwhelming.' Concerned but warm expression, open body language, natural window light, intimate framing."
+Scene 3 - Minimal continuation:
+- Same as Scene 2 rules
+- Add final ~20 words from voiceScript
+- Focus on final emotional shift
 
-Focus on making the video show someone actively delivering comforting dialogue.`,
+Remember: Scenes 2-3 use frame chaining - the image parameter provides visual context, so verbose descriptions cause conflicts.`,
 
   promptRules: {
-    description: "Direct-to-camera requires person actively speaking dialogue",
+    description: "Direct-to-camera with frame chaining: Scene 1 full, Scenes 2-3 minimal",
     instructions: [
-      "Extract dialogue from scene content",
-      "Use Veo 3 format: person saying \"dialogue\"",
-      "Emphasize mouth moving, active speaking",
-      "Include expression, setting, lighting",
-      "Keep concise (50-100 words)"
+      "Scene 1: Full description using videoScript baseline",
+      "Scenes 2-3: Minimal (expression shift only)",
+      "Include dialogue from voiceScript in all scenes",
+      "Use Veo 3.1 format: person saying \"dialogue\"",
+      "Frame chaining handles visual continuity"
     ],
     veo3Format: "person saying \"exact dialogue\""
   },

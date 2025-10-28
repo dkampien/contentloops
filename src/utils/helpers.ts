@@ -69,6 +69,15 @@ export function generateVideoId(category: ProblemCategory, template: TemplateTyp
 }
 
 /**
+ * Generate a timestamped video folder name
+ */
+export function generateVideoFolderName(category: ProblemCategory, template: TemplateType): string {
+  const videoId = generateVideoId(category, template);
+  const timestamp = generateTimestamp();
+  return `${videoId}_${timestamp}`;
+}
+
+/**
  * Generate a timestamp string (ISO 8601 compact format)
  */
 export function generateTimestamp(): string {
@@ -76,16 +85,18 @@ export function generateTimestamp(): string {
 }
 
 /**
- * Generate a script file path
+ * Generate a manifest file path (timestamped)
  */
-export function generateScriptPath(
-  scriptsDir: string,
+export function generateManifestPath(
+  manifestsDir: string,
   category: ProblemCategory,
-  template: TemplateType
+  template: TemplateType,
+  isDryRun: boolean = false
 ): string {
   const videoId = generateVideoId(category, template);
   const timestamp = generateTimestamp();
-  return path.join(scriptsDir, `${videoId}_${timestamp}.json`);
+  const prefix = isDryRun ? 'dry-run_' : '';
+  return path.join(manifestsDir, `${prefix}${videoId}_${timestamp}.json`);
 }
 
 /**
@@ -93,11 +104,11 @@ export function generateScriptPath(
  */
 export function generateClipPath(
   videosDir: string,
-  videoId: string,
+  videoFolderName: string,
   sceneNumber: number
 ): string {
-  const timestamp = generateTimestamp();
-  return path.join(videosDir, `${videoId}_scene${sceneNumber}_${timestamp}.mp4`);
+  const scenesDir = path.join(videosDir, videoFolderName, 'scenes');
+  return path.join(scenesDir, `scene${sceneNumber}.mp4`);
 }
 
 /**

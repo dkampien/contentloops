@@ -3,8 +3,6 @@
  * OpenAI integration for generating video scripts
  */
 
-import * as fs from 'fs/promises';
-import * as path from 'path';
 import { z } from 'zod';
 import OpenAI from 'openai';
 import { zodResponseFormat } from 'openai/helpers/zod';
@@ -13,7 +11,7 @@ import { Template } from '../types/script.types';
 import { Config } from '../types/config.types';
 import { ScriptGenerationError } from '../utils/errors';
 import { logger } from '../utils/logger';
-import { withRetry, generateVideoId, generateScriptPath } from '../utils/helpers';
+import { withRetry, generateVideoId } from '../utils/helpers';
 
 /**
  * ScriptGenerator class for LLM-based script generation
@@ -51,34 +49,28 @@ export class ScriptGenerator {
         );
       }
 
-      // CALL 1: Generate content (overallScript + scenes[].content)
+      // CALL 1: Generate content (videoScript + voiceScript)
       logger.info('  Step 1/2: Generating content...');
       const contentResponse = await this.generateContent(userProblem, templateDef);
 
-      // CALL 2: Generate prompts (scenes[].prompt from scenes[].content)
+      // CALL 2: Generate prompts (3 scene prompts from videoScript + voiceScript)
       logger.info('  Step 2/2: Generating prompts...');
-      const scenesWithPrompts = await this.generatePrompts(
-        contentResponse.scenes,
+      const scenes = await this.generatePrompts(
+        contentResponse.videoScript,
+        contentResponse.voiceScript,
         templateDef
       );
 
       // Build VideoScript object
       const videoScript = this.buildVideoScript(
-        contentResponse.overallScript,
-        scenesWithPrompts,
+        contentResponse.videoScript,
+        contentResponse.voiceScript,
+        scenes,
         userProblem.category,
         template
       );
 
-      // Save script to disk
-      const scriptPath = generateScriptPath(
-        this.config.paths.scriptsDir,
-        userProblem.category,
-        template
-      );
-      await this.saveScript(videoScript, scriptPath);
-
-      logger.success(`Script generated and saved: ${path.basename(scriptPath)}`);
+      logger.success(`Script generated`);
 
       return videoScript;
     } catch (error) {
@@ -93,12 +85,12 @@ export class ScriptGenerator {
   }
 
   /**
-   * CALL 1: Generate content (overallScript + scenes[].content)
+   * CALL 1: Generate content (videoScript + voiceScript)
    */
   private async generateContent(
     userProblem: UserProblem,
     template: Template
-  ): Promise<{ overallScript: string; scenes: Array<{ sceneNumber: number; content: string }> }> {
+  ): Promise<{ videoScript: string; voiceScript: string }> {
     try {
       const systemPrompt = template.systemPromptCall1;
 
@@ -111,11 +103,8 @@ Generate a 3-scene video script addressing this specific problem.`;
 
       // Define Zod schema for Call 1 response
       const ContentSchema = z.object({
-        overallScript: z.string().min(50),
-        scenes: z.array(z.object({
-          sceneNumber: z.number().int().min(1).max(3),
-          content: z.string().min(10)
-        })).length(3)
+        videoScript: z.string().describe("Full visual description of Scene 1 - the baseline"),
+        voiceScript: z.string().describe("50-60 words of dialogue")
       });
 
       // Make API call with retry
@@ -128,18 +117,23 @@ Generate a 3-scene video script addressing this specific problem.`;
               { role: 'user', content: userPrompt }
             ],
             response_format: zodResponseFormat(ContentSchema, 'content_generation'),
-            temperature: this.config.apis.openai.temperature,
-            max_tokens: this.config.apis.openai.maxTokens
+            max_completion_tokens: this.config.apis.openai.maxTokens
+            // Note: gpt-5-mini does not support temperature, top_p, or other sampling parameters
           });
 
           const message = completion.choices[0]?.message;
           if (!message?.content) {
+            logger.error('OpenAI API returned no content');
+            logger.error('Full response:', JSON.stringify(completion, null, 2));
             throw new ScriptGenerationError('No response from OpenAI (Call 1)', {
               category: userProblem.category,
-              template: template.id
+              template: template.id,
+              finishReason: completion.choices[0]?.finish_reason,
+              refusal: (message as any)?.refusal
             });
           }
 
+          logger.debug('Raw API response:', message.content.substring(0, 200));
           return ContentSchema.parse(JSON.parse(message.content));
         },
         {
@@ -152,7 +146,7 @@ Generate a 3-scene video script addressing this specific problem.`;
         }
       );
 
-      logger.debug(`Content generated: ${response.scenes.length} scenes`);
+      logger.debug('Content generated: videoScript and voiceScript');
       return response;
     } catch (error) {
       throw new ScriptGenerationError(
@@ -163,70 +157,71 @@ Generate a 3-scene video script addressing this specific problem.`;
   }
 
   /**
-   * CALL 2: Generate prompts from content
+   * CALL 2: Generate prompts from videoScript and voiceScript
    */
   private async generatePrompts(
-    scenes: Array<{ sceneNumber: number; content: string }>,
+    videoScript: string,
+    voiceScript: string,
     template: Template
-  ): Promise<Array<{ sceneNumber: number; content: string; prompt: string }>> {
+  ): Promise<Array<{ sceneNumber: number; prompt: string }>> {
     try {
       const systemPrompt = template.systemPromptCall2;
 
-      const scenesWithPrompts = [];
+      const userPrompt = `videoScript: ${videoScript}
 
-      for (const scene of scenes) {
-        const userPrompt = `Scene ${scene.sceneNumber} content:\n${scene.content}\n\nGenerate an optimized Veo 3 prompt for this scene.`;
+voiceScript: ${voiceScript}
 
-        logger.debug(`Generating prompt for scene ${scene.sceneNumber}...`);
+Generate 3 Veo-optimized scene prompts following the strategy above.`;
 
-        // Define Zod schema for Call 2 response
-        const PromptSchema = z.object({
-          prompt: z.string().min(20)
-        });
+      logger.debug('Generating scene prompts...');
 
-        const response = await withRetry(
-          async () => {
-            const completion = await this.client.chat.completions.create({
-              model: this.config.apis.openai.model,
-              messages: [
-                { role: 'system', content: systemPrompt },
-                { role: 'user', content: userPrompt }
-              ],
-              response_format: zodResponseFormat(PromptSchema, 'prompt_generation'),
-              temperature: 0.7,
-              max_tokens: 500
+      // Define Zod schema for Call 2 response
+      const PromptsSchema = z.object({
+        scenes: z.array(z.object({
+          sceneNumber: z.number().int(),
+          prompt: z.string()
+        })).length(3)  // Exactly 3 scenes required
+      });
+
+      const response = await withRetry(
+        async () => {
+          const completion = await this.client.chat.completions.create({
+            model: this.config.apis.openai.model,
+            messages: [
+              { role: 'system', content: systemPrompt },
+              { role: 'user', content: userPrompt }
+            ],
+            response_format: zodResponseFormat(PromptsSchema, 'prompt_generation'),
+            max_completion_tokens: 4000  // gpt-5-mini uses ~2000 for reasoning + ~1000 for output
+            // Note: gpt-5-mini does not support temperature, top_p, or other sampling parameters
+          });
+
+          const message = completion.choices[0]?.message;
+          if (!message?.content) {
+            logger.error('OpenAI API returned no content (Call 2)');
+            logger.error('Full response:', JSON.stringify(completion, null, 2));
+            throw new ScriptGenerationError('No response from OpenAI (Call 2)', {
+              template: template.id,
+              finishReason: completion.choices[0]?.finish_reason,
+              refusal: (message as any)?.refusal
             });
-
-            const message = completion.choices[0]?.message;
-            if (!message?.content) {
-              throw new ScriptGenerationError('No response from OpenAI (Call 2)', {
-                sceneNumber: scene.sceneNumber,
-                template: template.id
-              });
-            }
-
-            return PromptSchema.parse(JSON.parse(message.content));
-          },
-          {
-            maxRetries: 3,
-            backoff: 'exponential',
-            baseDelay: 1000,
-            onRetry: (attempt, error) => {
-              logger.warn(`Prompt generation retry ${attempt} (scene ${scene.sceneNumber}):`, error.message);
-            }
           }
-        );
 
-        scenesWithPrompts.push({
-          sceneNumber: scene.sceneNumber,
-          content: scene.content,
-          prompt: response.prompt
-        });
+          logger.debug('Raw API response (Call 2):', message.content.substring(0, 200));
+          return PromptsSchema.parse(JSON.parse(message.content));
+        },
+        {
+          maxRetries: 3,
+          backoff: 'exponential',
+          baseDelay: 1000,
+          onRetry: (attempt, error) => {
+            logger.warn(`Prompt generation retry ${attempt}:`, error.message);
+          }
+        }
+      );
 
-        logger.debug(`Prompt generated for scene ${scene.sceneNumber}`);
-      }
-
-      return scenesWithPrompts;
+      logger.debug(`Generated ${response.scenes.length} scene prompts`);
+      return response.scenes;
     } catch (error) {
       throw new ScriptGenerationError(
         `Prompt generation failed (Call 2): ${error instanceof Error ? error.message : String(error)}`,
@@ -239,8 +234,9 @@ Generate a 3-scene video script addressing this specific problem.`;
    * Build VideoScript object from generated content
    */
   private buildVideoScript(
-    overallScript: string,
-    scenes: Array<{ sceneNumber: number; content: string; prompt: string }>,
+    videoScript: string,
+    voiceScript: string,
+    scenes: Array<{ sceneNumber: number; prompt: string }>,
     category: ProblemCategory,
     template: TemplateType
   ): VideoScript {
@@ -250,7 +246,6 @@ Generate a 3-scene video script addressing this specific problem.`;
     // Convert scenes to proper Scene objects
     const processedScenes: Scene[] = scenes.map(scene => ({
       sceneNumber: scene.sceneNumber,
-      content: scene.content,
       prompt: scene.prompt,
       status: 'pending' as SceneStatus,
       videoClipPath: undefined,
@@ -263,30 +258,10 @@ Generate a 3-scene video script addressing this specific problem.`;
       category,
       template,
       timestamp,
-      overallScript,  // Use LLM-generated overallScript (don't generate locally)
+      videoScript,
+      voiceScript,
       scenes: processedScenes
     };
   }
 
-  /**
-   * Save script to disk as JSON
-   */
-  private async saveScript(script: VideoScript, scriptPath: string): Promise<void> {
-    try {
-      // Ensure directory exists
-      const dir = path.dirname(scriptPath);
-      await fs.mkdir(dir, { recursive: true });
-
-      // Write JSON file
-      const content = JSON.stringify(script, null, 2);
-      await fs.writeFile(scriptPath, content, 'utf-8');
-
-      logger.debug(`Script saved to: ${scriptPath}`);
-    } catch (error) {
-      throw new ScriptGenerationError(
-        `Failed to save script: ${error instanceof Error ? error.message : String(error)}`,
-        { scriptPath }
-      );
-    }
-  }
 }

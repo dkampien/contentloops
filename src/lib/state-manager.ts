@@ -9,6 +9,7 @@ import { PipelineState, VideoState, SceneState } from '../types/state.types';
 import { ProblemCategory, TemplateType } from '../types/script.types';
 import { StateError } from '../utils/errors';
 import { logger } from '../utils/logger';
+import { generateVideoFolderName } from '../utils/helpers';
 
 /**
  * StateManager class for pipeline state management
@@ -114,6 +115,7 @@ export class StateManager {
   ): void {
     const videoState: VideoState = {
       id: videoId,
+      videoFolderName: generateVideoFolderName(category, template),
       category,
       template,
       status: 'pending',
@@ -134,7 +136,6 @@ export class StateManager {
     state: PipelineState,
     videoId: string,
     status: VideoState['status'],
-    scriptPath?: string,
     error?: string
   ): void {
     const video = state.videos.find(v => v.id === videoId);
@@ -143,13 +144,44 @@ export class StateManager {
     }
 
     video.status = status;
-    if (scriptPath) video.scriptPath = scriptPath;
     if (error) video.error = error;
 
     // Update progress
     if (status === 'completed') {
       state.progress.completedVideos++;
     }
+  }
+
+  /**
+   * Update manifest path
+   */
+  updateVideoManifestPath(
+    state: PipelineState,
+    videoId: string,
+    manifestPath: string
+  ): void {
+    const video = state.videos.find(v => v.id === videoId);
+    if (!video) {
+      throw new StateError(`Video not found: ${videoId}`, { videoId });
+    }
+
+    video.manifestPath = manifestPath;
+  }
+
+  /**
+   * Update final video path
+   */
+  updateVideoFinalPath(
+    state: PipelineState,
+    videoId: string,
+    finalVideoPath: string
+  ): void {
+    const video = state.videos.find(v => v.id === videoId);
+    if (!video) {
+      throw new StateError(`Video not found: ${videoId}`, { videoId });
+    }
+
+    video.finalVideoPath = finalVideoPath;
   }
 
   /**
