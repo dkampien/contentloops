@@ -18,7 +18,7 @@
 - **Related Docs:**
   - `@_docs/1_development-docs/cycle-4/0-exploration.md` - Discussion and decisions
   - `@_docs/1_development-docs/cycle-4/1-requirements.md` - Formal specifications
-  - `@_docs/1_development-docs/temp-implementation.md` - Tested system prompts
+  - `@_docs/2_reference-docs/template_direct-to-camera_comfort.md` - Template design with system prompts
   - `@_docs/2_reference-docs/template-design-full.md` - Template framework
   - `@_docs/2_reference-docs/workflow-problems-and-solutions-2.md` - Technical decisions
 
