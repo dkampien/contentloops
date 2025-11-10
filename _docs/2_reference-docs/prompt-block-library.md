@@ -1,0 +1,137 @@
+- Character persona (creates detailed character profiles and personality descriptions for text-based character sheets)
+    - **Identity**
+        - Name - Valentina, Kaelan, Marcus
+        - Age - 27 years old, early thirties, mid-twenties
+        - Gender - female, male
+        - Nationality - Italian, Japanese, Brazilian
+        - Cultural Background - Milan fashion scene, Tokyo tech culture
+    - **Personality**
+        - Core Traits - confident, curious, analytical, empathetic
+        - Social Style - extroverted, introverted, ambivert
+        - Communication Style - witty, direct, formal, playful
+        - Emotional Temperament - passionate, calm, excitable, steady
+    - **Background**
+        - Occupation - fashion model, software engineer, artist, teacher
+        - Education Level - bachelor's degree, self-taught, masters, high school
+        - Life Experience - walked Paris runway, built startup, traveled solo
+    - **Psychology**
+        - Core Motivation - self-expression, helping others, achievement, connection
+        - Personal Goals - launch clothing line, publish novel, learn piano
+        - Values - authenticity, sustainability, family, creativity
+        - Character Flaw - perfectionist, impatient, overthinks, stubborn
+        - Quirks - sketches on napkins, talks to plants, collects vintage records
+    - **Relationship2User**
+        - Relationship Type - friend, mentor, confidante, companion
+        - Interaction Style - supportive, challenging, playful, nurturing
+    - **Lifestyle**
+        - Hobbies - pilates, photography, cooking, gaming
+        - Interests - sustainable fashion, space exploration, art history
+        - Activities - attends gallery openings, weekend hiking, tries new restaurants
+    - Aesthetic
+        - Clothing Style -
+        - General Vibe - minimalist, artsy, sportsy, etc.
+- Medium (what is the medium or the purpose of the image?)
+    - Type (core block) - photograph, digital art, 3D render, oil painting, watercolor, illustration, pencil drawing, charcoal, ink wash, concept art
+    - Photography Style (core block) - portrait photography, fashion photography, editorial photography, commercial photography, beauty photography, documentary photography, street photography
+    - Art Style (core block) - traditional painting, digital painting, technical illustration, children's book illustration, storybook art
+- Scene (where does the action happen? who does the action? what does the subject looks like? what is the environment and what does it look like?)
+    - Subjects
+        - Details about the subjects
+            - Gender - male, female
+            - Age - 32 years
+            - Age group - young adult, middle-aged, mature
+            - Demographic - gen Z trendsetter, millennial professional, affluent retiree
+            - Ethnicity - caucasian, east asian, african, south asian, latinx
+            - Overall subject features - piercing blue eyes, luscious curly hair, statuesque height, radiant skin
+            - Facial features
+                - Face shape - oval, heart-shaped, square, round
+                - Face structure - high cheekbones, full lips, defined jawline, striking eyes
+                - Face marks - freckles, dimples, beauty mark, distinctive nose
+                - Makeup - minimal makeup
+            - Body type - slim, athletic, curvy, plus-size
+            - Weight - 50kg
+            - Height - 190cm
+            - Skin - smooth, glowing, tanned, freckled, detailed texture, warm undertones
+            - Hair - long wavy blonde, short cropped back, medium auburn curls
+            - Outfit v1 (simple, for before IPAdapter) - selecting multiple like "fitted black dress" or "loose white blouse with blue jeans”
+            - Outfit v2 (detailed, for before IPAdapter)
+                - Tops - blouse, sweater, t-shirt, tank top, jacket, coat
+                - Bottoms - pants, jeans, skirt, shorts
+                - Dresses - mini dress, midi dress, maxi dress, gown
+                - Shoes - heels, boots, sneakers, sandals
+                - Accessories - jewelry, bags, belts, scarves
+                - Garment Fit (sub-block) - fitted, loose, oversized, slim-fit
+                - Garment Length (sub-block) - mini, knee-length, maxi, cropped
+                - Style Details (sub-block) - buttoned, zipped, belted, draped
+            - Outfit v3 (extracted from IPAdapter with VLM.)
+            - Model type - runway model, editorial model, commercial model, fitness model
+            - Archetype
+            - Fashion style / aestethics
+            - Object related?
+                - textures and patterns
+                - surfaces
+        - Action & posture
+            - Action (simple block) - riding bicycle, walking dog, reading book, drinking coffee
+            - Body Pose (simple block) - standing, walking, sitting, leaning, contrapposto
+            - Body Position Details (simple block) - hands on hips, crossed arms, profile view, looking over shoulder
+            - Expression (simple block) - confident smile, intense gaze, serene look, playful smirk
+            - Mood (simple block) - confident, mysterious, approachable, contemplative
+        - Motion
+            - Locomotion (core block) - walking, running, flying, swimming, crawling, dancing, jumping
+            - Gesture (core block) - waving, pointing, reaching, nodding, clapping, stretching
+            - Facial (core block) - smiling, speaking, blinking, looking around, laughing
+            - Position (core block) - turning, bending, sitting down, standing up, leaning
+            - Speed (core block) - slow motion, normal speed, fast, time-lapse
+            - Direction (core block) - forward, backward, left, right, upward, downward, toward camera, away from camera
+    - Environment
+        - Setting / Location (simple block) - photo studio, indoor location, outdoor location, urban street
+        - Location Details (simple block) - concrete wall, brick wall, garden, beach, city street
+        - Location Style (simple block) - minimalist, industrial, rustic, modern, luxurious
+        - Location Mood (simple block) - sleek, cozy, elegant, edgy, dramatic
+        - Architecture (simple block) - modern building, classic architecture, industrial space, loft
+        - Interior Elements (simple block) - large windows, staircase, doorway, pillars
+        - Room Type (simple block) - loft space, gallery, warehouse, boutique
+        - Background (simple block) - white backdrop, gradient background, textured wall, seamless paper
+        - Space Quality (simple block) - spacious, intimate, open plan, enclosed
+        - Surfaces (simple block) - wooden floor, marble tiles, concrete, grass
+        - Props (simple block) - chair, stool, architectural elements, plants
+        - Time of Day (simple block) - morning, noon, golden hour, evening
+        - Other
+            - animal or plant life
+            - weather
+    - Lighting
+        - Light Type (simple block) - natural light, studio lighting, artificial light, mixed lighting
+        - Light Setup (simple block) - beauty lighting, Rembrandt lighting, split lighting, butterfly lighting, rim lighting, backlight
+        - Light Quality (simple block) - soft light, hard light, diffused, dramatic, even lighting, high contrast
+        - Light Direction (simple block) - front lit, side lit, back lit, top down, bottom up
+        - Light Temperature (simple block) - warm light, cool light, daylight balanced, golden hour light
+        - Overall Lighting (simple block) - natural light, studio lighting, soft diffused light, dramatic lighting, butterfly lighting, rim lighting, side lit, warm golden hour light, high contrast
+        - Light Properties - warm, cool, front lit, side lit, back lit
+- Composition (how are the objects or characters arranged in the scene? where is the camera relative to the objects or characters?)
+    - **Shot**
+        - Type (core block) - full body shot, three-quarter shot, half body shot, close-up, beauty shot, wide shot, extreme close-up
+        - Distance (core block) - close shot, medium shot, wide shot, macro, aerial
+        - Angle (core block) - eye level, low angle, high angle, dutch angle, bird's eye view, worm's eye view
+    - **Framing**
+        - Arrangement (core block) - centered, rule of thirds, off-center, symmetrical, diagonal
+        - Perspective (core block) - front view, side view, profile, three-quarter view, back view
+        - Boundaries (core block) - tight framing, loose framing, edge cropping, full frame
+    - **Camera**
+        - Movement (core block) - static, pan left, pan right, tilt up, tilt down, dolly forward, dolly back, zoom in, zoom out, orbit, tracking
+        - Style (core block) - smooth, handheld, locked, cinematic, stabilized, floating
+- Technical details (how is the camera setup? what are the settings used to capture the image?)
+    - Camera Type (simple block) - DSLR, medium format, digital camera, film camera
+    - Lens Effect (simple block) - wide angle, telephoto, standard lens, macro
+    - Film Type (simple block) - Kodak Portra, Fujifilm, Kodachrome, instant film, polaroid, 35mm
+    - Image Quality (simple block) - high resolution, sharp details, crystal clear, professional quality
+    - Focus Style (simple block) - shallow depth of field, deep focus, tack sharp, soft focus, infinite focus
+- Style (what is the overall style of the image? Is the style similar to any artist? can the model checkpoint do this style?)
+    - Image Style (simple block) - photorealistic, hyperrealistic, cinematic, stylized, artistic
+    - Art Style (simple block) - realistic, impressionist, watercolor style, oil painting style
+    - Illustration Style (simple block) - cartoon, anime, 3D disney
+    - Artist Reference (simple block) → links with mj styles
+- Effects (is there any post edit effects?)
+    - Visual Effects (simple block) - bokeh, lens flare, glowing, motion blur, soft focus
+    - Color Effects / Pallete (simple block) - high contrast, high saturation, muted colors, vintage tones, color grading, green hues
+    - Light Effects (simple block) - light leaks, sun flare, backlight glow, rim lighting
+    - Effects (simple block) - bokeh, lens flare, high contrast, soft focus, light leaks, motion blur, glow effect

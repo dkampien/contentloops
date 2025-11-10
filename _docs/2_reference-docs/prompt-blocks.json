@@ -1,0 +1,171 @@
+{
+  "library": "prompt-blocks",
+  "version": "1.0",
+  "lastUpdated": "2025-01-04",
+  "characterPersona": {
+    "identity": {
+      "name": {},
+      "age": {},
+      "gender": {},
+      "nationality": {},
+      "culturalBackground": {}
+    },
+    "personality": {
+      "coreTraits": {},
+      "socialStyle": {},
+      "communicationStyle": {},
+      "emotionalTemperament": {}
+    },
+    "background": {
+      "occupation": {},
+      "educationLevel": {},
+      "lifeExperience": {}
+    },
+    "psychology": {
+      "coreMotivation": {},
+      "personalGoals": {},
+      "values": {},
+      "characterFlaw": {},
+      "quirks": {}
+    },
+    "relationship2User": {
+      "relationshipType": {},
+      "interactionStyle": {}
+    },
+    "lifestyle": {
+      "hobbies": {},
+      "interests": {},
+      "activities": {}
+    },
+    "aesthetic": {
+      "clothingStyle": {},
+      "generalVibe": {}
+    }
+  },
+  "medium": {
+    "type": {},
+    "photographyStyle": {},
+    "artStyle": {}
+  },
+  "scene": {
+    "subjects": {
+      "details": {
+        "gender": {},
+        "age": {},
+        "ageGroup": {},
+        "demographic": {},
+        "ethnicity": {},
+        "overallSubjectFeatures": {},
+        "facialFeatures": {
+          "faceShape": {},
+          "faceStructure": {},
+          "faceMarks": {},
+          "makeup": {}
+        },
+        "bodyType": {},
+        "weight": {},
+        "height": {},
+        "skin": {},
+        "hair": {},
+        "outfit": {
+          "v1": {},
+          "v2": {
+            "tops": {},
+            "bottoms": {},
+            "dresses": {},
+            "shoes": {},
+            "accessories": {},
+            "garmentFit": {},
+            "garmentLength": {},
+            "styleDetails": {}
+          },
+          "v3": {}
+        },
+        "modelType": {},
+        "archetype": {},
+        "fashionStyle": {},
+        "objectRelated": {
+          "texturesAndPatterns": {},
+          "surfaces": {}
+        }
+      },
+      "actionAndPosture": {
+        "action": {},
+        "bodyPose": {},
+        "bodyPositionDetails": {},
+        "expression": {},
+        "mood": {}
+      },
+      "motion": {
+        "locomotion": {},
+        "gesture": {},
+        "facial": {},
+        "position": {},
+        "speed": {},
+        "direction": {}
+      }
+    },
+    "environment": {
+      "setting": {},
+      "locationDetails": {},
+      "locationStyle": {},
+      "locationMood": {},
+      "architecture": {},
+      "interiorElements": {},
+      "roomType": {},
+      "background": {},
+      "spaceQuality": {},
+      "surfaces": {},
+      "props": {},
+      "timeOfDay": {},
+      "other": {
+        "animalOrPlantLife": {},
+        "weather": {}
+      }
+    }
+  },
+  "lighting": {
+    "lightType": {},
+    "lightSetup": {},
+    "lightQuality": {},
+    "lightDirection": {},
+    "lightTemperature": {},
+    "overall": {},
+    "lightProperties": {}
+  },
+  "composition": {
+    "shot": {
+      "type": {},
+      "distance": {},
+      "angle": {}
+    },
+    "framing": {
+      "arrangement": {},
+      "perspective": {},
+      "boundaries": {}
+    },
+    "camera": {
+      "movement": {},
+      "style": {}
+    }
+  },
+  "technical": {
+    "cameraType": {},
+    "lensEffect": {},
+    "filmType": {},
+    "imageQuality": {},
+    "focusStyle": {}
+  },
+  "style": {
+    "imageStyle": {},
+    "artStyle": {},
+    "illustrationStyle": {},
+    "artistReference": {}
+  },
+  "effects": {
+    "visualEffects": {},
+    "colorEffects": {},
+    "lightEffects": {},
+    "general": {}
+  }
+}

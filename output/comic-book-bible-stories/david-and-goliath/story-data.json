@@ -1,0 +1,28 @@
+{
+  "storyId": "david-and-goliath",
+  "title": "David and Goliath",
+  "thumbnailFile": "thumbnail.png",
+  "totalPages": 4,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "imageFile": "page1.png",
+      "narration": "The Israelite army faced the Philistines across the valley. Every day, the giant warrior Goliath challenged Israel to send a champion to fight him. For forty days, no one dared to face him. Young David, a shepherd boy, arrived at the camp bringing food to his brothers."
+    },
+    {
+      "pageNumber": 2,
+      "imageFile": "page2.png",
+      "narration": "When he heard Goliath's mocking challenge, David volunteered to fight. King Saul offered David his armor, but it was too heavy. David refused it and went to the stream, choosing five smooth stones for his sling."
+    },
+    {
+      "pageNumber": 3,
+      "imageFile": "page3.png",
+      "narration": "Standing before the giant, Goliath laughed at the boy. But David proclaimed he came in the name of the Lord. David slung a stone that struck Goliath's forehead."
+    },
+    {
+      "pageNumber": 4,
+      "imageFile": "page4.png",
+      "narration": "The giant fell. David had defeated Goliath with faith and a single stone."
+    }
+  ]
+}

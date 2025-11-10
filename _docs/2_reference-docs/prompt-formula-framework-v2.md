@@ -396,6 +396,8 @@ When generating prompts:
 
 3. **Prompt independence:** Each prompt generation is separate unless explicitly instructed to carry over variations. Don't automatically apply changes from one prompt to the next.
 
+4. **Library gaps:** When using a block library, if needed blocks don't exist in the library, generate appropriate blocks as needed. Flag new blocks inline with (NEW) notation so they can be evaluated for library inclusion.
+
 ## Example Formula
 
 **Character Appearance (Text-to-Image):**
