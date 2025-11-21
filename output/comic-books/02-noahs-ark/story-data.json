@@ -1,0 +1,28 @@
+{
+  "storyId": "noahs-ark",
+  "title": "Noah's Ark",
+  "thumbnailFile": "thumbnail.jpg",
+  "totalPages": 4,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "imageFile": "1.jpg",
+      "narration": "God chose Noah, a righteous man, to build a great ark. God gave him specific instructions: build it from gopher wood, three stories tall. Noah and his family worked for years building the massive boat while neighbors mocked them."
+    },
+    {
+      "pageNumber": 2,
+      "imageFile": "2.jpg",
+      "narration": "When the ark was finished, God sent the animals - two of every kind marched toward the ark. Lions walked beside lambs, elephants alongside rabbits. Birds flew overhead as Noah's family guided them all aboard."
+    },
+    {
+      "pageNumber": 3,
+      "imageFile": "3.jpg",
+      "narration": "Then the rains began, pouring for forty days and forty nights. The ark floated safely on the rising waters while the flood covered the earth. After many months inside, Noah sent out a dove that returned with an olive branch."
+    },
+    {
+      "pageNumber": 4,
+      "imageFile": "4.jpg",
+      "narration": "Finally, the ark landed on dry ground. Animals streamed out down the ramp as Noah and his family gave thanks. God placed a magnificent rainbow in the sky as His promise to never flood the earth again."
+    }
+  ]
+}

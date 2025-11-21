@@ -1,0 +1,28 @@
+{
+  "storyId": "creation-story",
+  "title": "The Creation Story",
+  "thumbnailFile": "thumbnail.jpg",
+  "totalPages": 4,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "imageFile": "1.jpg",
+      "narration": "In the beginning, there was nothing but darkness and empty void. Then God spoke: 'Let there be light.' Brilliant light burst forth, separating from the darkness. God called the light Day and the darkness Night. On the second day, God created the sky, separating the waters above from the waters below."
+    },
+    {
+      "pageNumber": 2,
+      "imageFile": "2.jpg",
+      "narration": "On the third day, God gathered the waters together, and dry land appeared. He called the land Earth and the waters Seas. God made plants spring from the ground—grass, flowers, and trees bearing fruit. On the fourth day, God created the sun to rule the day and the moon to rule the night, filling the sky with countless stars."
+    },
+    {
+      "pageNumber": 3,
+      "imageFile": "3.jpg",
+      "narration": "On the fifth day, God filled the seas with fish and creatures of every kind. Birds took flight across the sky. On the sixth day, God created animals—wild beasts, livestock, and creatures that crawl. Then God created humans in His own image, male and female, to care for all creation."
+    },
+    {
+      "pageNumber": 4,
+      "imageFile": "4.jpg",
+      "narration": "On the seventh day, God rested from His work. He looked at everything He had made—the earth, sky, seas, plants, animals, and people—and it was very good. The world was complete and beautiful."
+    }
+  ]
+}

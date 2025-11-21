@@ -1,0 +1,28 @@
+{
+  "storyId": "the-wise-men",
+  "title": "The Wise Men",
+  "thumbnailFile": "thumbnail.png",
+  "totalPages": 4,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "imageFile": "page1.png",
+      "narration": "In lands far to the East, three wise men studied the stars each night. One evening, a brilliant new star appeared in the sky, brighter than all others. They knew this star announced the birth of a great king."
+    },
+    {
+      "pageNumber": 2,
+      "imageFile": "page2.png",
+      "narration": "The wise men prepared for a long journey. They gathered precious gifts: gold, frankincense, and myrrh. Loading their camels, they set out following the star that moved before them across the desert."
+    },
+    {
+      "pageNumber": 3,
+      "imageFile": "page3.png",
+      "narration": "For many days and nights, they traveled across mountains and valleys. The star guided them westward. Finally, the star stopped over the small town of Bethlehem, shining brightly above a humble stable."
+    },
+    {
+      "pageNumber": 4,
+      "imageFile": "page4.png",
+      "narration": "The wise men entered the stable and found Mary holding baby Jesus. They knelt before him, presenting their royal gifts. They had traveled far to worship the newborn King, just as the star had promised."
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "storyId": "the-good-samaritan",
+  "title": "The Good Samaritan",
+  "thumbnailFile": "thumbnail.jpg",
+  "voiceFile": "voice.mp3",
+  "totalPages": 4,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "imageFile": "1.jpg",
+      "narration": "A man travels alone on a dusty road when trouble finds him. After being hurt, he lies quietly beside the path, hoping someone kind will come by and help him. Soon, travelers begin to pass."
+    },
+    {
+      "pageNumber": 2,
+      "imageFile": "2.jpg",
+      "narration": "Another traveler passes the hurt man but chooses not to help. The hurt man waits quietly, hoping someone will show kindness. Then a third man approaches from down the road."
+    },
+    {
+      "pageNumber": 3,
+      "imageFile": "3.jpg",
+      "narration": "The helper feels compassion and goes straight to the hurt man. He gently cares for him, bandages his wounds, and helps him stand. Then he places the hurt man on his donkey to take him to safety."
+    },
+    {
+      "pageNumber": 4,
+      "imageFile": "4.jpg",
+      "narration": "The helper brings the hurt man to an inn so he can rest. He pays the innkeeper and promises to return. Jesus reminds everyone that a true neighbor shows kindness to anyone in need."
+    }
+  ]
+}

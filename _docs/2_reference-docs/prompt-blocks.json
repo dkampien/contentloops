@@ -162,6 +162,10 @@
     "illustrationStyle": {},
     "artistReference": {}
   },
+  "comicStyle": {
+    "inkStyle": {},
+    "colorTreatment": {}
+  },
   "effects": {
     "visualEffects": {},
     "colorEffects": {},

@@ -1,0 +1,29 @@
+{
+  "storyId": "jonah-and-the-whale",
+  "title": "Jonah and the Whale",
+  "thumbnailFile": "thumbnail.jpg",
+  "voiceFile": "voice.mp3",
+  "totalPages": 4,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "imageFile": "1.jpg",
+      "narration": "God gives the man an important message to deliver, but he tries to run away instead. He boards a ship going in the opposite direction, hoping to escape, even though God can see him anywhere."
+    },
+    {
+      "pageNumber": 2,
+      "imageFile": "2.jpg",
+      "narration": "Out at sea a powerful storm suddenly appears. Waves crash, the wind howls, and the sailors fear the ship will break apart. The man realizes the storm has come because he is running from God."
+    },
+    {
+      "pageNumber": 3,
+      "imageFile": "3.jpg",
+      "narration": "As soon as the man is thrown into the sea, the storm stops. A giant fish appears and swallows him, keeping him safe in its belly. There he prays and thinks about what he should do."
+    },
+    {
+      "pageNumber": 4,
+      "imageFile": "4.jpg",
+      "narration": "After three days the giant fish spits the man onto dry land. He goes where God asked him to go. The people listen to his message, change their ways, and God shows them mercy."
+    }
+  ]
+}

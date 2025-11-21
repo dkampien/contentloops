@@ -1,0 +1,29 @@
+{
+  "storyId": "noahs-ark",
+  "title": "Noah's Ark",
+  "thumbnailFile": "thumbnail.jpg",
+  "voiceFile": "voice.mp3",
+  "totalPages": 4,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "imageFile": "1.jpg",
+      "narration": "God sees that the world has become filled with wickedness, but one man chooses to walk with Him. God decides to send a great flood and gives the older man instructions to build a massive ark."
+    },
+    {
+      "pageNumber": 2,
+      "imageFile": "2.jpg",
+      "narration": "The older man and his family work for many days, cutting wood and shaping beams. Others laugh and mock them, but they continue faithfully, building the giant ark exactly as God commanded."
+    },
+    {
+      "pageNumber": 3,
+      "imageFile": "3.jpg",
+      "narration": "As the storm approaches, animals begin arriving from every direction, large and small. The older man guides them into the ark while dark clouds gather and thunder rumbles in the distance."
+    },
+    {
+      "pageNumber": 4,
+      "imageFile": "4.jpg",
+      "narration": "Water covers the earth as the ark floats safely above the waves. After many days the waters fade, and a rainbow appears in the sky, showing God's promise of mercy and new beginnings."
+    }
+  ]
+}

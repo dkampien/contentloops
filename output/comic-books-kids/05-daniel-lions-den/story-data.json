@@ -1,0 +1,29 @@
+{
+  "storyId": "daniel-in-the-lions-den",
+  "title": "Daniel in the Lions' Den",
+  "thumbnailFile": "thumbnail.jpg",
+  "voiceFile": "voice.mp3",
+  "totalPages": 4,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "imageFile": "1.jpg",
+      "narration": "The older man serves the king faithfully and prays each day. When jealous men try to stop him, he continues to pray at his window, trusting that God hears him no matter what laws are made."
+    },
+    {
+      "pageNumber": 2,
+      "imageFile": "2.jpg",
+      "narration": "The king signs a new law without realizing it will harm the older man. When the jealous men report him for praying, the king is sad but must follow the rule he created."
+    },
+    {
+      "pageNumber": 3,
+      "imageFile": "3.jpg",
+      "narration": "The guards lead the older man to the lions’ den. The king hopes he will be safe. That night, lions surround him, but God sends an angel to protect him until morning."
+    },
+    {
+      "pageNumber": 4,
+      "imageFile": "4.jpg",
+      "narration": "At dawn, the king hurries to the den and finds the older man unharmed. The jealous men are punished, and the king honors the older man’s faith, praising God’s protection."
+    }
+  ]
+}

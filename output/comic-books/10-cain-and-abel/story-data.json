@@ -1,0 +1,28 @@
+{
+  "storyId": "cain-and-abel",
+  "title": "Cain and Abel",
+  "thumbnailFile": "thumbnail.jpg",
+  "totalPages": 4,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "imageFile": "1.jpg",
+      "narration": "Adam and Eve had two sons. Cain, the older brother, worked the soil and grew crops. Abel, the younger brother, kept flocks of sheep. Both brothers worked hard at their tasks. The fields were full of grain, and the flocks grew healthy and strong."
+    },
+    {
+      "pageNumber": 2,
+      "imageFile": "2.jpg",
+      "narration": "When harvest time came, both brothers brought offerings to God. Cain brought some of his crops from the field—grain and vegetables. Abel chose the best lamb from his flock and presented it with a sincere heart. God was pleased with Abel's offering but did not accept Cain's gift."
+    },
+    {
+      "pageNumber": 3,
+      "imageFile": "3.jpg",
+      "narration": "Cain became very angry and jealous. His face darkened with fury. God spoke to Cain, warning him to control his anger and do what was right. But Cain refused to listen. He asked Abel to walk with him into the field."
+    },
+    {
+      "pageNumber": 4,
+      "imageFile": "4.jpg",
+      "narration": "In the field, Cain's anger exploded. He attacked his brother Abel and killed him. God called out to Cain, asking where Abel was. Cain answered, 'Am I my brother's keeper?' But God knew what Cain had done. As punishment, Cain was sent away to wander the earth, marked and alone."
+    }
+  ]
+}

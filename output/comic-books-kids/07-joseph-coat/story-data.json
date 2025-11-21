@@ -1,0 +1,29 @@
+{
+  "storyId": "joseph-and-his-colorful-coat",
+  "title": "Joseph and His Colorful Coat",
+  "thumbnailFile": "thumbnail.jpg",
+  "voiceFile": "voice.mp3",
+  "totalPages": 4,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "imageFile": "1.jpg",
+      "narration": "The father gives the young man a bright colorful coat, showing how much he loves him. The older brothers watch with jealousy and frustration, wondering why their father treats him differently from the rest."
+    },
+    {
+      "pageNumber": 2,
+      "imageFile": "2.jpg",
+      "narration": "The young man shares strange dreams he has. In the dreams, he stands tall while others bow around him. The older brothers do not like hearing this, and their jealousy grows even stronger."
+    },
+    {
+      "pageNumber": 3,
+      "imageFile": "3.jpg",
+      "narration": "When the young man visits his brothers in the fields, they grab him and throw him into a deep pit. They take his colorful coat, leaving him alone and frightened in the darkness."
+    },
+    {
+      "pageNumber": 4,
+      "imageFile": "4.jpg",
+      "narration": "Travelers pass by, and the older brothers decide to sell the young man to them. The travelers take him far away. Even in this scary moment, the young man quietly trusts that God is still with him."
+    }
+  ]
+}

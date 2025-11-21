@@ -1,0 +1,29 @@
+{
+  "storyId": "david-and-goliath",
+  "title": "David and Goliath",
+  "thumbnailFile": "thumbnail.jpg",
+  "voiceFile": "voice.mp3",
+  "totalPages": 4,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "imageFile": "1.jpg",
+      "narration": "The young boy arrives at a tense battlefield where soldiers stand in fear. A giant warrior shouts challenges from a nearby hill. As the young boy watches the frightened army, he begins to understand the danger facing them."
+    },
+    {
+      "pageNumber": 2,
+      "imageFile": "2.jpg",
+      "narration": "The young boy bravely offers to face the giant warrior. The older man listens with surprise, but the boy trusts that courage will be enough. He tries on heavy armor, decides he cannot wear it, and gathers smooth stones instead."
+    },
+    {
+      "pageNumber": 3,
+      "imageFile": "3.jpg",
+      "narration": "The young boy steps forward with only a sling and stones. The giant warrior mocks him, but the boy stands firm. He speaks with courage, trusting that the battle will be won by faith rather than strength."
+    },
+    {
+      "pageNumber": 4,
+      "imageFile": "4.jpg",
+      "narration": "The young boy releases a stone that strikes the giant warrior and brings him down. Shock turns into celebration as the soldiers cheer. Through courage and trust, the young boy wins a victory no one expected."
+    }
+  ]
+}

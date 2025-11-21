@@ -1,0 +1,28 @@
+{
+  "storyId": "tower-of-babel",
+  "title": "Tower of Babel",
+  "thumbnailFile": "thumbnail.jpg",
+  "totalPages": 4,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "imageFile": "1.jpg",
+      "narration": "Long ago, all people on earth spoke the same language and used the same words. They traveled together and settled in a plain in the land of Shinar. They said to one another, 'Let us make bricks and build ourselves a great city.'"
+    },
+    {
+      "pageNumber": 2,
+      "imageFile": "2.jpg",
+      "narration": "The people grew proud and ambitious. They decided to build a massive tower that would reach all the way to the heavens. 'We will make a name for ourselves,' they declared. 'This tower will show our greatness!' They worked together, stacking brick upon brick, building higher and higher."
+    },
+    {
+      "pageNumber": 3,
+      "imageFile": "3.jpg",
+      "narration": "God came down to see the city and the tower the people were building. He saw their pride and said, 'If they can do this as one people with one language, nothing will be impossible for them.' So God confused their language, and suddenly no one could understand each other."
+    },
+    {
+      "pageNumber": 4,
+      "imageFile": "4.jpg",
+      "narration": "The people stopped building because they could no longer communicate or work together. They scattered across the earth, forming different nations with different languages. The unfinished tower stood abandoned, a reminder that God alone is great. The place was called Babel, meaning 'confusion.'"
+    }
+  ]
+}

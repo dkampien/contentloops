@@ -1,0 +1,28 @@
+{
+  "storyId": "abraham-and-isaac",
+  "title": "Abraham and Isaac",
+  "thumbnailFile": "thumbnail.jpg",
+  "totalPages": 4,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "imageFile": "1.jpg",
+      "narration": "God spoke to Abraham and said, 'Take your son Isaac, whom you love, and go to the land of Moriah. Offer him there as a sacrifice on one of the mountains I will show you.' Abraham's heart was heavy, but he trusted God. Early the next morning, he prepared for the journey with his son."
+    },
+    {
+      "pageNumber": 2,
+      "imageFile": "2.jpg",
+      "narration": "Abraham and Isaac traveled for three days toward the distant mountain. Isaac carried the wood for the sacrifice, while Abraham carried the fire and the knife. As they walked together, Isaac asked, 'Father, we have the fire and the wood, but where is the lamb for the sacrifice?'"
+    },
+    {
+      "pageNumber": 3,
+      "imageFile": "3.jpg",
+      "narration": "Abraham answered with faith, 'God will provide the lamb, my son.' They reached the mountain and built an altar of stones. Abraham placed the wood on the altar. With trembling hands and tears in his eyes, he bound Isaac and laid him on the wood. Abraham raised the knife."
+    },
+    {
+      "pageNumber": 4,
+      "imageFile": "4.jpg",
+      "narration": "Suddenly, an angel called out from heaven: 'Abraham! Do not harm the boy. Now I know you truly fear God.' Abraham looked up and saw a ram caught in a thicket. God had provided! Abraham sacrificed the ram instead. His faith had been tested, and God blessed him greatly."
+    }
+  ]
+}

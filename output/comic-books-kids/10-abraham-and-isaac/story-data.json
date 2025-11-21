@@ -1,0 +1,29 @@
+{
+  "storyId": "abraham-and-isaac",
+  "title": "Abraham and Isaac",
+  "thumbnailFile": "thumbnail.jpg",
+  "voiceFile": "voice.mp3",
+  "totalPages": 4,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "imageFile": "1.jpg",
+      "narration": "God asks the older man to take the boy on a special journey to a distant mountain. The older man trusts God completely and prepares for the trip, even though he does not fully understand God’s plan."
+    },
+    {
+      "pageNumber": 2,
+      "imageFile": "2.jpg",
+      "narration": "The journey continues up the mountain. The boy notices they have wood but no animal for the offering. The older man gently assures him that God Himself will provide what they need."
+    },
+    {
+      "pageNumber": 3,
+      "imageFile": "3.jpg",
+      "narration": "At the top of the mountain, the older man prepares an altar as God instructed. Just as he begins to lift his hand, a soft voice calls out to stop him. God has seen his trust and does not want him to harm the boy."
+    },
+    {
+      "pageNumber": 4,
+      "imageFile": "4.jpg",
+      "narration": "A ram appears caught in a nearby bush, and God provides it for the offering. The older man and the boy worship joyfully together, grateful that God always keeps His promises."
+    }
+  ]
+}

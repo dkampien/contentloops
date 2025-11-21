@@ -1,0 +1,29 @@
+{
+  "storyId": "cain-and-abel",
+  "title": "Cain and Abel",
+  "thumbnailFile": "thumbnail.jpg",
+  "voiceFile": "voice.mp3",
+  "totalPages": 4,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "imageFile": "1.jpg",
+      "narration": "Two brothers work in different ways. The older brother cares for the fields, and the younger brother watches over the animals. Both work hard, each wanting to give their best gifts to God from what they have."
+    },
+    {
+      "pageNumber": 2,
+      "imageFile": "2.jpg",
+      "narration": "The older brother brings part of his harvest, and the younger brother brings his best animal. God is pleased with the younger brother’s offering because it comes from a thankful heart, and the older brother becomes upset."
+    },
+    {
+      "pageNumber": 3,
+      "imageFile": "3.jpg",
+      "narration": "The older brother lets anger into his heart. God warns him to choose what is right, but he does not listen. Later in the field, something sad happens, and he feels deep regret."
+    },
+    {
+      "pageNumber": 4,
+      "imageFile": "4.jpg",
+      "narration": "God speaks gently to the older brother about what happened. Even though he made a hurtful choice, God still cares for him and sends him to live in another place, hoping he will choose kindness in the future."
+    }
+  ]
+}

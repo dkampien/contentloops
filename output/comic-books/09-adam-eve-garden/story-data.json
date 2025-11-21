@@ -1,0 +1,28 @@
+{
+  "storyId": "adam-eve-garden",
+  "title": "Adam and Eve in the Garden",
+  "thumbnailFile": "thumbnail.jpg",
+  "totalPages": 4,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "imageFile": "1.jpg",
+      "narration": "God created a beautiful garden called Eden and placed the first man, Adam, there to care for it. The garden overflowed with fruit trees, flowing rivers, and magnificent plants. God brought all the animals to Adam, who named each one. Then God caused Adam to fall into deep sleep and created Eve from his rib to be his companion."
+    },
+    {
+      "pageNumber": 2,
+      "imageFile": "2.jpg",
+      "narration": "Adam and Eve lived joyfully in the garden, walking with God in the cool of the day. God told them they could eat from any tree except the Tree of Knowledge of Good and Evil. One day, a cunning serpent spoke to Eve, questioning God's command and tempting her with the forbidden fruit."
+    },
+    {
+      "pageNumber": 3,
+      "imageFile": "3.jpg",
+      "narration": "The serpent told Eve that eating the fruit would make them like God, knowing good and evil. Eve looked at the beautiful fruit, took it, and ate. She gave some to Adam, and he ate too. Suddenly their eyes were opened, and they realized they had disobeyed God."
+    },
+    {
+      "pageNumber": 4,
+      "imageFile": "4.jpg",
+      "narration": "When God came to walk in the garden, Adam and Eve hid in shame. God called out to them and learned what they had done. Saddened, God told them they must leave the beautiful garden. An angel with a flaming sword guarded the entrance so they could never return."
+    }
+  ]
+}

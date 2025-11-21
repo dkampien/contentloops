@@ -1,0 +1,28 @@
+{
+  "storyId": "jonah-whale",
+  "title": "Jonah and the Whale",
+  "thumbnailFile": "thumbnail.png",
+  "totalPages": 4,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "imageFile": "page1.png",
+      "narration": "God called Jonah to go to Nineveh and preach, but Jonah refused. He fled to the port and boarded a ship sailing far away. As the ship traveled across the sea, God sent a powerful storm. Massive waves crashed over the deck as the terrified sailors fought to survive."
+    },
+    {
+      "pageNumber": 2,
+      "imageFile": "page2.png",
+      "narration": "The sailors cried out to their gods and threw cargo overboard, but the storm raged on. They found Jonah sleeping below deck. When they woke him, Jonah confessed that he was running from God. He told them to throw him into the sea to save themselves."
+    },
+    {
+      "pageNumber": 3,
+      "imageFile": "page3.png",
+      "narration": "The sailors threw Jonah overboard. He plunged into the churning waters. God sent a great fish that swallowed Jonah whole. For three days and three nights, Jonah prayed inside the belly of the fish."
+    },
+    {
+      "pageNumber": 4,
+      "imageFile": "page4.png",
+      "narration": "God commanded the fish to release Jonah. The great fish swam to shore and spit Jonah out onto dry land. Jonah stood up, covered in seaweed, grateful to be alive. This time, he would obey God."
+    }
+  ]
+}

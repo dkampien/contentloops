@@ -1,0 +1,29 @@
+{
+  "storyId": "the-birth-of-jesus",
+  "title": "The Birth of Jesus",
+  "thumbnailFile": "thumbnail.jpg",
+  "voiceFile": "voice.mp3",
+  "totalPages": 4,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "imageFile": "1.jpg",
+      "narration": "The young woman and the man travel to a crowded town at night. Every place to stay is full, but a kind host lets them rest in a quiet stable where animals sleep softly in the warm hay."
+    },
+    {
+      "pageNumber": 2,
+      "imageFile": "2.jpg",
+      "narration": "That night, the miracle happens. The young woman gives birth to a baby boy. She wraps Him in soft cloth and lays Him gently in a manger filled with hay, and the stable glows with quiet joy."
+    },
+    {
+      "pageNumber": 3,
+      "imageFile": "3.jpg",
+      "narration": "Shepherds watch their sheep in the quiet fields. Suddenly, a bright glowing angel appears with joyful news. More glowing angels fill the sky with songs of praise, filling the night with light."
+    },
+    {
+      "pageNumber": 4,
+      "imageFile": "4.jpg",
+      "narration": "The shepherds visit the stable and find the baby lying in the manger. They praise God joyfully and tell others what they have seen. Hope has come into the world."
+    }
+  ]
+}

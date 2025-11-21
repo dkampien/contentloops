@@ -1,0 +1,29 @@
+{
+  "storyId": "the-wise-men-visit-jesus",
+  "title": "The Wise Men Visit Jesus",
+  "thumbnailFile": "thumbnail.jpg",
+  "voiceFile": "voice.mp3",
+  "totalPages": 4,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "imageFile": "1.jpg",
+      "narration": "Far away in the east, wise men study the night sky. One night they see a brand-new star shining brightly. They know it means a special child has been born, and they prepare for a long journey."
+    },
+    {
+      "pageNumber": 2,
+      "imageFile": "2.jpg",
+      "narration": "The wise men travel across deserts and hills, following the bright star. They bring gifts to honor the new child. The star guides them faithfully through every part of their long journey."
+    },
+    {
+      "pageNumber": 3,
+      "imageFile": "3.jpg",
+      "narration": "The wise men arrive in a small town, and the star stops above a simple home. Their long journey has led them to the place they have been hoping to find."
+    },
+    {
+      "pageNumber": 4,
+      "imageFile": "4.jpg",
+      "narration": "The wise men meet the child and his mother. Filled with joy, they offer their gifts and thank God for guiding them. They return home by another path, grateful for what they have seen."
+    }
+  ]
+}

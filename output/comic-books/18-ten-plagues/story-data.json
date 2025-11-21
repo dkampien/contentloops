@@ -1,0 +1,28 @@
+{
+  "storyId": "ten-plagues",
+  "title": "The Ten Plagues",
+  "thumbnailFile": "thumbnail.jpg",
+  "totalPages": 4,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "imageFile": "1.jpg",
+      "narration": "Moses returned to Egypt to free the Hebrew people from slavery. He went to Pharaoh with God's command: 'Let my people go!' But Pharaoh's heart was hard, and he refused. God told Moses He would send plagues upon Egypt until Pharaoh obeyed."
+    },
+    {
+      "pageNumber": 2,
+      "imageFile": "2.jpg",
+      "narration": "The plagues began. The Nile River turned to blood, making the water undrinkable. Frogs swarmed across the land, covering everything. Swarms of gnats filled the air, followed by flies. The Egyptian livestock became sick and died."
+    },
+    {
+      "pageNumber": 3,
+      "imageFile": "3.jpg",
+      "narration": "Still Pharaoh refused. Painful boils broke out on people and animals. Hail rained down from the sky, destroying crops. Locusts devoured what remained of the harvest. Thick darkness covered Egypt for three days, so dark no one could see."
+    },
+    {
+      "pageNumber": 4,
+      "imageFile": "4.jpg",
+      "narration": "Finally, God sent the last and most terrible plague. The firstborn of every Egyptian family died that night. Pharaoh, grieving his own son, finally cried out to Moses: 'Take your people and go!'"
+    }
+  ]
+}

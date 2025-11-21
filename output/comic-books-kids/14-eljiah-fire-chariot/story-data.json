@@ -1,0 +1,29 @@
+{
+  "storyId": "elijah-and-the-chariot-of-fire",
+  "title": "Elijah and the Chariot of Fire",
+  "thumbnailFile": "thumbnail.jpg",
+  "voiceFile": "voice.mp3",
+  "totalPages": 4,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "imageFile": "1.jpg",
+      "narration": "Elijah walks with Elisha through the towns of Israel. Other prophets warn Elisha that Elijah will soon be taken away, but Elisha refuses to leave him, choosing to stay close beside his teacher."
+    },
+    {
+      "pageNumber": 2,
+      "imageFile": "2.jpg",
+      "narration": "Elijah rolls up his cloak and strikes the Jordan River. The waters part, revealing dry ground. Elisha follows in amazement as the two cross together, sensing something powerful is about to happen."
+    },
+    {
+      "pageNumber": 3,
+      "imageFile": "3.jpg",
+      "narration": "As they walk, a fiery chariot suddenly descends. A mighty whirlwind lifts Elijah away while Elisha reaches toward him, watching his teacher being taken up into heaven."
+    },
+    {
+      "pageNumber": 4,
+      "imageFile": "4.jpg",
+      "narration": "Elijah disappears into the whirlwind and his cloak falls. Elisha picks it up, realizing God has chosen him to continue Elijah’s work as he prepares to cross the Jordan again."
+    }
+  ]
+}

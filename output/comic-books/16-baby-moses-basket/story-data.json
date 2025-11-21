@@ -1,0 +1,28 @@
+{
+  "storyId": "baby-moses-basket",
+  "title": "Baby Moses in the Basket",
+  "thumbnailFile": "thumbnail.jpg",
+  "totalPages": 4,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "imageFile": "1.jpg",
+      "narration": "The Egyptian Pharaoh feared the Hebrew people were growing too numerous. He ordered all Hebrew baby boys to be thrown into the Nile River. A Hebrew woman gave birth to a beautiful baby boy and hid him for three months."
+    },
+    {
+      "pageNumber": 2,
+      "imageFile": "2.jpg",
+      "narration": "When she could no longer hide him, she wove a waterproof basket from reeds and papyrus. She placed her baby son inside the basket, covering him with a soft cloth. Then she carried the basket to the river."
+    },
+    {
+      "pageNumber": 3,
+      "imageFile": "3.jpg",
+      "narration": "The mother gently placed the basket among the tall reeds at the river's edge. The baby's sister stayed nearby, watching from a distance to see what would happen to her little brother. The basket floated safely in the shallow water."
+    },
+    {
+      "pageNumber": 4,
+      "imageFile": "4.jpg",
+      "narration": "Pharaoh's daughter came to the river to bathe. She discovered the basket and looked inside. When she saw the crying baby, her heart filled with compassion. She decided to adopt him as her own son, naming him Moses."
+    }
+  ]
+}

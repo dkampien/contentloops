@@ -1,0 +1,28 @@
+{
+  "storyId": "moses-red-sea",
+  "title": "Moses and the Red Sea",
+  "thumbnailFile": "thumbnail.png",
+  "totalPages": 4,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "imageFile": "page1.png",
+      "narration": "The Israelites fled Egypt and reached the shore of the Red Sea. Behind them, Pharaoh's army thundered closer - chariots and soldiers in hot pursuit. The people were trapped between the sea and their enemies. Moses raised his staff toward heaven as the people cried out in fear."
+    },
+    {
+      "pageNumber": 2,
+      "imageFile": "page2.png",
+      "narration": "Moses stretched his staff over the sea. A mighty wind began to blow. The waters started to part, dividing left and right. The sea floor appeared, creating a dry path through the middle. Towering walls of water stood on both sides, held back by God's power."
+    },
+    {
+      "pageNumber": 3,
+      "imageFile": "page3.png",
+      "narration": "The Israelites walked through on dry ground, walls of water rising high on either side. The Egyptian army charged in behind them, chariots racing between the waters. The Israelites hurried toward the far shore."
+    },
+    {
+      "pageNumber": 4,
+      "imageFile": "page4.png",
+      "narration": "Moses stretched out his staff again. The walls of water crashed down upon the Egyptian army. The Israelites stood safely on the far shore, watching as God delivered them. They were free."
+    }
+  ]
+}

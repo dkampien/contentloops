@@ -1,0 +1,28 @@
+{
+  "storyId": "daniel-lions-den",
+  "title": "Daniel in the Lions' Den",
+  "thumbnailFile": "thumbnail.jpg",
+  "totalPages": 4,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "imageFile": "1.jpg",
+      "narration": "Daniel served God faithfully in Babylon. Jealous officials convinced the king to make a new law: anyone who prayed to any god except the king would be thrown into the lions' den. Daniel heard about the law but continued to pray to God three times each day, kneeling by his open window."
+    },
+    {
+      "pageNumber": 2,
+      "imageFile": "2.jpg",
+      "narration": "The officials watched Daniel praying and ran to report him to the king. The king was deeply troubled, for he loved Daniel, but the law could not be changed. With a heavy heart, the king commanded that Daniel be thrown into the den of lions."
+    },
+    {
+      "pageNumber": 3,
+      "imageFile": "3.jpg",
+      "narration": "Soldiers lowered Daniel into the dark pit. Lions surrounded him, growling and circling. A stone sealed the entrance above. The king returned to his palace unable to sleep, worried about Daniel all night long."
+    },
+    {
+      "pageNumber": 4,
+      "imageFile": "4.jpg",
+      "narration": "At dawn, the king rushed to the den and called out to Daniel. Daniel answered that God had sent an angel to shut the lions' mouths. The king rejoiced and commanded Daniel be lifted out, unharmed."
+    }
+  ]
+}

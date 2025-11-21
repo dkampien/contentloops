@@ -1,0 +1,28 @@
+{
+  "storyId": "moses-burning-bush",
+  "title": "Moses and the Burning Bush",
+  "thumbnailFile": "thumbnail.jpg",
+  "totalPages": 4,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "imageFile": "1.jpg",
+      "narration": "Moses was a shepherd living in the desert of Midian, tending his father-in-law's flock. One day, while watching the sheep near Mount Horeb, he saw something extraordinary. A bush was blazing with fire, but it was not burning up."
+    },
+    {
+      "pageNumber": 2,
+      "imageFile": "2.jpg",
+      "narration": "Moses walked closer to examine this strange sight. Suddenly, God's voice called out from the flames, telling Moses to remove his sandals because he stood on holy ground. Moses covered his face, afraid to look at God."
+    },
+    {
+      "pageNumber": 3,
+      "imageFile": "3.jpg",
+      "narration": "God told Moses that He had seen the suffering of the Hebrew people in Egypt. God was sending Moses to Pharaoh to demand the release of His people. Moses felt uncertain and asked how he could possibly do this."
+    },
+    {
+      "pageNumber": 4,
+      "imageFile": "4.jpg",
+      "narration": "God promised to be with Moses and gave him a sign. God told Moses to throw down his shepherd's staff. When Moses obeyed, the staff transformed into a serpent, then back into a staff, showing God's power would be with him."
+    }
+  ]
+}

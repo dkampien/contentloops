@@ -1,0 +1,28 @@
+{
+  "storyId": "joseph-coat",
+  "title": "Joseph and the Coat",
+  "thumbnailFile": "thumbnail.jpg",
+  "totalPages": 4,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "imageFile": "1.jpg",
+      "narration": "Jacob loved his son Joseph more than his other sons. He gave Joseph a beautiful coat of many colors. When Joseph's brothers saw this special gift, jealousy filled their hearts. They could barely speak kindly to him anymore."
+    },
+    {
+      "pageNumber": 2,
+      "imageFile": "2.jpg",
+      "narration": "One day, Jacob sent Joseph to check on his brothers in the fields. When they saw him coming in his colorful coat, they plotted against him. 'Here comes the dreamer,' they said with contempt."
+    },
+    {
+      "pageNumber": 3,
+      "imageFile": "3.jpg",
+      "narration": "The brothers seized Joseph, stripped off his beautiful coat, and threw him into a deep, empty pit. As they sat down to eat, a caravan of merchants passed by, heading to Egypt."
+    },
+    {
+      "pageNumber": 4,
+      "imageFile": "4.jpg",
+      "narration": "Judah convinced his brothers to sell Joseph to the merchants instead of leaving him to die. They pulled Joseph from the pit and sold him for twenty pieces of silver. Joseph was taken away to Egypt as a slave."
+    }
+  ]
+}

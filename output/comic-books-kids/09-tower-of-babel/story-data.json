@@ -1,0 +1,29 @@
+{
+  "storyId": "the-tower-of-babel",
+  "title": "The Tower of Babel",
+  "thumbnailFile": "thumbnail.jpg",
+  "voiceFile": "voice.mp3",
+  "totalPages": 4,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "imageFile": "1.jpg",
+      "narration": "All the people spoke the same language and worked together. They traveled across the land until they found a wide plain and chose to settle there, building homes and starting new lives side by side."
+    },
+    {
+      "pageNumber": 2,
+      "imageFile": "2.jpg",
+      "narration": "The people decide to build a great city with a tower reaching high into the sky. They hope to make themselves famous and stay together instead of spreading across the world."
+    },
+    {
+      "pageNumber": 3,
+      "imageFile": "3.jpg",
+      "narration": "God sees the people growing proud and thinking only of themselves. To help them learn humility, He gives them different languages, and suddenly no one understands each other."
+    },
+    {
+      "pageNumber": 4,
+      "imageFile": "4.jpg",
+      "narration": "The people leave the unfinished city and spread out across the earth, traveling to many new lands. The tall tower remains behind as a reminder of what happened at Babel."
+    }
+  ]
+}

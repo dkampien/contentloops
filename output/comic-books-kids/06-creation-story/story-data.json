@@ -1,0 +1,29 @@
+{
+  "storyId": "the-creation-story-7-days",
+  "title": "The Creation Story (7 Days)",
+  "thumbnailFile": "thumbnail.jpg",
+  "voiceFile": "voice.mp3",
+  "totalPages": 4,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "imageFile": "1.jpg",
+      "narration": "In the beginning everything was dark and empty. God spoke, creating bright light that filled the world. He separated light from darkness and spread a wide blue sky above, shaping the first days of creation."
+    },
+    {
+      "pageNumber": 2,
+      "imageFile": "2.jpg",
+      "narration": "God gathers the waters together so dry land appears. Hills, oceans, and beaches form. Then green plants and colorful flowers begin to grow everywhere, covering the land with life and beauty."
+    },
+    {
+      "pageNumber": 3,
+      "imageFile": "3.jpg",
+      "narration": "God places the sun in the sky to shine by day and the moon and stars for night. He fills the waters with fish and fills the sky with birds of every kind."
+    },
+    {
+      "pageNumber": 4,
+      "imageFile": "4.jpg",
+      "narration": "God creates animals large and small, creatures that walk, hop, run, and crawl. Then He creates people to care for the world. On the seventh day He rests, blessing everything He made as very good."
+    }
+  ]
+}

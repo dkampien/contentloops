@@ -1,0 +1,28 @@
+{
+  "storyId": "jacobs-ladder",
+  "title": "Jacob's Ladder",
+  "thumbnailFile": "thumbnail.jpg",
+  "totalPages": 4,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "imageFile": "1.jpg",
+      "narration": "Jacob left his home after deceiving his father and angering his brother Esau. He traveled alone toward his uncle's land, carrying only a staff and a small bag. As the sun began to set, Jacob found himself in a barren wilderness with rocky terrain. Tired and alone, he stopped for the night."
+    },
+    {
+      "pageNumber": 2,
+      "imageFile": "2.jpg",
+      "narration": "Jacob gathered stones from the ground and made a pillow for his head. He lay down under the stars and fell into a deep sleep. As he slept, he began to dream. In his dream, he saw something extraordinary that would change his life forever."
+    },
+    {
+      "pageNumber": 3,
+      "imageFile": "3.jpg",
+      "narration": "A magnificent ladder appeared, reaching from the earth all the way to heaven. Angels of God were ascending and descending on the ladder. Above the ladder stood the Lord, who spoke to Jacob, promising to bless him and his descendants and never leave him."
+    },
+    {
+      "pageNumber": 4,
+      "imageFile": "4.jpg",
+      "narration": "Jacob woke from his sleep filled with awe. 'Surely the Lord is in this place, and I did not know it!' he said. He took the stone he had used as a pillow and set it upright as a memorial. He poured oil on it and named the place Bethel, which means 'House of God.'"
+    }
+  ]
+}

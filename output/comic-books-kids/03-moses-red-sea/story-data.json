@@ -1,0 +1,29 @@
+{
+  "storyId": "moses-and-the-red-sea",
+  "title": "Moses and the Red Sea",
+  "thumbnailFile": "thumbnail.jpg",
+  "voiceFile": "voice.mp3",
+  "totalPages": 4,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "imageFile": "1.jpg",
+      "narration": "The older man leads the people out of a land where they had worked as slaves. Families pack their belongings and hurry into the wilderness, thankful to finally be free and hopeful for the journey ahead."
+    },
+    {
+      "pageNumber": 2,
+      "imageFile": "2.jpg",
+      "narration": "The king grows angry and sends his soldiers after the people. Chariots race across the desert, and dust fills the air. The people see them coming and begin to fear what will happen next."
+    },
+    {
+      "pageNumber": 3,
+      "imageFile": "3.jpg",
+      "narration": "The people cry out as the soldiers approach, but the older man lifts his staff. A powerful wind blows, and the Red Sea rises into two giant walls of water with a path between them."
+    },
+    {
+      "pageNumber": 4,
+      "imageFile": "4.jpg",
+      "narration": "The people cross through the sea and reach the far shore safely. When the soldiers try to follow, the waters crash back into place. The people are saved, and they celebrate God's protection with joy."
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "storyId": "birth-of-jesus",
+  "title": "Birth of Jesus",
+  "thumbnailFile": "thumbnail.png",
+  "totalPages": 4,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "imageFile": "page1.png",
+      "narration": "Mary and Joseph traveled to Bethlehem for the census, journeying on a dusty road. Mary was ready to give birth. They arrived at the town gates as evening fell, weary from the long journey."
+    },
+    {
+      "pageNumber": 2,
+      "imageFile": "page2.png",
+      "narration": "The town was crowded with travelers. Joseph knocked on inn doors, but every room was full. Finally, an innkeeper took pity and offered them his stable where animals were kept."
+    },
+    {
+      "pageNumber": 3,
+      "imageFile": "page3.png",
+      "narration": "That night in the humble stable, Mary gave birth to baby Jesus. She wrapped him in cloths and laid him gently in a manger filled with hay. The animals watched peacefully in the warm, quiet stable."
+    },
+    {
+      "pageNumber": 4,
+      "imageFile": "page4.png",
+      "narration": "In nearby fields, shepherds tended their flocks. Suddenly, an angel appeared in brilliant light, announcing the birth of the Savior. The shepherds hurried to the stable and found the baby, just as the angel had said."
+    }
+  ]
+}

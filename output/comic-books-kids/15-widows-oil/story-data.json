@@ -1,0 +1,29 @@
+{
+  "storyId": "the-widows-oil",
+  "title": "The Widow’s Oil",
+  "thumbnailFile": "thumbnail.jpg",
+  "voiceFile": "voice.mp3",
+  "totalPages": 4,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "imageFile": "1.jpg",
+      "narration": "A widow in great distress comes to Elisha, fearing a creditor will take her sons. She has only a tiny jar of oil and desperately asks Elisha what she should do."
+    },
+    {
+      "pageNumber": 2,
+      "imageFile": "2.jpg",
+      "narration": "Elisha tells the widow to borrow as many empty jars as she can. Her sons gather containers from neighbors and carry them back home to prepare for the miracle."
+    },
+    {
+      "pageNumber": 3,
+      "imageFile": "3.jpg",
+      "narration": "The widow closes the door and begins pouring from her tiny jar. The oil flows endlessly, filling every jar her sons bring until the whole room is full of overflowing containers."
+    },
+    {
+      "pageNumber": 4,
+      "imageFile": "4.jpg",
+      "narration": "When the last jar is full, the oil stops. Elisha tells the widow to sell the oil, pay her debts, and live in peace with her sons from the remaining amount."
+    }
+  ]
+}

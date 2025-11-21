@@ -29,7 +29,7 @@ A Prompt Formula is a structured template that combines specific **blocks** to g
 Each block contains **values** - the actual text elements that will appear in the final prompt. Values can be:
 
 - Manually written
-- AI-generated suggestions
+- LLM-generated suggestions (the default typically)
 - Curated lists of options
 
 ## Formula Types
