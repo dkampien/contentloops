@@ -16,6 +16,7 @@ yarn-error.log*
 output/videos/
 output/state.json
 output/**/*.mp4
+output/**/*.zip
 dist/
 build/
 
