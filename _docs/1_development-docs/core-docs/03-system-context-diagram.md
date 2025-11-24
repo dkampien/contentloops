@@ -1,15 +1,21 @@
-# System Context Diagram: Content Generator <-> AdLoop
+# System Context Diagram: ContentLoops <-> AdLoop
 
 ```mermaid
 graph TD
     %% --- The Generator System (Your Domain) ---
-    subgraph "Bib Content Gen (System V2)"
+    subgraph "ContentLoops"
         CLI[CLI / Batch Runner]
         
-        subgraph "Template Engine"
+        subgraph "Asset Templates"
             Comic[Comic Book Template]
             UGC[UGC Video Template]
             HookGen[Hook Logic]
+            
+            NoteConfig(Config Profiles / Flavors drive variations: 
+- kids vs. standard 
+- app vs. adloop packaging)
+            Comic --- NoteConfig
+            UGC --- NoteConfig
         end
         
         CLI --> Comic
@@ -17,13 +23,18 @@ graph TD
         UGC --> HookGen
         
         %% The Outputs
-        Asset_Files[("Media Files\n(.mp4 / .png)")]
+        Asset_Files[("Media Files\n(.png)")]
         Manifest_JSON[("Manifest\n(JSON Data)")]
         
         Comic --> Asset_Files
         Comic --> Manifest_JSON
         UGC --> Asset_Files
         UGC --> Manifest_JSON
+
+        Note_Gen[Current Gen: Replicate/Fal.ai (Direct API)]
+        Gen -.- Note_Gen
+        
+
     end
 
     %% --- The Boundary (Storage) ---
