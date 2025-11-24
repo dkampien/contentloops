@@ -3,16 +3,17 @@
 OUTLINE
 - Recap
 - Notes & Questions + Problems
-- References
 - Tasks 
+- References
 
 
 ## RECAP 
 - Tried to create the comics template but relized I need to work on the block library. How to organize library and which blocks to include and when to add new blocks. Explored various block lib designs. And what to do with testing blocks. 
 - I realized the template is not produciton ready and that the LLM (ex claude) can't follow the template precisely and I can't fix this currently. 
-
+[more info in notion]
 
 ----
+
 ## WORKFLOW & PROCESS REVIEW
   1. For the LLM to generate usable, consistent, production ready prompts we need some files:
     - Knowledge layer:
@@ -23,7 +24,6 @@ OUTLINE
       - [comic-books_template.md] (or TEST version) - The specific step-by-step workflow for comic book generation
       - Defines: Story narrative → Panel planning → Prompt generation process
     - The template tells the llm what do to (workflow steps) and the framework tells the llm how to do it (block prompt methodology)
-
   2. STEP-1 - STORY NARATIVE
     - Approaches
       - Cover the full arc and miss some details. Do we have these?
@@ -36,45 +36,25 @@ OUTLINE
     - Needs:
       - Block assembly instructions
       - Other rules and guides ex from best practices and known challenges
+    - STEP 3 Responsibilities
+      1. Chose blocks (or have the blocks pre-set) - based on an input + source of blocks
+        How does the LLM decide what blocks to chose?
+      2. Fill block values (block detail level)
+        - Rules on filling block values
+      3. Assemble blocks into prompt (block depth level)
+        - Aseembly rules, language or other rules
+      4. Output and output format
 
 
-Does the block approach helps or hurts the prompt gen? 
+Workflow Variables
+- Story narative word count - currently is 150 words (dynamic?)
+- Number of pages extracted from narative - was fixed 4, now its 3-5 (dynamic pages per narative)
+- Number of panels per page - currently fixed 3 (dynamic panels per page)
 
 
-
-
-By going throught its flow. Im thinking as a list of tasks the llm needs to do. 
-1. Chose blocks. This is based on an input and a source for blocks. In this case the input is the panels from step 2. In theory should answer to "How does the LLM decide what blocks to chose". And the source is the block library. I think the block depth concept fits here nicely. It would also need some instructions to think visually like a DOP. (not sure about this tho)
-2. Fill values for the blocks. Ok so the blocks have been chosen, the block depth has been chosen, now its time to fill the values. The llm takes full creativity for this. Needs to know to fill info specifically for image gen model and to think in a visual descriptive language. The block detail level fits here nicely. 
-3. Assemnble blocks. Blocks have been chosen and filled. Now its time to assemble the blocks. Im not sure here if it should be kinda like two steps. Assemble blocks and assemble prompt. The main difference (altough tbd), would be that assemble prompt would take the blocks and their values and assemble into natural language. I remember there are some rules on this as well. - Whats your take on this task? 
-4. Output prompt - is this a specific task? 
-
-
-
-
-
-
-
-
-
-
-
-
-Chose blocks
-Fill blocks
-Assemble blocks into prompt
-
-
-Detail level of blocks
-Block depth
-Output format
-
-
-
-
-
-
-
+Workflow variations
+- Step 3 with one-time setup or without (eg define characters and story-wide blocks
+- Workflow for seedream4 (more constrictive prompting rules in step 3) OR nanobanana pro
 
 
 ----
@@ -89,6 +69,9 @@ Output format
 - The block library suggestion is not working properly -> make follow only the blocks in library or standard blocks? I have standard blocks defined already but where did those come from?
 - General whats working and best practices should be on their respective steps?
 - In theory, the prompting methodology should also be referenced in a system prompt
+- Does the block approach helps or hurts the prompt gen? 
+- What I should've done first
+  1. Test content gen model limits. Manually try all kinds of prompts using the same story
 
 
 ### Problems With The Prompt Step (these were mostly fixed in the template documentation)
@@ -109,6 +92,7 @@ Output format
   - It learns patterns from examples and past generations in the same context window
 - When the LLM converts to step 4 prompts, he's carrying over the screenplay language from step 3 because he's just reformatting, not rethinking. -> We merged step 3 and 4. 
 - The natural language instructions are inherently ambigous for the precision needed -> a more constrained format for the intermediate steps?
+[more update info in notion]
 
 
 ----
@@ -125,7 +109,7 @@ Output format
 - [ ] Change backlog story format to a more natural language summary (TBD)
 - [ ] Make the output format (detailed with sublocks) only as a debugging step. Takes too many tokens
 - [ ] Update step 2 format and move character definitions to prompt gen step?
-- [ ] Do a full WORKFLOW REVIEW? 
+- [x] Do a full WORKFLOW REVIEW? 
 
 
 
@@ -284,6 +268,53 @@ captions, etc.)
 
 
 ## PROMPTS
+
+
+[]
+
+
+----
+
+
+Framework Outline
+
+- Overview
+- Core Concepts
+    - Prompt formula
+    - Block structure
+    - Block values
+    - Core blocks
+- Formula types
+    - Text
+    - Image gen
+    - video gen
+- Formula construction process
+- Block library
+- Output formats
+- LLM usage rules - assembly rules
+
+Guide Outline
+
+- Understanding AI models - not needed
+- Modalities - model capabilities
+- Ai generation workflows
+- Prompts and modalities (how to prompt for each modality)
+- Formulas and blocks
+- Detail levels
+- Prompting best practices
+- Examples and system hierarchy
+
+
+
+----
+
+API structure and where to place differnt types of information
+
+
+
+OPTIONS moving forward
+- separate panels with seedream then stitch with comfyui api or programatic stitcher 0.03 * 3 = 0.09 per page = 0.39 per comic
+- generate with nano banana pro 0.14 per page (image) = 0.7 per comic
 
 
 
