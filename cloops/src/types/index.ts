@@ -158,11 +158,17 @@ export interface StorageService {
   writeBundle(storyId: string, data: BundleData): void;
 }
 
+// GPT-5 specific types
+export type ReasoningEffort = 'none' | 'low' | 'medium' | 'high';
+export type Verbosity = 'low' | 'medium' | 'high';
+
 export interface LLMCallParams {
   systemPrompt: string;
   userMessage: string;
   schema?: object;
   variables?: Record<string, unknown>;
+  reasoning?: ReasoningEffort;  // GPT-5.1 param
+  verbosity?: Verbosity;        // GPT-5.1 param
 }
 
 export interface GenerateImageParams {

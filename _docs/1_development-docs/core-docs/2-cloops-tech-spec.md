@@ -450,38 +450,58 @@ interface Services {
 
 ### 8.1 LLM Service
 
-**OpenAI integration:**
+**OpenAI Responses API with GPT-5.1:**
 ```typescript
+// GPT-5 specific types
+type ReasoningEffort = 'none' | 'low' | 'medium' | 'high';
+type Verbosity = 'low' | 'medium' | 'high';
+
 interface LLMCallParams {
   systemPrompt: string;
   userMessage: string;
   schema?: object;
+  reasoning?: ReasoningEffort;  // GPT-5.1 param
+  verbosity?: Verbosity;        // GPT-5.1 param
 }
 
-async function llmCall<T = string>({ systemPrompt, userMessage, schema }: LLMCallParams): Promise<T> {
-  const messages: ChatCompletionMessageParam[] = [
+async function llmCall<T = string>(params: LLMCallParams): Promise<T> {
+  const { systemPrompt, userMessage, schema, reasoning, verbosity } = params;
+
+  const input = [
     { role: 'system', content: systemPrompt },
     { role: 'user', content: userMessage }
   ];
 
-  const options: ChatCompletionCreateParams = {
-    model: 'gpt-4o',
-    messages
-  };
-
-  // Structured output if schema provided
+  // With schema: use responses.parse() or responses.create() with json_schema
   if (schema) {
-    options.response_format = {
-      type: 'json_schema',
-      json_schema: { name: 'response', schema }
-    };
+    const response = await openai.responses.create({
+      model: 'gpt-5.1',
+      input,
+      ...(reasoning && { reasoning: { effort: reasoning } }),
+      text: {
+        format: { type: 'json_schema', name: 'response', schema, strict: true },
+        ...(verbosity && { verbosity }),
+      },
+    });
+    // Extract and parse JSON from response
+    return JSON.parse(response.output[0].content[0].text) as T;
   }
 
-  const response = await openai.chat.completions.create(options);
-  const content = response.choices[0].message.content ?? '';
-  return schema ? JSON.parse(content) : content as T;
+  // Plain text response
+  const response = await openai.responses.create({
+    model: 'gpt-5.1',
+    input,
+    ...(reasoning && { reasoning: { effort: reasoning } }),
+    ...(verbosity && { text: { verbosity } }),
+  });
+  return response.output_text as T;
 }
 ```
+
+**GPT-5.1 Parameters:**
+- `reasoning.effort`: Controls reasoning depth (`none`, `low`, `medium`, `high`)
+- `text.verbosity`: Controls output detail (`low`, `medium`, `high`)
+- NOT supported: `temperature`, `top_p`, `logprobs`
 
 ### 8.2 Generation Service
 
@@ -840,10 +860,17 @@ interface StorageService {
   writeBundle(storyId: string, data: BundleData): void;
 }
 
+// GPT-5 specific types
+type ReasoningEffort = 'none' | 'low' | 'medium' | 'high';
+type Verbosity = 'low' | 'medium' | 'high';
+
 interface LLMCallParams {
-  prompt: string;
+  systemPrompt: string;
+  userMessage: string;
   schema?: object;
   variables?: Record<string, unknown>;
+  reasoning?: ReasoningEffort;  // GPT-5.1 param
+  verbosity?: Verbosity;        // GPT-5.1 param
 }
 
 interface GenerateImageParams {
@@ -880,10 +907,11 @@ interface StoryDataJson {
 
 ## Changelog
 
+- **v4 (2025-12-02):** Upgraded to GPT-5.1 with Responses API. Added reasoning/verbosity params to LLMCallParams. Per-step configuration in workflow.ts.
 - **v3 (2025-12-01):** Added debug/replay system, renamed prompts/ to system-prompts/ with .md extension, added CLI flags (--debug, --replay, cleanup command).
 - **v2 (2025-12-01):** Hybrid architecture - templates have workflow.ts for logic, config.json for settings. Services are shared building blocks. No hardcoded steps in engine.
 - **v1 (2025-11-28):** Initial spec with hardcoded step registry (superseded).
 
 ---
 
-*v3 - 2025-12-01*
+*v4 - 2025-12-02*

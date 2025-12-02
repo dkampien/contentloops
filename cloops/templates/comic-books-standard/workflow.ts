@@ -81,6 +81,8 @@ ${narrative}`;
         systemPrompt,
         userMessage,
         schema: ctx.schemas['planning'],
+        reasoning: 'low',
+        verbosity: 'low',
       });
 
       pages = result.pages;
@@ -107,6 +109,8 @@ ${pagesJson}`;
         systemPrompt,
         userMessage,
         schema: ctx.schemas['prompts'],
+        reasoning: 'medium',
+        verbosity: 'low',
       });
 
       prompts = result.prompts;
@@ -130,6 +134,8 @@ Title: ${input.title}`;
         systemPrompt,
         userMessage,
         schema: ctx.schemas['thumbnail'],
+        reasoning: 'low',
+        verbosity: 'low',
       });
 
       thumbnailPrompt = result.prompt;

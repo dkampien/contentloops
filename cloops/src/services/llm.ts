@@ -29,7 +29,7 @@ function isJsonSchema(schema: object): boolean {
  * Supports both Zod schemas and JSON schemas for structured output.
  */
 async function llmCall<T = string>(params: LLMCallParams): Promise<T> {
-  const { systemPrompt, userMessage, schema } = params;
+  const { systemPrompt, userMessage, schema, reasoning, verbosity } = params;
   const openai = getClient();
 
   const input = [
@@ -42,10 +42,12 @@ async function llmCall<T = string>(params: LLMCallParams): Promise<T> {
     // Check if it's a Zod schema
     if (schema instanceof z.ZodType) {
       const response = await openai.responses.parse({
-        model: 'gpt-4o',
+        model: 'gpt-5.1',
         input,
+        ...(reasoning && { reasoning: { effort: reasoning } }),
         text: {
           format: zodTextFormat(schema, 'response'),
+          ...(verbosity && { verbosity }),
         },
       });
 
@@ -59,8 +61,9 @@ async function llmCall<T = string>(params: LLMCallParams): Promise<T> {
     // Check if it's a JSON Schema (has type and properties)
     if (isJsonSchema(schema)) {
       const response = await openai.responses.create({
-        model: 'gpt-4o',
+        model: 'gpt-5.1',
         input,
+        ...(reasoning && { reasoning: { effort: reasoning } }),
         text: {
           format: {
             type: 'json_schema',
@@ -68,6 +71,7 @@ async function llmCall<T = string>(params: LLMCallParams): Promise<T> {
             schema: schema as Record<string, unknown>,
             strict: true,
           },
+          ...(verbosity && { verbosity }),
         },
       });
 
@@ -93,10 +97,12 @@ async function llmCall<T = string>(params: LLMCallParams): Promise<T> {
     // Fallback: try to use as Zod raw shape (legacy behavior)
     const zodSchema = z.object(schema as z.ZodRawShape);
     const response = await openai.responses.parse({
-      model: 'gpt-4o',
+      model: 'gpt-5.1',
       input,
+      ...(reasoning && { reasoning: { effort: reasoning } }),
       text: {
         format: zodTextFormat(zodSchema, 'response'),
+        ...(verbosity && { verbosity }),
       },
     });
 
@@ -109,8 +115,10 @@ async function llmCall<T = string>(params: LLMCallParams): Promise<T> {
 
   // Plain text response (no schema)
   const response = await openai.responses.create({
-    model: 'gpt-4o',
+    model: 'gpt-5.1',
     input,
+    ...(reasoning && { reasoning: { effort: reasoning } }),
+    ...(verbosity && { text: { verbosity } }),
   });
 
   // Extract text from response output
@@ -140,18 +148,22 @@ async function llmCall<T = string>(params: LLMCallParams): Promise<T> {
 export async function llmCallWithSchema<T extends z.ZodType>(
   systemPrompt: string,
   userMessage: string,
-  schema: T
+  schema: T,
+  options?: { reasoning?: 'none' | 'low' | 'medium' | 'high'; verbosity?: 'low' | 'medium' | 'high' }
 ): Promise<z.infer<T>> {
   const openai = getClient();
+  const { reasoning, verbosity } = options || {};
 
   const response = await openai.responses.parse({
-    model: 'gpt-4o',
+    model: 'gpt-5.1',
     input: [
       { role: 'system', content: systemPrompt },
       { role: 'user', content: userMessage },
     ],
+    ...(reasoning && { reasoning: { effort: reasoning } }),
     text: {
       format: zodTextFormat(schema, 'response'),
+      ...(verbosity && { verbosity }),
     },
   });
 

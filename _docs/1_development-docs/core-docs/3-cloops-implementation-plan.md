@@ -48,7 +48,8 @@ Based on PRD and Tech Spec. Steps are designed to be atomic and build on each ot
 - **Validation:** Can make a test call to OpenAI, returns expected response.
 - **Implementation Notes:**
   - Support both plain text and JSON schema responses
-  - Use `gpt-4o` as default model
+  - Use `gpt-5.1` with OpenAI Responses API
+  - Per-step `reasoning` and `verbosity` params (GPT-5.1 specific)
   - Handle API errors gracefully
 
 ### Step 2.2: Generation Service `[x]`
