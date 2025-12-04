@@ -445,10 +445,3 @@ The STEP 1 problem
 
 
 
-User Story
-- I want a batch of 20 comics for kids to use in ads. Full naration bundled 
-
-Notes
-- Should the system also work outside adloops?
-- Can the system manage ads variants and in-app variants? What info is packaged? Different steps? 
-- How can the system manage already made stories? Can it redo existing story?

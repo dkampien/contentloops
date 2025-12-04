@@ -7,15 +7,18 @@
 - **SR4**: Output feeds into AdLoops platform
 
 ## Next Cycle
-_(empty until scoped)_
+- Stories Backlog Service [2]
+- Batch Processing [1]
 
 ## Backlog
 
 ### Core System
 1. **Batch Processing** - Run multiple items in one command [SR1]
    - `--batch N` or `--all` flag on run command
-2. **Backlog Management** - Populate backlog from source [SR1]
-   - `cloops backlog add <template> --count N` or similar
+2. **Stories Backlog Service** - Universal datasource with Bible API extraction [SR1]
+   - api.bible integration with sections (fallback: chapters)
+   - Cursor-based extraction, LLM filters story-worthy content
+   - Local storage after extraction
 3. **Selective Regeneration** - Regenerate specific pages without full re-run [SR2]
    - `cloops regen <template> <story-id> --pages 2,4`
    - Reads prompts from existing debug.md, regenerates only those images
@@ -37,7 +40,7 @@ _(empty until scoped)_
   - [ ] Review step 3 prompts (image prompts)
   - [ ] Review step 4 prompts (thumbnail)
 - [ ] Add story metadata - is it useful?
-- [ ] Review step 1 input source (Bible API)
+- [x] Review step 1 input source (Bible API)
 - [ ] Find good comic style for nano-banana model
 
 ## Done
