@@ -22,14 +22,13 @@ export interface WorkflowContext {
   schemas: Record<string, object>;
   templatePath: string;
   dry: boolean;
-  debug: boolean;
   replay: boolean;
   storyId: string;
 }
 
 export interface TemplateConfig {
   name: string;
-  datasource: 'backlog' | 'csv';
+  datasource: 'ds-stories-backlog' | 'ds-csv';
   settings: TemplateSettings;
   style: StyleConfig;
   generation: GenerationConfig;
@@ -59,10 +58,43 @@ export interface GenerationConfig {
 // ===================
 
 export interface Datasource {
-  getNextItem(): BacklogItem | null;
-  markInProgress(itemId: string): void;
-  markComplete(itemId: string): void;
-  markFailed(itemId: string, error: string): void;
+  getNextItem(): Promise<BacklogItem | null>;
+  markInProgress(itemId: string): Promise<void>;
+  markComplete(itemId: string): Promise<void>;
+  markFailed(itemId: string, error: string): Promise<void>;
+}
+
+// ===================
+// Stories Backlog Types
+// ===================
+
+/** Story in the universal pool (extracted from Bible) */
+export interface Story {
+  id: string;                    // e.g., "GEN.1.1-creation"
+  title: string;                 // e.g., "The Creation"
+  summary: string;
+  keyMoments: string[];
+  source: {
+    book: string;
+    chapter: number;
+    section?: string;            // Section ID from api.bible
+  };
+}
+
+/** Item in a template's backlog (references a Story) */
+export interface TemplateBacklogItem {
+  storyId: string;               // References Story.id in universal pool
+  title: string;                 // Story title (for folder naming)
+  error?: string;                // Last error (for debugging failed runs)
+}
+
+/** Tracks extraction position in Bible */
+export interface ExtractionState {
+  bibleId: string;               // Bible version being used
+  currentBook: string;           // Current book being processed
+  currentChapter: number;        // Current chapter in that book
+  completedBooks: string[];      // Books fully processed
+  totalExtracted: number;        // Total stories extracted
 }
 
 export interface Backlog {
@@ -115,8 +147,7 @@ export interface PagePrompt {
 export interface RunOptions {
   dry: boolean;
   item?: string; // Specific item ID to run
-  debug?: boolean; // Save debug.json with all prompts
-  replay?: boolean; // Replay from debug.json (skip LLM calls)
+  replay?: boolean; // Replay from prompts.md (skip LLM calls)
 }
 
 export interface State {
@@ -145,8 +176,8 @@ export interface LLMService {
 }
 
 export interface ReplicateService {
-  generateImage(prompt: string, config: GenerationConfig): Promise<string>;
-  generateImages(prompts: string[], config: GenerationConfig): Promise<string[]>;
+  generateImage(prompt: string, config: GenerationConfig, outputPath: string): Promise<string>;
+  generateImages(prompts: string[], config: GenerationConfig, outputDir: string): Promise<string[]>;
 }
 
 export interface ComfyUIService {
@@ -201,11 +232,11 @@ export interface StoryDataJson {
 }
 
 // ===================
-// Debug Types
+// Prompts Types
 // ===================
 
-/** Data written to debug.md (all LLM responses) */
-export interface DebugMdData {
+/** Data written to prompts.md (all LLM responses) */
+export interface PromptsMdData {
   storyId: string;
   title: string;
   narrative: string;
@@ -214,7 +245,7 @@ export interface DebugMdData {
   thumbnailPrompt: string;
 }
 
-/** Data needed for --replay (subset of debug) */
+/** Data needed for --replay (subset of prompts) */
 export interface ReplayData {
   pages: Page[];
   imagePrompts: string[];

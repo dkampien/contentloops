@@ -65,9 +65,9 @@ async function downloadFile(url: string, destPath: string): Promise<void> {
 }
 
 /**
- * Generate an image using Replicate API (internal, takes GenerateImageParams)
+ * Generate an image using Replicate API and save to specified path
  */
-async function generateImageInternal(params: GenerateImageParams): Promise<string> {
+async function generateImageInternal(params: GenerateImageParams, outputPath: string): Promise<string> {
   const { model, prompt, params: genParams } = params;
   const replicate = getClient();
 
@@ -101,44 +101,40 @@ async function generateImageInternal(params: GenerateImageParams): Promise<strin
 
   console.log('Image URL:', imageUrl.slice(0, 80) + '...');
 
-  // Create temp directory if it doesn't exist
-  const tempDir = path.join(process.cwd(), 'temp');
-  if (!fs.existsSync(tempDir)) {
-    fs.mkdirSync(tempDir, { recursive: true });
+  // Ensure output directory exists
+  const outputDir = path.dirname(outputPath);
+  if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir, { recursive: true });
   }
 
-  // Generate unique filename
-  const ext = path.extname(new URL(imageUrl).pathname) || '.jpg';
-  const filename = `${Date.now()}-${Math.random().toString(36).slice(2)}${ext}`;
-  const localPath = path.join(tempDir, filename);
+  // Download directly to output path
+  await downloadFile(imageUrl, outputPath);
 
-  // Download the image
-  await downloadFile(imageUrl, localPath);
-
-  console.log(`Image saved to: ${localPath}`);
-  return localPath;
+  console.log(`Image saved to: ${outputPath}`);
+  return outputPath;
 }
 
 /**
  * Generate a single image (service interface method)
  */
-async function generateImage(prompt: string, config: GenerationConfig): Promise<string> {
+async function generateImage(prompt: string, config: GenerationConfig, outputPath: string): Promise<string> {
   return generateImageInternal({
     model: config.model,
     prompt,
     params: config.params,
-  });
+  }, outputPath);
 }
 
 /**
- * Generate multiple images sequentially (service interface method)
+ * Generate multiple images sequentially to output directory
  */
-async function generateImages(prompts: string[], config: GenerationConfig): Promise<string[]> {
+async function generateImages(prompts: string[], config: GenerationConfig, outputDir: string): Promise<string[]> {
   const results: string[] = [];
 
   for (let i = 0; i < prompts.length; i++) {
     console.log(`Generating image ${i + 1}/${prompts.length}...`);
-    const localPath = await generateImage(prompts[i], config);
+    const outputPath = path.join(outputDir, `${i + 1}.jpg`);
+    const localPath = await generateImage(prompts[i], config, outputPath);
     results.push(localPath);
   }
 

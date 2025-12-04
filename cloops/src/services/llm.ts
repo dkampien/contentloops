@@ -54,9 +54,16 @@ function extractTextFromResponse(response: Response): string {
 }
 
 /**
- * Check if schema is a JSON Schema (has type and properties fields)
+ * Check if schema is in OpenAI's wrapped format: { name, strict, schema }
  */
-function isJsonSchema(schema: object): boolean {
+function isOpenAISchemaFormat(schema: object): schema is { name: string; strict: boolean; schema: object } {
+  return 'name' in schema && 'schema' in schema;
+}
+
+/**
+ * Check if schema is a raw JSON Schema (has type and properties fields)
+ */
+function isRawJsonSchema(schema: object): boolean {
   return 'type' in schema && 'properties' in schema;
 }
 
@@ -99,8 +106,29 @@ async function llmCall<T = string>(params: LLMCallParams): Promise<T> {
       return response.output_parsed as T;
     }
 
-    // JSON Schema - use responses.create with json_schema format
-    if (isJsonSchema(schema)) {
+    // OpenAI wrapped format: { name, strict, schema }
+    if (isOpenAISchemaFormat(schema)) {
+      const response = await openai.responses.create({
+        model: DEFAULT_MODEL,
+        input,
+        ...(reasoning && { reasoning: { effort: reasoning } }),
+        text: {
+          format: {
+            type: 'json_schema',
+            name: schema.name,
+            schema: schema.schema as Record<string, unknown>,
+            strict: schema.strict ?? true,
+          },
+          ...(verbosity && { verbosity }),
+        },
+      });
+
+      const text = extractTextFromResponse(response);
+      return JSON.parse(text) as T;
+    }
+
+    // Raw JSON Schema - wrap it
+    if (isRawJsonSchema(schema)) {
       const response = await openai.responses.create({
         model: DEFAULT_MODEL,
         input,

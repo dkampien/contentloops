@@ -1,0 +1,28 @@
+{
+  "storyId": "the-day-god-rested",
+  "title": "The Day God Rested",
+  "thumbnailFile": "thumbnail.jpg",
+  "totalPages": 4,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "imageFile": "1.jpg",
+      "narration": "In the beginning days, God spoke and creation answered. Light broke the darkness. Waters pulled back and dry land rose."
+    },
+    {
+      "pageNumber": 2,
+      "imageFile": "2.jpg",
+      "narration": "Seas swarmed with fish, skies filled with birds, and the earth grew green with plants and trees. The sun, moon, and stars took their places. Animals walked the land."
+    },
+    {
+      "pageNumber": 3,
+      "imageFile": "3.jpg",
+      "narration": "At last, God made man and woman in His image and gave them the world to care for. Then the work was finished."
+    },
+    {
+      "pageNumber": 4,
+      "imageFile": "4.jpg",
+      "narration": "The rush of forming and filling stopped. The roaring seas grew calm. The new forests stood still in the soft wind. Galaxies spun in quiet order. From His high and holy place, God looked over all He had made. It was very good. On the seventh day, God did not create. He rested. No new word was spoken. Peace covered heaven and earth. God blessed the seventh day and made it holy. It was set apart, shining like a circle of gentle light in time, a gift of sacred rest over all creation."
+    }
+  ]
+}

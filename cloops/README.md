@@ -11,19 +11,33 @@ cp .env.example .env  # Add API keys
 
 ## Commands
 
+### Run Templates
+
 ```bash
-# Run a template
-cloops run <template>              # Full run
+cloops run <template>              # Run next pending item
 cloops run <template> --dry        # Skip image generation
 cloops run <template> --debug      # Save debug.md with LLM responses
 cloops run <template> --replay     # Load from debug.md, skip LLM
-cloops run <template> -i <id>      # Run specific backlog item
+cloops run <template> -i <id>      # Run specific item
+cloops run <template> -b 20        # Batch: run 20 items
+cloops run <template> --all        # Run all pending items
+```
 
-# List & status
+### Stories Extraction
+
+Templates using `"datasource": "stories-backlog"` automatically extract stories from the Bible.
+
+```bash
+cloops extract                     # Extract 10 stories (default)
+cloops extract -c 50               # Extract 50 stories
+cloops stories                     # Show extraction status
+```
+
+### Management
+
+```bash
 cloops templates                   # List available templates
 cloops status <template>           # Show backlog status
-
-# Cleanup
 cloops cleanup                     # Remove temp files
 ```
 
@@ -33,6 +47,9 @@ cloops cleanup                     # Remove temp files
 # Test LLM calls without generating images
 npm run dev -- run comic-books-standard --dry
 
+# Batch generate 20 comics
+npm run dev -- run comic-books-standard -b 20
+
 # Full run with debug output
 npm run dev -- run comic-books-standard --debug
 
@@ -41,6 +58,13 @@ npm run dev -- run comic-books-standard --debug          # Generate + save debug
 # Edit image prompts in output/.../debug.md
 npm run dev -- run comic-books-standard --replay -i id   # Regenerate images only
 ```
+
+## Datasource Types
+
+| Type | Description |
+|------|-------------|
+| `backlog` | Manual JSON backlog in `data/backlogs/` |
+| `stories-backlog` | Auto-extracted Bible stories via api.bible |
 
 ## Docs
 

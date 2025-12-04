@@ -10,12 +10,12 @@
   - `@_docs/1_development-docs/cycle-1/2-requirements.md`
 
 ## Completion Status
-- **Phase 1:** ❌ — api.bible integration
-- **Phase 2:** ❌ — Stories Backlog datasource
-- **Phase 3:** ❌ — CLI commands
-- **Phase 4:** ❌ — Batch processing
-- **Phase 5:** ❌ — Integration testing
-- **Phase 6:** ❌ — Cleanup
+- **Phase 1:** ✅ — api.bible integration
+- **Phase 2:** ✅ — Stories Backlog datasource
+- **Phase 3:** ✅ — CLI commands
+- **Phase 4:** ✅ — Batch processing
+- **Phase 5:** ✅ — Integration testing
+- **Phase 6:** ✅ — Cleanup
 
 ---
 

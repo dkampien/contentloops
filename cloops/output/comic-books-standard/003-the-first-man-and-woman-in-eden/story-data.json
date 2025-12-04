@@ -1,0 +1,28 @@
+{
+  "storyId": "the-first-man-and-woman-in-eden",
+  "title": "The First Man and Woman in Eden",
+  "thumbnailFile": "thumbnail.jpg",
+  "totalPages": 4,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "imageFile": "1.jpg",
+      "narration": "The earth is bare and quiet. From the dust of the ground, God shapes the first man. He leans close and breathes into the man’s nostrils the breath of life. The man opens his eyes and lives."
+    },
+    {
+      "pageNumber": 2,
+      "imageFile": "2.jpg",
+      "narration": "God plants a garden in Eden. The empty land changes. Soft soil, bright flowers, and many trees appear. In the center stand the tree of life and the tree of the knowledge of good and evil. A clear river flows out and becomes four great streams."
+    },
+    {
+      "pageNumber": 3,
+      "imageFile": "3.jpg",
+      "narration": "God places the man in the garden to work it and care for it. God says, “You may eat from every tree in the garden, but you must not eat from the tree of the knowledge of good and evil. If you eat from it you will surely die.” That tree stands apart, marked as dangerous. God brings animals and birds to the man. One by one he names them, yet he finds no partner like himself."
+    },
+    {
+      "pageNumber": 4,
+      "imageFile": "4.jpg",
+      "narration": "God sends the man into a deep sleep. God gently takes a rib from his side and forms it into a woman, a shining work of His hands. God brings her to the man. He cries with joy, “This is now bone of my bones and flesh of my flesh.” The man and the woman stand together in the garden, united as one. They are naked and feel no shame, surrounded by the beauty of Eden and the life God has given them."
+    }
+  ]
+}

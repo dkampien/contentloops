@@ -1,6 +1,6 @@
 {
   "name": "comic-books-standard",
-  "datasource": "backlog",
+  "datasource": "ds-stories-backlog",
   "settings": {
     "pageCount": { "min": 3, "max": 5 },
     "panelsPerPage": 3,

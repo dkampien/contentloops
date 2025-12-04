@@ -1,6 +1,6 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import type { BundleData, StoryDataJson, StorageService, DebugMdData, ReplayData, Page } from '../types/index.js';
+import type { BundleData, StoryDataJson, StorageService, PromptsMdData, ReplayData, Page } from '../types/index.js';
 
 /**
  * Ensure a directory exists, creating it recursively if needed
@@ -9,13 +9,6 @@ export function ensureDir(dirPath: string): void {
   if (!fs.existsSync(dirPath)) {
     fs.mkdirSync(dirPath, { recursive: true });
   }
-}
-
-/**
- * Copy a file to a destination
- */
-export function copyFile(src: string, dest: string): void {
-  fs.copyFileSync(src, dest);
 }
 
 /**
@@ -41,18 +34,75 @@ export function getOutputDir(templateName: string): string {
 }
 
 /**
- * Get the bundle directory for a specific story
+ * Get the next sequence number for a template
  */
-export function getBundleDir(templateName: string, storyId: string): string {
-  return path.join(getOutputDir(templateName), storyId);
+export function getNextSequence(templateName: string): number {
+  const outputDir = getOutputDir(templateName);
+  if (!fs.existsSync(outputDir)) {
+    return 1;
+  }
+
+  const entries = fs.readdirSync(outputDir, { withFileTypes: true });
+  const folders = entries.filter(e => e.isDirectory());
+
+  // Find highest existing sequence number
+  let maxSeq = 0;
+  for (const folder of folders) {
+    const match = folder.name.match(/^(\d{3})-/);
+    if (match) {
+      const seq = parseInt(match[1], 10);
+      if (seq > maxSeq) maxSeq = seq;
+    }
+  }
+
+  return maxSeq + 1;
 }
 
 /**
- * Write a complete bundle to the output directory
+ * Find existing bundle folder for a storyId (with or without sequence prefix)
+ */
+export function findBundleDir(templateName: string, storyId: string): string | null {
+  const outputDir = getOutputDir(templateName);
+  if (!fs.existsSync(outputDir)) {
+    return null;
+  }
+
+  const entries = fs.readdirSync(outputDir, { withFileTypes: true });
+  for (const entry of entries) {
+    if (entry.isDirectory()) {
+      // Match "001-story-id" or just "story-id"
+      if (entry.name === storyId || entry.name.match(new RegExp(`^\\d{3}-${storyId}$`))) {
+        return path.join(outputDir, entry.name);
+      }
+    }
+  }
+  return null;
+}
+
+/**
+ * Get the bundle directory for a specific story (creates sequenced folder name)
+ */
+export function getBundleDir(templateName: string, storyId: string): string {
+  // Check if folder already exists
+  const existing = findBundleDir(templateName, storyId);
+  if (existing) {
+    return existing;
+  }
+
+  // Create new sequenced folder name
+  const seq = getNextSequence(templateName);
+  const seqStr = seq.toString().padStart(3, '0');
+  return path.join(getOutputDir(templateName), `${seqStr}-${storyId}`);
+}
+
+/**
+ * Write story-data.json to the output directory
+ *
+ * Images are already written directly by the replicate service.
  *
  * @param storyId - Unique identifier for the story
  * @param templateName - Name of the template (e.g., "comic-books-standard")
- * @param data - Bundle data containing images, pages, and metadata
+ * @param data - Bundle data containing metadata
  */
 export function writeBundle(
   storyId: string,
@@ -62,35 +112,17 @@ export function writeBundle(
   const bundleDir = getBundleDir(templateName, storyId);
   ensureDir(bundleDir);
 
-  // Copy page images with sequential numbering
-  data.images.forEach((imagePath, index) => {
-    const ext = path.extname(imagePath) || '.jpg';
-    const destPath = path.join(bundleDir, `${index + 1}${ext}`);
-    copyFile(imagePath, destPath);
-  });
-
-  // Copy thumbnail if provided
-  let thumbnailFile: string | undefined;
-  if (data.thumbnailImage) {
-    const ext = path.extname(data.thumbnailImage) || '.jpg';
-    thumbnailFile = `thumbnail${ext}`;
-    copyFile(data.thumbnailImage, path.join(bundleDir, thumbnailFile));
-  }
-
-  // Create story-data.json
+  // Create story-data.json (images already written by replicate service)
   const storyData: StoryDataJson = {
     storyId,
     title: data.title,
-    thumbnailFile,
+    thumbnailFile: data.thumbnailImage ? 'thumbnail.jpg' : undefined,
     totalPages: data.pages.length,
-    pages: data.pages.map((page, index) => {
-      const ext = path.extname(data.images[index] || '.jpg');
-      return {
-        pageNumber: index + 1,
-        imageFile: `${index + 1}${ext}`,
-        narration: page.narration,
-      };
-    }),
+    pages: data.pages.map((page, index) => ({
+      pageNumber: index + 1,
+      imageFile: `${index + 1}.jpg`,
+      narration: page.narration,
+    })),
   };
 
   writeJson(path.join(bundleDir, 'story-data.json'), storyData);
@@ -100,52 +132,42 @@ export function writeBundle(
 }
 
 /**
- * Check if a bundle already exists for a story
+ * Check if a complete bundle exists for a story (has story-data.json)
  */
 export function bundleExists(templateName: string, storyId: string): boolean {
-  const bundleDir = getBundleDir(templateName, storyId);
+  const bundleDir = findBundleDir(templateName, storyId);
+  if (!bundleDir) return false;
   const storyDataPath = path.join(bundleDir, 'story-data.json');
   return fs.existsSync(storyDataPath);
 }
 
 /**
- * Clean up temporary files
+ * Write prompts.md to the bundle directory
  */
-export function cleanupTemp(): void {
-  const tempDir = path.join(process.cwd(), 'temp');
-  if (fs.existsSync(tempDir)) {
-    fs.rmSync(tempDir, { recursive: true, force: true });
-    console.log('Temporary files cleaned up');
-  }
-}
-
-/**
- * Write debug.md to the bundle directory
- */
-export function writeDebugMd(
+export function writePromptsMd(
   templateName: string,
   storyId: string,
-  data: DebugMdData
+  data: PromptsMdData
 ): void {
   const bundleDir = getBundleDir(templateName, storyId);
   ensureDir(bundleDir);
-  const debugPath = path.join(bundleDir, 'debug.md');
+  const promptsPath = path.join(bundleDir, 'prompts.md');
 
   // Build markdown content
   const lines: string[] = [
-    `# Debug: ${data.title}`,
+    `# ${data.title}`,
     '',
-    '## Step 1: Narrative',
+    '## Narrative',
     '```',
     data.narrative,
     '```',
     '',
-    '## Step 2: Pages',
+    '## Pages',
     '```json',
     JSON.stringify(data.pages, null, 2),
     '```',
     '',
-    '## Step 3: Image Prompts',
+    '## Image Prompts',
     '',
   ];
 
@@ -158,39 +180,49 @@ export function writeDebugMd(
     lines.push('');
   });
 
-  lines.push('## Step 4: Thumbnail');
+  lines.push('## Thumbnail');
   lines.push('```');
   lines.push(data.thumbnailPrompt);
   lines.push('```');
 
-  fs.writeFileSync(debugPath, lines.join('\n'));
-  console.log(`Debug data written to: ${debugPath}`);
+  fs.writeFileSync(promptsPath, lines.join('\n'));
+  console.log(`Prompts written to: ${promptsPath}`);
 }
 
 /**
- * Read debug.md and parse replay data (steps 2, 3, 4)
+ * Read prompts.md and parse replay data
  */
-export function readDebugMd(
+export function readPromptsMd(
   templateName: string,
   storyId: string
 ): ReplayData | null {
   const bundleDir = getBundleDir(templateName, storyId);
-  const debugPath = path.join(bundleDir, 'debug.md');
 
-  if (!fs.existsSync(debugPath)) {
-    return null;
+  // Try new format first, fall back to old debug.md for backwards compatibility
+  let promptsPath = path.join(bundleDir, 'prompts.md');
+  let isNewFormat = true;
+
+  if (!fs.existsSync(promptsPath)) {
+    promptsPath = path.join(bundleDir, 'debug.md');
+    isNewFormat = false;
+    if (!fs.existsSync(promptsPath)) {
+      return null;
+    }
   }
 
-  const content = fs.readFileSync(debugPath, 'utf-8');
+  const content = fs.readFileSync(promptsPath, 'utf-8');
 
-  // Parse Step 2: Pages (JSON)
-  const pagesMatch = content.match(/## Step 2: Pages\s*```json\s*([\s\S]*?)\s*```/);
+  // Parse Pages (JSON) - handle both old and new format
+  const pagesRegex = isNewFormat
+    ? /## Pages\s*```json\s*([\s\S]*?)\s*```/
+    : /## Step 2: Pages\s*```json\s*([\s\S]*?)\s*```/;
+  const pagesMatch = content.match(pagesRegex);
   if (!pagesMatch) {
-    throw new Error('Could not parse pages from debug.md');
+    throw new Error('Could not parse pages from prompts file');
   }
   const pages: Page[] = JSON.parse(pagesMatch[1]);
 
-  // Parse Step 3: Image Prompts
+  // Parse Image Prompts
   const imagePrompts: string[] = [];
   const promptRegex = /### Page \d+\s*```\s*([\s\S]*?)\s*```/g;
   let match;
@@ -198,10 +230,13 @@ export function readDebugMd(
     imagePrompts.push(match[1].trim());
   }
 
-  // Parse Step 4: Thumbnail
-  const thumbMatch = content.match(/## Step 4: Thumbnail\s*```\s*([\s\S]*?)\s*```/);
+  // Parse Thumbnail - handle both old and new format
+  const thumbRegex = isNewFormat
+    ? /## Thumbnail\s*```\s*([\s\S]*?)\s*```/
+    : /## Step 4: Thumbnail\s*```\s*([\s\S]*?)\s*```/;
+  const thumbMatch = content.match(thumbRegex);
   if (!thumbMatch) {
-    throw new Error('Could not parse thumbnail from debug.md');
+    throw new Error('Could not parse thumbnail from prompts file');
   }
   const thumbnailPrompt = thumbMatch[1].trim();
 
@@ -209,12 +244,13 @@ export function readDebugMd(
 }
 
 /**
- * Check if debug.md exists for a story
+ * Check if prompts.md exists for a story
  */
-export function debugMdExists(templateName: string, storyId: string): boolean {
+export function promptsMdExists(templateName: string, storyId: string): boolean {
   const bundleDir = getBundleDir(templateName, storyId);
+  const promptsPath = path.join(bundleDir, 'prompts.md');
   const debugPath = path.join(bundleDir, 'debug.md');
-  return fs.existsSync(debugPath);
+  return fs.existsSync(promptsPath) || fs.existsSync(debugPath);
 }
 
 /**

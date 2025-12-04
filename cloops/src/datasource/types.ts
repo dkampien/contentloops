@@ -12,7 +12,7 @@ export interface Datasource {
    * Get the next pending item from the datasource
    * Returns null if no items are available
    */
-  getNextItem(): BacklogItem | null;
+  getNextItem(): Promise<BacklogItem | null>;
 
   /**
    * Get a specific item by ID
@@ -23,17 +23,17 @@ export interface Datasource {
   /**
    * Mark an item as in progress
    */
-  markInProgress(itemId: string): void;
+  markInProgress(itemId: string): Promise<void>;
 
   /**
    * Mark an item as completed
    */
-  markComplete(itemId: string): void;
+  markComplete(itemId: string): Promise<void>;
 
   /**
    * Mark an item as failed with an error message
    */
-  markFailed(itemId: string, error: string): void;
+  markFailed(itemId: string, error: string): Promise<void>;
 
   /**
    * Get all items with their current status
@@ -44,6 +44,12 @@ export interface Datasource {
    * Get counts by status
    */
   getStatus(): DatasourceStatus;
+
+  /**
+   * Ensure at least N items are available for processing
+   * Extracts more from source if needed (only for datasources that support extraction)
+   */
+  ensureAvailable?(count: number): Promise<void>;
 }
 
 /**

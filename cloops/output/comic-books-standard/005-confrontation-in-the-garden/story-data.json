@@ -1,0 +1,23 @@
+{
+  "storyId": "confrontation-in-the-garden",
+  "title": "Confrontation in the Garden",
+  "thumbnailFile": "thumbnail.jpg",
+  "totalPages": 3,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "imageFile": "1.jpg",
+      "narration": "The garden is quiet in the cool of the day. Adam and Eve crouch among thick trees, hearts pounding. The joy of Eden is gone, replaced by fear. They clutch leaves to their bodies, trying to cover their nakedness.\n\nThe sound of the LORD’s presence moves through the garden. Branches whisper. Light and shadow shift. A powerful voice calls, “Where are you?” The words roll through the trees and find them where they hide."
+    },
+    {
+      "pageNumber": 2,
+      "imageFile": "2.jpg",
+      "narration": "Adam trembles. At last he steps out, still half hidden, covering himself. “I heard You in the garden,” he says, “and I was afraid, because I was naked. So I hid.”\n\nGod’s voice is firm and heavy. “Who told you that you were naked? Have you eaten from the tree I commanded you not to eat from?” Behind them the forbidden tree stands, its fruit still hanging.\n\nAdam’s eyes dart to Eve. Fear twists into blame. He points toward her. “The woman whom You gave to be with me, she gave me fruit from the tree, and I ate.” Eve’s face fills with shock and shame."
+    },
+    {
+      "pageNumber": 3,
+      "imageFile": "3.jpg",
+      "narration": "The LORD turns to Eve with solemn intensity. “What is this you have done?”\n\nEve cannot lift her eyes. She gestures toward the serpent, coiled nearby in the shadows. “The serpent deceived me, and I ate.”\n\nThe garden is silent. Their excuses hang in the air, but nothing can hide the truth. They have disobeyed. Now they must face the holy God who walks in their broken paradise."
+    }
+  ]
+}

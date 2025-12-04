@@ -5,10 +5,10 @@ import type {
   WorkflowContext,
   Page,
   PagePrompt,
-  DebugMdData,
+  PromptsMdData,
 } from '../../src/types/index.js';
 import { injectVariables } from '../../src/utils/config.js';
-import { writeDebugMd, readDebugMd } from '../../src/services/storage.js';
+import { writePromptsMd, readPromptsMd, getBundleDir, ensureDir } from '../../src/services/storage.js';
 
 // ===== Workflow Implementation =====
 
@@ -26,13 +26,13 @@ export async function run(
   let images: string[] | undefined;
   let thumbnailImage: string | undefined;
 
-  // ===== REPLAY MODE: Load from debug.md =====
+  // ===== REPLAY MODE: Load from prompts.md =====
   if (ctx.replay) {
-    console.log('\n[REPLAY] Loading from debug.md...');
-    const replayData = readDebugMd(config.name, ctx.storyId);
+    console.log('\n[REPLAY] Loading from prompts.md...');
+    const replayData = readPromptsMd(config.name, ctx.storyId);
 
     if (!replayData) {
-      throw new Error(`No debug.md found for ${ctx.storyId}. Run with --debug first.`);
+      throw new Error(`No prompts.md found for ${ctx.storyId}. Run without --replay first.`);
     }
 
     // Use saved data instead of running LLM calls
@@ -160,22 +160,23 @@ Title: ${input.title}`;
     }
   }
 
+  // ===== Save prompts.md (before generation, so replay works if cut) =====
+  if (!ctx.replay && narrative && pages && prompts && thumbnailPrompt) {
+    const promptsData: PromptsMdData = {
+      storyId: ctx.storyId,
+      title: input.title,
+      narrative,
+      pages,
+      imagePrompts: prompts.map((p) => p.prompt),
+      thumbnailPrompt,
+    };
+    writePromptsMd(config.name, ctx.storyId, promptsData);
+    console.log('\n✓ Saved prompts.md');
+  }
+
   // ===== Step 5: Generation (skip in dry run) =====
   if (ctx.dry) {
-    console.log('\n[DRY RUN] Skipping image generation\n');
-
-    // Save debug.md if requested (even in dry run)
-    if (ctx.debug && narrative && pages && prompts && thumbnailPrompt) {
-      const debugData: DebugMdData = {
-        storyId: ctx.storyId,
-        title: input.title,
-        narrative,
-        pages,
-        imagePrompts: prompts.map((p) => p.prompt),
-        thumbnailPrompt,
-      };
-      writeDebugMd(config.name, ctx.storyId, debugData);
-    }
+    console.log('\n[DRY RUN] Skipping image generation');
     return;
   }
 
@@ -185,14 +186,19 @@ Title: ${input.title}`;
       throw new Error('No prompts available for generation');
     }
 
-    // Generate page images
+    // Get output directory and ensure it exists
+    const outputDir = getBundleDir(config.name, ctx.storyId);
+    ensureDir(outputDir);
+
+    // Generate page images directly to output
     const promptStrings = prompts.map((p) => p.prompt);
-    images = await services.replicate.generateImages(promptStrings, config.generation);
+    images = await services.replicate.generateImages(promptStrings, config.generation, outputDir);
     console.log(`✓ Generated ${images.length} page images`);
 
-    // Generate thumbnail
+    // Generate thumbnail directly to output
     if (thumbnailPrompt) {
-      thumbnailImage = await services.replicate.generateImage(thumbnailPrompt, config.generation);
+      const thumbnailPath = `${outputDir}/thumbnail.jpg`;
+      thumbnailImage = await services.replicate.generateImage(thumbnailPrompt, config.generation, thumbnailPath);
       console.log(`✓ Generated thumbnail image`);
     }
   }
@@ -214,16 +220,4 @@ Title: ${input.title}`;
     console.log(`✓ Bundle written`);
   }
 
-  // Save debug.md if requested
-  if (ctx.debug && narrative && pages && prompts && thumbnailPrompt) {
-    const debugData: DebugMdData = {
-      storyId: ctx.storyId,
-      title: input.title,
-      narrative,
-      pages,
-      imagePrompts: prompts.map((p) => p.prompt),
-      thumbnailPrompt,
-    };
-    writeDebugMd(config.name, ctx.storyId, debugData);
-  }
 }

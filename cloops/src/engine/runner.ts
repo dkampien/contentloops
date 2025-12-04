@@ -35,8 +35,7 @@ export async function runTemplate(
   // Determine mode for display
   let mode = 'FULL RUN';
   if (options.dry) mode = 'DRY RUN';
-  else if (options.replay) mode = 'REPLAY (from debug.json)';
-  else if (options.debug) mode = 'FULL RUN + DEBUG';
+  else if (options.replay) mode = 'REPLAY (from prompts.md)';
 
   console.log(`\n========================================`);
   console.log(`Running template: ${template.name}`);
@@ -53,7 +52,6 @@ export async function runTemplate(
     schemas: template.schemas,
     templatePath: `templates/${template.name}`,
     dry: options.dry,
-    debug: options.debug ?? false,
     replay: options.replay ?? false,
     storyId,
   };

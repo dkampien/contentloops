@@ -13,24 +13,26 @@
 ## Backlog
 
 ### Core System
-1. **Batch Processing** - Run multiple items in one command [SR1]
-   - `--batch N` or `--all` flag on run command
-2. **Stories Backlog Service** - Universal datasource with Bible API extraction [SR1]
-   - api.bible integration with sections (fallback: chapters)
-   - Cursor-based extraction, LLM filters story-worthy content
-   - Local storage after extraction
+1. ~~**Batch Processing** - Run multiple items in one command [SR1]~~ ✓
+2. ~~**Stories Backlog Service** - Universal datasource with Bible API extraction [SR1]~~ ✓
 3. **Selective Regeneration** - Regenerate specific pages without full re-run [SR2]
    - `cloops regen <template> <story-id> --pages 2,4`
    - Reads prompts from existing debug.md, regenerates only those images
-4. **Scheduling Worker** - Auto-run on schedule [SR3]
-5. **AdLoops Integration** - Wire output to AdLoops [SR4]
+4. **Retry Stuck Items** - Reset in_progress items after crashes
+   - `--retry` flag on run command resets in_progress → pending
+5. **Improved Failure Tracking** - Better metadata for failed items
+   - Add `failedAt` timestamp
+   - Add `retryCount` field for "give up after N attempts" logic
+   - Consider `--stop-on-failure` flag for batch mode
+6. **Scheduling Worker** - Auto-run on schedule [SR3]
+7. **AdLoops Integration** - Wire output to AdLoops [SR4]
 
 ### Templates
-6. **Kids Comic Template** - Kid-friendly art/vocabulary with voiceover [SR1]
-7. **Video Comic Template** - Output video instead of images
+8. **Kids Comic Template** - Kid-friendly art/vocabulary with voiceover [SR1]
+9. **Video Comic Template** - Output video instead of images
 
 ### Infrastructure
-8. **Agents SDK Migration** - Replace manual API calls with SDK
+10. **Agents SDK Migration** - Replace manual API calls with SDK
 
 ## Project Tasks
 - Prompts

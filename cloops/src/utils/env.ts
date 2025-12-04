@@ -3,6 +3,7 @@ import 'dotenv/config';
 interface EnvConfig {
   OPENAI_API_KEY: string;
   REPLICATE_API_TOKEN: string;
+  BIBLE_API_KEY: string;
 }
 
 function getRequiredEnv(name: string): string {
@@ -17,6 +18,7 @@ export function loadEnv(): EnvConfig {
   return {
     OPENAI_API_KEY: getRequiredEnv('OPENAI_API_KEY'),
     REPLICATE_API_TOKEN: getRequiredEnv('REPLICATE_API_TOKEN'),
+    BIBLE_API_KEY: getRequiredEnv('BIBLE_API_KEY'),
   };
 }
 

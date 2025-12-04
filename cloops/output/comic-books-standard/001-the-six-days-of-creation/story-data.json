@@ -1,0 +1,28 @@
+{
+  "storyId": "the-six-days-of-creation",
+  "title": "The Six Days of Creation",
+  "thumbnailFile": "thumbnail.jpg",
+  "totalPages": 4,
+  "pages": [
+    {
+      "pageNumber": 1,
+      "imageFile": "1.jpg",
+      "narration": "In the beginning, there was only a deep, silent darkness. Waters covered everything, formless and empty, and the Spirit of God hovered over the surface like a watchful presence. All was still, waiting. Then God spoke, “Let there be light.”"
+    },
+    {
+      "pageNumber": 2,
+      "imageFile": "2.jpg",
+      "narration": "At once, light burst into the darkness. Day and night parted from each other, and the first great division of creation began. God spoke again, and the waters pulled back. Dry land rose up while seas gathered on every side. At His word the ground broke into life, covered in grass, flowers, and trees heavy with fruit."
+    },
+    {
+      "pageNumber": 3,
+      "imageFile": "3.jpg",
+      "narration": "God set great lights in the sky: the sun to rule the day, the moon to rule the night, and countless stars to mark seasons and years over the young earth. He filled the seas with huge creatures and darting fish, and the sky with birds of every color. Then He made animals to walk the land."
+    },
+    {
+      "pageNumber": 4,
+      "imageFile": "4.jpg",
+      "narration": "Last, God formed humanity, male and female, in His own image. He blessed them and gave them rule over all He had made. God looked over the wide, living world. Light and sky, land and sea, plants, stars, animals, and people. He saw everything that He had made, and it was very good."
+    }
+  ]
+}
