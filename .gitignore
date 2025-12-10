@@ -1,6 +1,9 @@
-# ADLOOPS Folders
-_adloops
-_bookchat
+# BIBLECHAT Folders
+_projects/_adloops
+_projects/_bookchat
+_projects/_onb-builder
+
+
 
 # Dependencies
 node_modules/

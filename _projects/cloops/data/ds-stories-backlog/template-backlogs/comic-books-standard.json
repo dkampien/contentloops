@@ -1,0 +1,43 @@
+[
+  {
+    "storyId": "GEN.1.S1",
+    "title": "The Six Days of Creation"
+  },
+  {
+    "storyId": "GEN.2.S2",
+    "title": "The Day God Rested"
+  },
+  {
+    "storyId": "GEN.2.S3",
+    "title": "The First Man and Woman in Eden"
+  },
+  {
+    "storyId": "GEN.3.S4",
+    "title": "The Serpent’s Deception in the Garden"
+  },
+  {
+    "storyId": "GEN.3.S5",
+    "title": "Confrontation in the Garden"
+  },
+  {
+    "storyId": "GEN.4.S9",
+    "title": "Cain and Abel: The First Murder"
+  },
+  {
+    "storyId": "GEN.4.S10",
+    "title": "Lamech’s Boast and the Children of Cain"
+  },
+  {
+    "storyId": "GEN.5.S13",
+    "title": "Enoch Walks with God and Vanishes"
+  },
+  {
+    "storyId": "GEN.6.S15",
+    "title": "The Days of the Nephilim: Corruption Before the Flood",
+    "error": "Connection error."
+  },
+  {
+    "storyId": "GEN.6.S16",
+    "title": "Noah’s Favor in a Corrupt World"
+  }
+]

@@ -118,3 +118,15 @@ Notes
 - How can the system manage already made stories? Can it redo existing story?
 - Need fal api key
 
+
+----
+
+- Validate againht user story. 
+    - Add: I want to see the prompt that was used for a specific image. This means adding naming conventions to the files?
+
+- How does the system choses how many stories to extract?
+- Does the system, take books and stories in an order? So the cursor concept works?
+- Datasource conflict 
+
+
+How does the system analyzez the story? It extracts the full text or based on the summary and key moments?
