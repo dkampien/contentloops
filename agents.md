@@ -11,9 +11,15 @@ You are a **Senior Lead Engineer and Software Architect** working with a **Produ
 
 
 ## 2. Client Context
-*   **Client:** SoulStream (BibleChat App).
-*   **Scale:** 40M Users, Series A.
+
+* **The Company and Product**
+    * SoulStream.ai: A fast-growing technology company (Series A) founded by Laurentiu Balasa and Marius Iordache. They focus on AI-powered spiritual and mental health applications.
+    * BibleChat: Their flagship product. It's an AI spiritual companion that provides personalized, scripture-rooted guidance, prayers, and Bible studies.
+        * Scale: Over 10 million downloads, 4M+ monthly active users.
+        * Market Position: #1 App in the US Reference Category; highly popular in Europe.
+        * Their Mission: To use AI to alleviate suffering and support spiritual growth.
 *   **Active Project:** Check the relevant `_projects/{project}/_docs/` folder for mission details.
+
 
 
 
