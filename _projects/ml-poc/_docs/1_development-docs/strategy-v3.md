@@ -1,7 +1,7 @@
 # The Mind-Reading Engine: Strategy Document v3
 
 **Project:** Real-Time Contextual Personalization
-**Goal:** $40M ARR / Optimize $3M/month Ad Spend
+**Goal:** $40M ARR, Optimize $3M/month Ad Spend
 
 ---
 

@@ -2,7 +2,8 @@
   "event_id": "string (primary key)",
   "user_id": "string (foreign key -> users.user_id)",
   "ts": "datetime (time column)",
-  "event_type": "string (habitDone/askChatGPT/spiritualMeterDone/ahaBedtimeStories/ahaGuidedBreathing/ahaBibleStudyGuides/purchaseCompleted/paywallShown)",
-  "category": "string (optional, for askChatGPT: anxiety/bible/relationships/general/sleep/gratitude)",
-  "price": "float (optional, for purchaseCompleted)"
+  "event_type": "string (habitDone, askChatGPT, spiritualMeterDone, ahaBedtimeStories, ahaGuidedBreathing, ahaBibleStudyGuides, purchaseCompleted, paywallShown)",
+  "category": "string (optional - for askChatGPT: anxiety, bible, relationships, general, sleep, gratitude)",
+  "price": "float (optional - for purchaseCompleted)",
+  "offer_type": "string (optional - monthly/annual for purchaseCompleted)"
 }

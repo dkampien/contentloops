@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paywall Visualizer - Bob Scenario PoC</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Paywall Visualizer</h1>
+            <p class="subtitle">Bob Scenario PoC - ML-Driven Paywall Personalization</p>
+        </header>
+
+        <div class="controls">
+            <label for="user-select">Select User:</label>
+            <select id="user-select">
+                <option value="">Loading...</option>
+            </select>
+            <button id="load-btn">Load Config</button>
+        </div>
+
+        <div class="main-content">
+            <div class="phone-frame">
+                <div class="phone-screen" id="paywall">
+                    <div class="paywall-header" id="paywall-header">
+                        <div class="topic-icon" id="topic-icon"></div>
+                        <h2 id="paywall-title">Loading...</h2>
+                    </div>
+                    <div class="paywall-body">
+                        <div class="price-display">
+                            <span class="price" id="price">$--</span>
+                            <span class="period" id="period">/month</span>
+                        </div>
+                        <div class="offer-badge" id="offer-badge">
+                            <span id="badge-text">Monthly</span>
+                        </div>
+                        <div class="features">
+                            <div class="feature">Unlimited Access</div>
+                            <div class="feature">Ad-Free Experience</div>
+                            <div class="feature">Personalized Content</div>
+                        </div>
+                        <button class="cta-button" id="cta-button">Start Free Trial</button>
+                        <div class="confidence-meter">
+                            <span>Conversion Confidence:</span>
+                            <div class="meter-bar">
+                                <div class="meter-fill" id="confidence-fill"></div>
+                            </div>
+                            <span id="confidence-value">--</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="config-panel">
+                <h3>Config JSON</h3>
+                <pre id="config-json">{}</pre>
+
+                <h3>Raw Predictions</h3>
+                <div class="raw-predictions" id="raw-predictions">
+                    <div class="prediction-row">
+                        <span>price_sens_prob:</span>
+                        <span id="raw-price">--</span>
+                    </div>
+                    <div class="prediction-row">
+                        <span>annual_prob:</span>
+                        <span id="raw-annual">--</span>
+                    </div>
+                    <div class="prediction-row">
+                        <span>conversion_prob:</span>
+                        <span id="raw-conversion">--</span>
+                    </div>
+                </div>
+
+                <h3>Assembly Logic</h3>
+                <div class="logic-display" id="logic-display">
+                    <div class="logic-row" id="logic-price"></div>
+                    <div class="logic-row" id="logic-offer"></div>
+                    <div class="logic-row" id="logic-topic"></div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>PoC Visualizer - Not Production UI</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

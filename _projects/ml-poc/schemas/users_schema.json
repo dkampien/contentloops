@@ -3,9 +3,8 @@
   "created_at": "datetime",
   "age": "string (13-17, 18-24, 25-34, 35-44, 45-54, 55+)",
   "gender": "string (m/f)",
-  "preferredTopics": "string (comma-separated)",
-  "lifeChallenge": "string (anxiety/sleep/faith/relationships/grief/purpose)",
-  "longestStreak": "int",
-  "dayDone7Days": "int",
-  "last_ad_context": "string (sleep/anxiety/biblestudy/generic)"
+  "geography": "string (US, MX, BR, DE, GB, etc.)",
+  "language": "string (en, es, pt, de, etc.)",
+  "lifeChallenge": "string (anxiety, sleep, faith, relationships, grief, purpose)",
+  "last_ad_intent": "string (lockscreen, widget, dailyverse, generic)"
 }

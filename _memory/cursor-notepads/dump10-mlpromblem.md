@@ -96,11 +96,6 @@ Revised Hybrid Structure:
 [x] Does adapty support paywalls only or also onboardings? What are aha moments?
 [x] Create a new set of docs and diagrams (v2)
 
-## NEEDED
-
-- Accounts and apis
-- Reference docs
-- More data about actual price points
 
 ---
 
@@ -131,17 +126,16 @@ Plan (to get to goal)
 - Increase ad spend to $3M in one month with 120% return (1.2 ROAS)
 - 10$ CPA for trials (3mil / 300k)
 
+
 --- 
+
+
+
 
 ## GEMINI RECAP
 
 
-
-
 "Why this is "Make or Break" for the $40M Goal: This isn't just about showing nice screens; it's about making your $3M/month ad spend massively more efficient. Every percentage point increase in conversion (Trial $\to$ Paid) at this scale translates into millions of dollars. If generic flows convert at 5% and personalized flows convert at 15%, that's a 3x boost in effective ad spend."
-
-
-
 
 
 The "Bob Scenario" PoC
@@ -187,49 +181,74 @@ So basically we identified two solution to the efficiency problem the pltv and t
 
 
 
+The data layer (the fuel)
+- Raw data: big query tables
+- "Features": clean data columns, vectors representing complex history (refined fuel)
+- Infrastructure: BigQuery (the warehouse), Redis / Feature Store (the gasstation - fast access for the app)
+The algorithm layer (the engine block)
+- 
+
+
+
+The data (fuel layer)
+The brain (logic layer)
+The bridge (transport layer)
+
+
+-----
 
 
 
 
+## What I need to know (what info would help)
+[x] Premium pricing tiers - found
+[x] Deep link structure and what info does it contain - given
+[x] Conversion rate form  to paid (avg) - found for us, given 
+[ ] Attribution broken from apple ad network - this is still unclear in my mind but confirmed capi 30 min - 1 hr delay
 
 
-
-
-The info hierarchy
-Compare against v2 strategy = add what is missing from the docs
-Rewrite strategy with diagrams in them
-
-
-
-- Deep link context gets stripped. What does a deeplink hold that can be valuable for new users?
-- What prediction types are neccesary with kumo to actually predict what we need? What do we actually need?
-    For returning users (PoC scope):
-        - We know their history (BigQuery)
-        - We might know their ad intent (deep link, if it survives)
-        - We need to decide: What paywall config will convert them?
-    - We have what we need to predict and the source (ad intent, user history [bigquery]) and what the ML outputs
-
-What I need to know (what info would help?)
-- Premium pricing tiers
-- Deep link structure and what info does it contain
-- Conversion rate form trial to paid (avg) - 30% 
-- Attribution broken from apple ad network - explain this 
- 
-
- The data (fuel layer)
- The brain (logic layer)
- The bridge (transport layer)
-
- Give kumo input and docs 
-
-
+## Need to figure out (open questions)
+<old notes>
  Need to figure out
  - The rendering engine (adapty is limited for onboarding) - What are the actual app experiences we can dynamically customzie
  - More granular details about the prediction types (need to figure out the most valuable predicitons types). And also what output can a prediction have? Only confidence lvl?
+</old notes>
 
 
- In the next thread
- - Review implementation plan
- - Start coding new 
+## References for POC 
+- strategy-v3
+- implementation-plan-v2
+- strategy-v3-funnel
+- app_event_schema
+---
+- Poc-complete
 
- add the rule for meta polution
+
+## General notes & questions
+- What other features does bible chat have that could be exploited?
+- Would be cool a diagram with the tech stack the app uses (and how they work together)
+    - Adapty
+    - Signal
+    - Adloops
+    - Facebook related sdks and tools
+    - Apple related sdks and tools 
+- What is the real funnel problem?
+- How many places (slots) are there where we can insert dynamic app experience? (besides paywall and onboardings)
+
+
+## Next
+[ ] Fix the inline pql filter syntax in poc (fix poc)
+[ ] Strengthed understanding and update docs - YOU ARE HERE
+    [ ] Research open questions 
+    [ ] Strategy v4
+[x] Diagram mapping the app tool stack 
+
+Approaches to close the info gaps
+    Go through the previous threads
+    Go through the info hierarchy
+    Go through the docs 
+
+
+
+
+

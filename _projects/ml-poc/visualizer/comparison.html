@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparison View - Bob Scenario PoC</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .server-notice {
+            background: #2d2d44;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        .server-notice code {
+            background: #1a1a2e;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 1000px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .user-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .user-header {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-header h2 {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .user-header .profile {
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .paywall-preview {
+            padding: 20px;
+        }
+
+        .preview-header {
+            padding: 25px 15px;
+            text-align: center;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        .preview-header.lockscreen {
+            background: linear-gradient(180deg, #4a1d6a 0%, #2d1b4e 100%);
+        }
+
+        .preview-header.widget {
+            background: linear-gradient(180deg, #1e3a5f 0%, #152238 100%);
+        }
+
+        .preview-header.dailyverse {
+            background: linear-gradient(180deg, #5d4037 0%, #3e2723 100%);
+        }
+
+        .preview-header.generic {
+            background: linear-gradient(180deg, #37474f 0%, #263238 100%);
+        }
+
+        .preview-header.loading {
+            background: #2d2d44;
+        }
+
+        .preview-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .preview-title {
+            font-size: 1.1rem;
+        }
+
+        .config-section {
+            background: #1a1a2e;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .config-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+        }
+
+        .config-row:last-child {
+            border-bottom: none;
+        }
+
+        .config-label {
+            color: #888;
+        }
+
+        .config-value {
+            font-weight: 600;
+        }
+
+        .config-value.low {
+            color: #10b981;
+        }
+
+        .config-value.high {
+            color: #f97316;
+        }
+
+        .config-value.monthly {
+            color: #6366f1;
+        }
+
+        .config-value.annual {
+            color: #10b981;
+        }
+
+        .price-display {
+            text-align: center;
+            padding: 20px;
+            background: #fff;
+            border-radius: 12px;
+            color: #1a1a1a;
+            margin-bottom: 15px;
+        }
+
+        .price {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .period {
+            color: #666;
+        }
+
+        .offer-tag {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .offer-tag.monthly {
+            background: #e8e8e8;
+            color: #333;
+        }
+
+        .offer-tag.annual {
+            background: #10b981;
+            color: #fff;
+        }
+
+        .confidence-bar {
+            height: 8px;
+            background: #2d2d44;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #f97316 0%, #10b981 100%);
+            border-radius: 4px;
+            transition: width 0.5s;
+        }
+
+        .legend {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .legend h3 {
+            margin-bottom: 15px;
+            font-size: 1rem;
+            color: #888;
+        }
+
+        .legend-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        a {
+            color: #6366f1;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .refresh-btn {
+            padding: 10px 25px;
+            border-radius: 8px;
+            border: none;
+            background: #6366f1;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .refresh-btn:hover {
+            background: #4f46e5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Multi-User Comparison</h1>
+            <p class="subtitle">Bob Scenario PoC - Side-by-Side Paywall Configurations</p>
+            <p style="margin-top: 10px;"><a href="index.html">Back to Single View</a></p>
+            <button class="refresh-btn" onclick="loadAllConfigs()">Refresh Configs</button>
+        </header>
+
+        <div class="server-notice" id="server-notice" style="display: none;">
+            To load dynamic configs, run: <code>python -m http.server 8000</code> from the ml-poc folder
+        </div>
+
+        <div class="legend">
+            <h3>Assembly Logic</h3>
+            <div class="legend-grid">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #10b981;"></div>
+                    <span>price_sens_prob > 0.5 => LOW price tier</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #f97316;"></div>
+                    <span>price_sens_prob <= 0.5 => HIGH price tier</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #6366f1;"></div>
+                    <span>annual_prob <= 0.5 => MONTHLY offer</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #10b981;"></div>
+                    <span>annual_prob > 0.5 => ANNUAL offer</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="comparison-grid" id="comparison-grid">
+            <!-- Cards will be dynamically generated -->
+        </div>
+
+        <footer>
+            <p>PoC Visualizer - Demonstrates ML-Driven Paywall Personalization</p>
+            <p style="margin-top: 10px;">Data: Synthetic | ML: Kumo GNN | Architecture: Tier 2 (Modular)</p>
+        </footer>
+    </div>
+
+    <script>
+        const USERS = [
+            { id: 'bob', profile: 'Dormant 6mo | Lockscreen Ad | $9.99 purchase' },
+            { id: 'alice', profile: 'Active | Widget Ad | $59.99 annual purchase' },
+            { id: 'charlie', profile: 'Medium activity | Dailyverse Ad | No purchases' }
+        ];
+
+        const INTENT_CONFIG = {
+            lockscreen: { title: 'Lockscreen Widget', icon: '\uD83D\uDD12', className: 'lockscreen' },
+            widget: { title: 'Daily Widget', icon: '\uD83D\uDCF1', className: 'widget' },
+            dailyverse: { title: 'Daily Verse', icon: '\uD83D\uDCD6', className: 'dailyverse' },
+            generic: { title: 'Unlock Premium', icon: '\u2B50', className: 'generic' }
+        };
+
+        const PRICE_CONFIG = {
+            low: { price: '$9.99', period: '/month' },
+            high: { price: '$59.99', period: '/year' }
+        };
+
+        async function loadConfig(userId) {
+            try {
+                const response = await fetch(`../output/configs/${userId}.json`);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                return await response.json();
+            } catch (error) {
+                console.error(`Failed to load ${userId}:`, error);
+                document.getElementById('server-notice').style.display = 'block';
+                return null;
+            }
+        }
+
+        function renderUserCard(user, config) {
+            const intent = config ? INTENT_CONFIG[config.intent] || INTENT_CONFIG.generic : INTENT_CONFIG.generic;
+            const price = config ? PRICE_CONFIG[config.price_tier] || PRICE_CONFIG.low : PRICE_CONFIG.low;
+
+            const confidence = config ? (config.confidence * 100).toFixed(1) : 0;
+            const priceSens = config?._raw?.price_sens_prob?.toFixed(3) || 'N/A';
+            const annualProb = config?._raw?.annual_prob?.toFixed(3) || 'N/A';
+            const convProb = config?._raw?.conversion_prob?.toFixed(3) || 'N/A';
+
+            return `
+                <div class="user-card">
+                    <div class="user-header">
+                        <h2>${user.id.charAt(0).toUpperCase() + user.id.slice(1)}</h2>
+                        <p class="profile">${user.profile}</p>
+                    </div>
+                    <div class="paywall-preview">
+                        <div class="preview-header ${config ? intent.className : 'loading'}">
+                            <div class="preview-icon">${config ? intent.icon : '...'}</div>
+                            <div class="preview-title">${config ? intent.title : 'Loading...'}</div>
+                        </div>
+                        <div class="price-display">
+                            <div class="price">${config ? price.price : '...'}</div>
+                            <div class="period">${config ? price.period : ''}</div>
+                            <div class="offer-tag ${config?.offer || 'monthly'}">${config?.offer === 'annual' ? 'Annual - Save 50%' : 'Monthly'}</div>
+                        </div>
+                        <div class="config-section">
+                            <div class="config-row">
+                                <span class="config-label">intent</span>
+                                <span class="config-value">${config?.intent || 'N/A'}</span>
+                            </div>
+                            <div class="config-row">
+                                <span class="config-label">price_tier</span>
+                                <span class="config-value ${config?.price_tier || ''}">${config?.price_tier || 'N/A'}</span>
+                            </div>
+                            <div class="config-row">
+                                <span class="config-label">offer</span>
+                                <span class="config-value ${config?.offer || ''}">${config?.offer || 'N/A'}</span>
+                            </div>
+                            <div class="config-row">
+                                <span class="config-label">confidence</span>
+                                <span class="config-value">${confidence}%</span>
+                            </div>
+                        </div>
+                        <div class="config-section">
+                            <div class="config-row">
+                                <span class="config-label">price_sens_prob</span>
+                                <span class="config-value">${priceSens}</span>
+                            </div>
+                            <div class="config-row">
+                                <span class="config-label">annual_prob</span>
+                                <span class="config-value">${annualProb}</span>
+                            </div>
+                            <div class="config-row">
+                                <span class="config-label">conversion_prob</span>
+                                <span class="config-value">${convProb}</span>
+                            </div>
+                        </div>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" style="width: ${confidence}%;"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function loadAllConfigs() {
+            const grid = document.getElementById('comparison-grid');
+            grid.innerHTML = '<p style="text-align: center; grid-column: 1/-1;">Loading configs...</p>';
+
+            const configs = await Promise.all(USERS.map(u => loadConfig(u.id)));
+
+            grid.innerHTML = USERS.map((user, i) => renderUserCard(user, configs[i])).join('');
+        }
+
+        // Load on page load
+        document.addEventListener('DOMContentLoaded', loadAllConfigs);
+    </script>
+</body>
+</html>

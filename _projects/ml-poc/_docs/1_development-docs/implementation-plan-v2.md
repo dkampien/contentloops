@@ -46,7 +46,7 @@
 
 ## Phase 1: Data Generation
 
-### Step 1.1: Define BCEvents-Aligned Schema `[ ]`
+### Step 1.1: Define BCEvents-Aligned Schema `[✓]`
 - **Priority:** Critical
 - **Task:** Define synthetic data schema matching real BCEvents.
 - **Deliverables:**
@@ -83,7 +83,7 @@
 
 ---
 
-### Step 1.2: Build Data Generator `[ ]`
+### Step 1.2: Build Data Generator `[✓]`
 - **Priority:** Critical
 - **Task:** Python script generating ~1,000 users with BCEvents-style histories.
 - **Deliverables:**
@@ -125,7 +125,7 @@
 
 ---
 
-### Step 1.3: Validate Data Quality `[ ]`
+### Step 1.3: Validate Data Quality `[✓]`
 - **Priority:** High
 - **Task:** Sanity checks on generated data.
 - **Deliverables:**
@@ -140,7 +140,7 @@
 
 ## Phase 2: Kumo Prediction
 
-### Step 2.1: Load Data into LocalGraph `[ ]`
+### Step 2.1: Load Data into LocalGraph `[✓]`
 - **Priority:** Critical
 - **Task:** Load synthetic CSVs into pandas and create LocalGraph.
 - **Deliverables:**
@@ -151,7 +151,7 @@
 
 ---
 
-### Step 2.2: Define Prediction Queries `[ ]`
+### Step 2.2: Define Prediction Queries `[✓]`
 - **Priority:** Critical
 - **Task:** Write PQL queries for each prediction head.
 - **Deliverables:**
@@ -162,15 +162,17 @@
 
 | Head | Question | Query Approach |
 |------|----------|----------------|
-| Price Sensitivity | Will user purchase at high price? | Predict purchase with price > $20 |
+| Price Sensitivity | Is user price sensitive? (will only buy cheap) | Predict purchase with price < $15 |
 | Offer Type | Will user purchase annual? | Predict purchase with offer_type = 'annual' |
 | P(conversion) | Will user purchase at all? | Predict any purchaseCompleted event |
+
+> **Logic check:** High `price_sens_prob` = user IS price sensitive = show LOW price tier. High `annual_prob` = user WILL buy annual = show ANNUAL offer.
 
 > ⚠️ **Note:** Exact PQL syntax must be verified against Kumo documentation during implementation.
 
 ---
 
-### Step 2.3: Run Predictions `[ ]`
+### Step 2.3: Run Predictions `[✓]`
 - **Priority:** Critical
 - **Task:** Run all 3 prediction queries and collect results.
 - **Deliverables:**
@@ -182,7 +184,7 @@
 
 ---
 
-### Step 2.4: Validate Predictions `[ ]`
+### Step 2.4: Validate Predictions `[✓]`
 - **Priority:** High
 - **Task:** Sanity check that predictions align with embedded correlations.
 - **Deliverables:**
@@ -196,7 +198,7 @@
 
 ## Phase 3: Config Assembly
 
-### Step 3.1: Build Config Assembler `[ ]`
+### Step 3.1: Build Config Assembler `[✓]`
 - **Priority:** High
 - **Task:** Script that takes predictions + ad intent → config JSON.
 - **Deliverables:**
@@ -223,7 +225,7 @@ confidence = conversion_prob
 
 ---
 
-### Step 3.2: Generate Test Configs `[ ]`
+### Step 3.2: Generate Test Configs `[✓]`
 - **Priority:** High
 - **Task:** Run assembler for Bob, Alice, Charlie.
 - **Deliverables:**
@@ -260,7 +262,7 @@ confidence = conversion_prob
 
 ## Phase 4: Visualizer
 
-### Step 4.1: Build Abstract Visualizer `[ ]`
+### Step 4.1: Build Abstract Visualizer `[✓]`
 - **Priority:** Medium
 - **Task:** HTML/CSS page that renders paywall from config JSON.
 - **Deliverables:**
@@ -289,7 +291,7 @@ confidence = conversion_prob
 
 ---
 
-### Step 4.2: Multi-User Comparison View `[ ]`
+### Step 4.2: Multi-User Comparison View `[✓]`
 - **Priority:** Low
 - **Task:** Extend visualizer to show Bob vs Alice vs Charlie side-by-side.
 - **Deliverables:**
@@ -335,10 +337,10 @@ open visualizer/index.html
 ## Completion Status
 
 - **Phase 0 (Environment):** ✅ Complete
-- **Phase 1 (Data Generation):** ❌ Not started
-- **Phase 2 (Kumo Prediction):** ❌ Not started
-- **Phase 3 (Config Assembly):** ❌ Not started
-- **Phase 4 (Visualizer):** ❌ Not started
+- **Phase 1 (Data Generation):** ✅ Complete
+- **Phase 2 (Kumo Prediction):** ✅ Complete
+- **Phase 3 (Config Assembly):** ✅ Complete
+- **Phase 4 (Visualizer):** ✅ Complete
 
 ---
 

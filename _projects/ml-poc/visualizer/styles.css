@@ -1,0 +1,331 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    min-height: 100vh;
+    color: #fff;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header */
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    font-size: 2rem;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: #888;
+    font-size: 0.9rem;
+}
+
+/* Controls */
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    align-items: center;
+}
+
+.controls label {
+    font-weight: 500;
+}
+
+.controls select {
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: none;
+    background: #2d2d44;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.controls button {
+    padding: 10px 25px;
+    border-radius: 8px;
+    border: none;
+    background: #6366f1;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.controls button:hover {
+    background: #4f46e5;
+}
+
+/* Main content layout */
+.main-content {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Phone frame */
+.phone-frame {
+    width: 320px;
+    height: 640px;
+    background: #1a1a1a;
+    border-radius: 40px;
+    padding: 15px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+.phone-screen {
+    width: 100%;
+    height: 100%;
+    border-radius: 28px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Paywall header - topic-specific */
+.paywall-header {
+    padding: 40px 20px 30px;
+    text-align: center;
+    transition: background 0.3s;
+}
+
+.paywall-header.sleep {
+    background: linear-gradient(180deg, #4a1d6a 0%, #2d1b4e 100%);
+}
+
+.paywall-header.anxiety {
+    background: linear-gradient(180deg, #1e3a5f 0%, #152238 100%);
+}
+
+.paywall-header.biblestudy {
+    background: linear-gradient(180deg, #5d4037 0%, #3e2723 100%);
+}
+
+.paywall-header.generic {
+    background: linear-gradient(180deg, #37474f 0%, #263238 100%);
+}
+
+.topic-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin: 0 auto 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+}
+
+.topic-icon.sleep {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.topic-icon.anxiety {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.topic-icon.biblestudy {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.topic-icon.generic {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.paywall-header h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+/* Paywall body */
+.paywall-body {
+    flex: 1;
+    background: #fff;
+    padding: 25px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.price-display {
+    margin-bottom: 15px;
+    color: #1a1a1a;
+}
+
+.price {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.period {
+    font-size: 1rem;
+    color: #666;
+}
+
+.offer-badge {
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    transition: all 0.3s;
+}
+
+.offer-badge.monthly {
+    background: #e8e8e8;
+    color: #333;
+}
+
+.offer-badge.annual {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: #fff;
+}
+
+.features {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.feature {
+    padding: 12px 15px;
+    background: #f5f5f5;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    color: #333;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+}
+
+.feature::before {
+    content: "";
+    margin-right: 10px;
+}
+
+.cta-button {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+
+.confidence-meter {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.meter-bar {
+    flex: 1;
+    height: 8px;
+    background: #e8e8e8;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.meter-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #f97316 0%, #10b981 100%);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+/* Config panel */
+.config-panel {
+    width: 400px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 25px;
+}
+
+.config-panel h3 {
+    font-size: 1rem;
+    margin-bottom: 12px;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.config-panel pre {
+    background: #1a1a2e;
+    padding: 15px;
+    border-radius: 8px;
+    font-family: 'SF Mono', Monaco, monospace;
+    font-size: 0.85rem;
+    overflow-x: auto;
+    margin-bottom: 25px;
+    color: #10b981;
+}
+
+.raw-predictions, .logic-display {
+    background: #1a1a2e;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+}
+
+.prediction-row, .logic-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.9rem;
+}
+
+.prediction-row:last-child, .logic-row:last-child {
+    border-bottom: none;
+}
+
+.logic-row {
+    font-family: 'SF Mono', Monaco, monospace;
+    font-size: 0.8rem;
+    color: #888;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 20px;
+    color: #666;
+    font-size: 0.85rem;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+    .main-content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .config-panel {
+        width: 100%;
+        max-width: 400px;
+    }
+}
