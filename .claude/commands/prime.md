@@ -4,22 +4,17 @@ description: Prime context with project structure scan
 
 ## Step 1: Show Project Structure
 ```bash
-eza . --tree --git-ignore --ignore-glob="node_modules|__pycache__|.next|dist|build|*.jpg|*.png|*.mp3|*.jpeg|*.gif|*.mp4|*.wav"
+eza . --tree --git-ignore --follow-symlinks --level 8 --ignore-glob="node_modules|__pycache__|.next|dist|build|lib|output|*.mp4|*.mp3|*.jpg|*.png|*.jpeg|*.mov|*.m4a|*.js.map|4_exported-threads|conversations|step-summaries|_archive|archive"
 ```
 
-## Step 2: Display Memory Status
-- Look in your context for the "Memory System:" message from SessionStart hook
-- If found: Display it to the user (makes hidden context visible)
-- If not found: Skip this step
-
-## Step 3: Understand Task
+## Step 2: Understand Task
 User input: $ARGUMENTS
 
 If no input provided, ask: "What are you working on today?"
 
-Note: If user references files with @ in their response, still proceed to Step 4 to suggest additional relevant files before loading anything.
+Note: If user references files with @ in their response, still proceed to Step 3 to suggest additional relevant files before loading anything.
 
-## Step 4: Initial Context
+## Step 3: Initial Context
 
 **If user describes a specific task:**
 - Acknowledge the task

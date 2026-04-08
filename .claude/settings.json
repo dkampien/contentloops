@@ -1,12 +1,56 @@
 {
   "hooks": {
-    "SessionStart": [
+    "Stop": [
       {
-        "matcher": "startup",
+        "matcher": "",
         "hooks": [
           {
             "type": "command",
-            "command": "/bin/bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.sh\""
+            "command": "uv run \"$CLAUDE_PROJECT_DIR/.claude/hooks/tts_hook.py\" stop"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run \"$CLAUDE_PROJECT_DIR/.claude/hooks/tts_hook.py\" notify"
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run \"$CLAUDE_PROJECT_DIR/.claude/hooks/tts_hook.py\" subagent-stop"
+          }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run \"$CLAUDE_PROJECT_DIR/.claude/hooks/tts_hook.py\" tool-failure"
+          }
+        ]
+      }
+    ],
+    "TaskCompleted": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run \"$CLAUDE_PROJECT_DIR/.claude/hooks/tts_hook.py\" task-completed"
           }
         ]
       }

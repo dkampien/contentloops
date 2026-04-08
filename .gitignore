@@ -1,11 +1,8 @@
-# BIBLECHAT Folders
-_projects/_adloops
-_projects/_bookchat
-_projects/_onb-builder
-_projects/_colab
+# Reference repos (company repos, not ours)
+_reference-repos/
 
-# AGENT Folders
-# _memory - now tracked (cloops detached)
+# Memory (deprecated, kept on disk only)
+_memory/
 
 # Dependencies
 node_modules/
@@ -52,18 +49,27 @@ temp/
 # MeiliSearch data
 data.ms/
 
+# Sensitive data
+_projects/colab
+
 # Symlinked/nested repos (have their own git)
+_projects/cc-telegram-bot
 _projects/cloops
+_projects/meeting-transcriber
+_projects/biblechat-ltv
+_projects/biblechat-sprint
 _projects/adloops-local/Adloops-Backend
 _projects/adloops-local/Ads_Platform_Web
 _projects/adloops-local/ads-library-automation
 
-# ML PoC generated output and data
+# Project-specific ignores
 _projects/ml-poc/output/
 _projects/ml-poc/data/
-
-# adloops-local logs
 _projects/adloops-local/logs/
 
 # Specstory (auto-generated)
 .specstory/
+
+# TTS Hooks (contains API keys)
+.claude/hooks/tts-config.json
+.claude/hooks/tts-debug.log
