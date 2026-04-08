@@ -73,3 +73,7 @@ _projects/adloops-local/logs/
 # TTS Hooks (contains API keys)
 .claude/hooks/tts-config.json
 .claude/hooks/tts-debug.log
+
+# Backup files and auto-generated Claude config
+*.bak
+.claude/projects/
