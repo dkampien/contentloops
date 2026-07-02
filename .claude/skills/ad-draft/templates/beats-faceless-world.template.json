@@ -1,0 +1,61 @@
+{
+  "id": "<coordinate-slug>",
+  "_note": "ad-draft output, FACELESS-WORLD vehicle. Same BeatsFile contract as beats.template.json (domain/beats.ts); this template differs ONLY in the vehicle's slot declarations and the visual authoring rule. NO character, NO lock (omit both; never inject a {LOCK}). treatment default = photoreal. Voice + music still required (VO-first timing unchanged). format/length semantics unchanged.",
+  "_authoring_rule": "THE FACELESS-WORLD RULE (why this vehicle exists): every visual is DERIVED FROM THE SCRIPT BUT REUSABLE. Recipe per beat: take the VO line, keep its NOUNS (the world icons: Bible, study table, coffee, phone, warm light, church room...) and its EMOTION (uncertainty, relief, warmth...), DROP its narrative action (never enact the line; no 'she falters when asked'). People are allowed but FACELESS ONLY: hands, silhouettes, from-behind, over-the-shoulder, out-of-focus figures; never an identifiable face. THE REUSE TEST before accepting a prompt: imagine the clip with the VO muted; if you can tell which ad it came from, it is too coupled, generalize it; it should sit believably under ~5 different scripts' same-role lines. EXCEPTION: a beat whose copy names or demos the app MUST show the app (prefer the real app-bridge clip; it is already faceless + reusable). Tag every asset for the library: role-emotion (e.g. symptom/uncertainty) + icons (e.g. bible, hands, table); tags go to productions/library/manifest.json at produce.",
+  "coordinate": {
+    "persona": "",
+    "pain": "",
+    "mechanism": "",
+    "angle": "",
+    "concept": "faceless-world",
+    "format": "video",
+    "length": "short",
+    "treatment": "photoreal",
+    "voice": "Rachel",
+    "music": "<music prompt>",
+    "style": "Photorealistic cinematic footage, warm natural light, shallow depth of field.",
+    "anchor": null
+  },
+  "beats": [
+    {
+      "role": "hook",
+      "t2i": "Photorealistic cinematic film still, single full-frame image, no text. <world-icon scene from the hook line's NOUNS + EMOTION; faceless people allowed (hands / silhouette / from-behind); never enact the line>. {STYLE}",
+      "i2v": "Global: preserve the look from the start image. Subtle motion: <one gentle ambient movement (light shifts, page turns, steam rises, hands move)>. No faces revealed. No redesign.",
+      "vo": "<hook line, opens IN the raw pain (Path A); the faith enters via the angle here>",
+      "tags": { "role_emotion": "hook/<emotion>", "icons": ["<noun>", "<noun>"] }
+    },
+    {
+      "role": "symptom",
+      "t2i": "Photorealistic cinematic film still, single full-frame image, no text. <world-icon scene: the symptom line's nouns + emotion, no narrative action, faceless>. {STYLE}",
+      "i2v": "Global: preserve the look from the start image. Subtle motion: <one gentle ambient movement>. No faces revealed. No redesign.",
+      "vo": "<symptom line>",
+      "tags": { "role_emotion": "symptom/<emotion>", "icons": ["<noun>"] }
+    },
+    {
+      "role": "solution",
+      "appBridge": "productions/app-bridges/<clip>.mp4",
+      "_appBridgeNote": "The copy names the app here, so this beat MUST show the app. Prefer the real app-bridge (faceless hands + real UI, already reusable). The t2i/i2v below are the generated fallback if no bridge fits.",
+      "t2i": "Photorealistic cinematic film still, single full-frame image, no text. Faceless hands holding a smartphone with a softly glowing screen, <setting from the world icons>, warm light. {STYLE}",
+      "i2v": "Global: preserve the look from the start image. Subtle motion: a thumb scrolls gently, the screen glow shifts. No faces revealed. No redesign.",
+      "vo": "<solution line: the real feature as the outcome, benefit first>",
+      "tags": { "role_emotion": "solution/relief", "icons": ["phone", "app"] }
+    },
+    {
+      "role": "result",
+      "t2i": "Photorealistic cinematic film still, single full-frame image, no text. <world-icon scene: the result line's nouns + emotion (warmth, connection, calm), no narrative action, faceless>. {STYLE}",
+      "i2v": "Global: preserve the look from the start image. Subtle motion: <one gentle ambient movement>. No faces revealed. No redesign.",
+      "vo": "<result line>",
+      "tags": { "role_emotion": "result/<emotion>", "icons": ["<noun>"] }
+    },
+    {
+      "role": "cta",
+      "t2i": "Photorealistic cinematic film still, single full-frame image, clean end-card feel, no text labels. <world-icon closing scene, inviting light, faceless>. {STYLE}",
+      "i2v": "Global: preserve the look from the start image. Subtle motion: a slow gentle drift, inviting closing beat. No faces revealed. No redesign.",
+      "vo": "<cta line>",
+      "tags": { "role_emotion": "cta/invitation", "icons": ["<noun>"] }
+    }
+  ],
+  "_variants_note": "Same shared variant shape as beats.template.json. NOTE what iteration means in THIS vehicle: with no character, there is no cast cascade; visuals swap freely per beat (each is a self-contained library asset), so per-beat visual swaps are the cheap default and line/voice/music swaps stay cheap as always.",
+  "_library_note": "REUSE-FIRST (v1, manual): before writing a beat's t2i, check productions/library/manifest.json for an asset whose role_emotion + icons fit the line; on a hit, point the beat at that clip (the app-bridge pool-pointing mechanism) instead of generating. On a miss, write the prompt; the produced asset joins the library with its tags.",
+  "variants": []
+}

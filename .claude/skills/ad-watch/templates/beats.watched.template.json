@@ -1,0 +1,37 @@
+{
+  "id": "<advertiser>-<slug>",
+  "source": "watched",
+  "_note": "ad-watch output: a DECOMPOSITION of a real ad, NOT a production. `coordinate` is INFERRED and partial (we are guessing the advertiser's targeting from the outside, so leave a field empty rather than invent). Each beat carries BOTH a structured `visual` slot object (the source of truth for the diegetic variables; the set of keys IS the vehicle's template) AND a `t2i`/`i2v` reconstruction (so produce can regenerate a lookalike today without a slot-to-prompt renderer). DECIDE THE COPY SOURCE per ad (do not assume VO): set `coordinate.copy_source` to vo | captions | both | none. `vo` holds the REAL spoken line ONLY when the ad actually speaks; `visual.on_screen_text` holds burned-in captions (often the real script in UGC/social ads). `duration` is the REAL measured seconds. `role` is a best-effort arc mapping (hook/symptom/solution/result/cta); use shot-1, shot-2 if the ad does not map to our arc. IMAGES: one beat per image, `vo` null, copy in `visual.on_screen_text`, `duration` null.",
+  "coordinate": {
+    "persona": "",
+    "pain": "",
+    "mechanism": "",
+    "angle": "",
+    "concept": "<vehicle read off the ad: char-3p-drama | text-on-gameplay | short-drama | ugc | app-demo | kinetic-text>",
+    "format": "<video | image | image-carousel>",
+    "length": "<micro | short | mid | long, derived from the measured total duration>",
+    "treatment": "<look read off the ad: live-action | claymation | photoreal | 2D | mixed>",
+    "voice": "<gender + quality read off the VO, or empty if no VO>",
+    "music": "<one-line description of the track, or empty>",
+    "copy_source": "<how the ad delivers its message, DECIDED from the evidence: vo | captions | both | none>",
+    "_inferred": true
+  },
+  "beats": [
+    {
+      "role": "hook",
+      "duration": 0,
+      "visual": {
+        "setting": "",
+        "activity": "",
+        "camera": "",
+        "light": "",
+        "expression": "",
+        "props": [],
+        "on_screen_text": ""
+      },
+      "t2i": "<reconstruction film-still prompt: what you would write to regenerate this shot>",
+      "i2v": "<reconstruction motion prompt, or empty for an image>",
+      "vo": "<the real transcribed line covering this beat's time range>"
+    }
+  ]
+}
