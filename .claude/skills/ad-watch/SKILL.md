@@ -95,8 +95,8 @@ Do **not** delete the decomposition directory , it is the artifact.
 ---
 
 ## The boundary (do not cross)
-- **This is research, not a production.** Never write into `productions/` and never touch Convex's content tables. A watched spec becomes a real ad only when a human runs `ad-draft`, which reads this file and authors the ad in Convex (`ads:createAd`), citing this decomposition's path in the ad's `notes` as provenance.
-- **Discovered templates may grow the registry.** If the decomposition reveals a genuinely new vehicle (a telling-structure none of the `vehicles` rows cover), propose it to the human; on approval, add it with `registry:upsertVehicle` (slots from the slot library, per-beat sub-slots from what you observed). Merge-check first: a flavor of an existing vehicle is not a new vehicle.
+- **This is research, not a production.** Never write into `productions/` and never touch the board's content tables (Renders/Beats/Assets). A watched spec becomes a real ad only when a human runs `ad-draft`, which reads this file and authors the ad on the board (`npm run ads -- create-ad`), citing this decomposition's path in the ad's `notes` as provenance.
+- **Discovered templates may grow the registry.** If the decomposition reveals a genuinely new vehicle (a telling-structure none of the Vehicles rows cover), propose it to the human; on approval, add it with `npm run ads -- upsert-vehicle` (slots from the slot library, per-beat sub-slots from what you observed). Merge-check first: a flavor of an existing vehicle is not a new vehicle.
 - **Never invent VO or targeting.** An empty field is an honest gap; a fabricated line poisons the learning loop.
 
 ## Failure modes

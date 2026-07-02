@@ -1,23 +1,24 @@
 ---
 name: ad-draft
-description: Phase 1 (PLAN) of the BibleChat ad pipeline. Turn a rough idea into a fully authored ad in Convex (the single source of truth), ready for production. ZERO spend; ends at the script approval gate. Use whenever the user wants to start a NEW ad, plan an ad, write an ad script, or turn an idea/insight/pain-point into an ad concept, even if they don't say "draft". Trigger phrases: "draft an ad", "new ad", "write an ad for", "ad about", "ad-draft". Not for: changing an existing ad (ad-iterate), rendering to mp4 (ad-produce), decomposing an outside ad (ad-watch).
+description: Phase 1 (PLAN) of the BibleChat ad pipeline. Turn a rough idea into a fully authored ad on the Airtable board (the single source of truth), ready for production. ZERO spend; ends at the script approval gate. Use whenever the user wants to start a NEW ad, plan an ad, write an ad script, or turn an idea/insight/pain-point into an ad concept, even if they don't say "draft". Trigger phrases: "draft an ad", "new ad", "write an ad for", "ad about", "ad-draft". Not for: changing an existing ad (ad-iterate), rendering to mp4 (ad-produce), decomposing an outside ad (ad-watch).
 argument-hint: <a rough idea, an audience, a pain point, or an existing ad's slug to sibling from>
 allowed-tools: Read, Write, Edit, Bash
 ---
 
-# ad-draft — PLAN: idea → an authored ad in Convex (NO spend)
+# ad-draft — PLAN: idea → an authored ad on the board (NO spend)
 
-Draft ONE ad: pick the coordinate (who it's for, the pain, the feature, the angle, the form) and write the script, then land it in Convex with one `createAd` call. **Zero paid generation happens here.** Bulk planning = run the flow once per ad.
+Draft ONE ad: pick the coordinate (who it's for, the pain, the feature, the angle, the form) and write the script, then land it on the board with one `create-ad` call. **Zero paid generation happens here.** Bulk planning = run the flow once per ad.
 
 **User input:** $ARGUMENTS
 
 ## Where things live
 
-- Run every command from `_projects/cloops-ads/` (the Convex backend and repo root).
-- **Convex is the single source of truth.** There is no beats.json, no Airtable. You read the registries with queries and write ads with mutations, all via `npx convex run <fn> '<json>'`.
-- The local backend must be up. Preflight: `npx convex run registry:pools '{}'`. If the connection is refused, start it: `npx convex dev` (background) and retry.
-- **Argument shapes:** upserts take `slug`; link mutations and relationship queries take `<entity>Slug` keys (`personaSlug`, `painSlug`, `mechanismSlug`). Unsure of any function's shape? `npx convex function-spec` lists every function with its validator, and a wrong call errors with the expected shape.
-- **Fixture data:** rows with `smoke-` or `t1-` prefixes are test fixtures, fake data for pipeline tests. Real values and real ads live on real rows; an ad linked to a fixture sits on made-up targeting.
+- Run every command from `_projects/cloops-ads/` (the repo root).
+- **Airtable is the single source of truth.** The base ("cloops-ads") is a live board the operator watches and hand-edits. There is no beats.json and no local backend. You read and write ONLY through the guarded client: `npm run ads -- <command> '<json>'`. Never the raw Airtable API and never the Airtable MCP; the client carries the guards.
+- Preflight: `npm run ads -- pools`. Nothing to start; a failure usually means `AIRTABLE_TOKEN` is missing from `.env.local`.
+- **Read fresh before you write.** The operator may have edited cells on the board since you last looked. `npm run ads -- look` lists what changed since your last look; a verb's read is always live. Never write from remembered state.
+- **Command shapes:** link commands take `<entity>Slug` keys (`personaSlug`, `painSlug`, `mechanismSlug`). A bare `npm run ads` lists every command, and a wrong call errors with the expected shape.
+- **Fixture data:** rows with a `smoke-` prefix are test fixtures, fake data for pipeline tests. Real values and real ads live on real rows; an ad linked to a fixture sits on made-up targeting.
 
 ## Invisible contract (how to talk to the operator, read this first)
 
@@ -46,7 +47,7 @@ The data shape needs no doc: the registries themselves are the checklists (read 
 ### 0. Read the box
 
 ```bash
-npx convex run registry:pools '{}'
+npm run ads -- pools
 ```
 
 Everything that exists: personas, pains, mechanisms, angles, vehicles, frameworks. You need to know what's there before you propose. Registries start sparse by design; growing them well is part of this skill.
@@ -56,7 +57,7 @@ Everything that exists: personas, pains, mechanisms, angles, vehicles, framework
 Show the existing personas + propose the fit (or one new). New personas must be **grounded in real evidence** (user research, reviews, the audience brief), and the `evidence` field cites the source: every audience traces back to something someone actually observed.
 
 ```bash
-npx convex run registry:upsertPersona '{"slug":"overwhelmed-mom","gender":"woman","age":"late 20s to early 40s","context":"...","awareness":"problem-aware","evidence":"audience-product-brief.md: ..."}'
+npm run ads -- upsert-persona '{"slug":"overwhelmed-mom","gender":"woman","age":"late 20s to early 40s","context":"...","awareness":"problem-aware","evidence":"audience-product-brief.md: ..."}'
 ```
 
 ### 2. PAIN — pick or define (keep it RAW)
@@ -64,27 +65,27 @@ npx convex run registry:upsertPersona '{"slug":"overwhelmed-mom","gender":"woman
 Read this persona's pains and propose (to the operator, in plain words, per the invisible contract; "show" never means dumping table rows):
 
 ```bash
-npx convex run registry:painsForPersona '{"personaSlug":"overwhelmed-mom"}'
-npx convex run registry:linkPersonaPain '{"personaSlug":"overwhelmed-mom","painSlug":"morning-overwhelm"}'
+npm run ads -- pains-for-persona overwhelmed-mom
+npm run ads -- link-persona-pain '{"personaSlug":"overwhelmed-mom","painSlug":"morning-overwhelm"}'
 ```
 
 **Classify the pain: `universal` vs `faith-native`.** Keep universal pains raw (no faith line; that's the angle's job). A pain is the symptom she feels, never the resolution.
 
 ### 3. MECHANISM — default it (it's near-constant)
 
-Mechanism is near-determined by the pain: default to the **habit-formation / daily-return feature** (daily plan, streak, journey); it's what M12 rewards. Reach past the default only when the moment itself is the story (panic-button, chat, bedtime stories for a nighttime pain). The honest test: **would the daily plan feel dishonest in the moment shown on screen?** If yes, pick the moment's feature, and read `biblechat-features.md` first. **Sell the outcome, prove with the feature**: copy leads with the benefit ("a calm two-minute start"); the feature is the on-screen proof. Link it: `registry:linkPainMechanism`.
+Mechanism is near-determined by the pain: default to the **habit-formation / daily-return feature** (daily plan, streak, journey); it's what M12 rewards. Reach past the default only when the moment itself is the story (panic-button, chat, bedtime stories for a nighttime pain). The honest test: **would the daily plan feel dishonest in the moment shown on screen?** If yes, pick the moment's feature, and read `biblechat-features.md` first. **Sell the outcome, prove with the feature**: copy leads with the benefit ("a calm two-minute start"); the feature is the on-screen proof. Link it: `npm run ads -- link-pain-mechanism '{"painSlug":"...","mechanismSlug":"..."}'`.
 
 ### 4. ANGLE — the lens (skip for faith-native pains)
 
 **If the pain is faith-native, skip this step entirely**: the pain is its own angle, and `createAd` will reject an angle on it. For universal pains an angle is required. The angle is not a separate scene: **it renders as the hook**. Beat 1's copy IS the angle expressed.
 
-**EXPLODE? (angle, the main fan-out point).** Offer plainly: try this pain from several angles? Each extra angle = a **variant of the first ad** (declared after step 8 via `ads:declareVariant` with the new angle + a rewritten hook). Curate the angle records centrally first (no dupes by meaning).
+**EXPLODE? (angle, the main fan-out point).** Offer plainly: try this pain from several angles? Each extra angle = a **variant of the first ad** (declared after step 8 via `declare-variant` with the new angle + a rewritten hook; see ad-iterate). Curate the angle records centrally first (no dupes by meaning).
 
 ### 5. FORM — vehicle · framework · format · length
 
 ```bash
-npx convex run registry:getVehicle '{"slug":"char-3p-drama"}'
-npx convex run registry:getFramework '{"slug":"classic"}'
+npm run ads -- get-vehicle char-3p-drama
+npm run ads -- get-framework classic
 ```
 
 - **Vehicle** (how it's told): read its row BEFORE authoring; the `slots` array is your checklist and `perBeatSubSlots` your per-beat vocabulary. `char-3p-drama` = a character living the problem; `faceless-world` = reusable no-character visuals (each beat keeps the line's NOUNS + EMOTION, drops the narrative action; faceless people only).
@@ -111,7 +112,7 @@ Write the copy per CRAFT: raw pain in the hook (the angle expressed), symptom �
 ### 8. CREATE — one call, all or nothing
 
 ```bash
-npx convex run ads:createAd '{
+npm run ads -- create-ad '{
   "slug": "calm-morning-1",
   "persona": "overwhelmed-mom", "pain": "morning-overwhelm", "mechanism": "daily-plan",
   "angle": "permission-to-pause",
@@ -131,11 +132,11 @@ npx convex run ads:createAd '{
 
 The slug is kebab-case, human-glanceable, and permanent. Either the whole ad lands or nothing does. **Guard errors are written for you**: they name the missing slot, the illegal role, the unresolved slug, and what IS valid. Read the error, fix the call, retry; do not work around a guard.
 
-**EXPLODE? (hooks).** Offer: bank several openers on this ad? Each = `ads:declareVariant` with `changeSet: ["copy"]` and a hook `vo` edit (see ad-iterate for the shape). Declared variants cost nothing and wait as `idea`. **Seam rule:** each opener must hand cleanly into the fixed symptom line.
+**EXPLODE? (hooks).** Offer: bank several openers on this ad? Each = `declare-variant` with `changeSet: ["copy"]` and a hook `vo` edit (see ad-iterate for the shape). Declared variants cost nothing and wait as `idea`. **Seam rule:** each opener must hand cleanly into the fixed symptom line.
 
 ### 9. FEEDBACK GATE — stop for approval
 
-Print the VO arc (the ordered spoken lines) + the plain summary (who it's for · the angle · how it's told · the look · the voice). **This is the no-spend approval gate.** Offer a redirect (whole arc / one line / a beat's visual / tone). Edits before production = fix and re-create (drop the slug, or use a `-2` slug; unproduced rows are cheap).
+Print the VO arc (the ordered spoken lines) + the plain summary (who it's for · the angle · how it's told · the look · the voice). **This is the no-spend approval gate.** Offer a redirect (whole arc / one line / a beat's visual / tone). Edits before production: fix in place with `update-beat` / `update-ad` (they work while the ad is still an idea and blank any stale assets), or `delete-ad` + re-create for a full redo. The operator may also just edit cells on the board; run `look`, read what changed, and carry on from the live state.
 
 ---
 
