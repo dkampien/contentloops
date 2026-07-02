@@ -17,15 +17,14 @@ Draft ONE ad: pick the coordinate (who it's for, the pain, the feature, the angl
 - **Convex is the single source of truth.** There is no beats.json, no Airtable. You read the registries with queries and write ads with mutations, all via `npx convex run <fn> '<json>'`.
 - The local backend must be up. Preflight: `npx convex run registry:pools '{}'`. If the connection is refused, start it: `npx convex dev` (background) and retry.
 - **Argument shapes:** upserts take `slug`; link mutations and relationship queries take `<entity>Slug` keys (`personaSlug`, `painSlug`, `mechanismSlug`). Unsure of any function's shape? `npx convex function-spec` lists every function with its validator, and a wrong call errors with the expected shape.
-- **Fixture data:** rows with `smoke-` or `t1-` prefixes are test fixtures; never merge real values into them or link real ads to them.
+- **Fixture data:** rows with `smoke-` or `t1-` prefixes are test fixtures, fake data for pipeline tests. Real values and real ads live on real rows; an ad linked to a fixture sits on made-up targeting.
 
 ## Invisible contract (how to talk to the operator, read this first)
 
 The operator never needs to know the model. You reason with the full model internally (coordinate, variation/iteration, diegetic, the flow); what reaches the operator is plain.
 
-- **Plain words only.** Never expose "coordinate / targeting / variation / iteration / diegetic / changeSet / vehicle / slot fill" in chat. Say it in their words: who it's for · the angle · how it's told · a few versions · a tweak for later.
-- **Propose, don't interrogate.** From the operator's one-liner, infer and propose a full plan (who it's for · the pain · the feature · the angle · the look · the script) and ask them to confirm or redirect. Ask a real question only where it's genuinely ambiguous or high-stakes.
-- **Lean on defaults** so most picks are silent: look = claymation, format = video, length = short, framework = classic, voice gender-matched, the habit-formation feature for the pain. Mention a default only when you change it or you're unsure.
+- **Plain words only.** Say it in their words: who it's for · the angle · how it's told · a few versions · a tweak for later. The model's own vocabulary ("coordinate / targeting / variation / iteration / diegetic / changeSet / vehicle / slot fill") stays internal, in your reasoning.
+- **Pick together.** Go through the elements one at a time: propose options with a recommendation, the operator picks. Skip an element only when the operator already gave it.
 - **Print plainly.** At the approval gate, show the spoken lines + a one-line plain summary (who it's for · the angle · how it's told), not field names.
 
 ## Load context first (these carry the craft, do not re-derive it)
@@ -34,7 +33,7 @@ All under `_projects/cloops-ads/`:
 1. `_docs/skill-reference/ad-copy-playbook.md`, CRAFT: Path A, the hook, the copy rules.
 2. `_docs/skill-reference/audience-product-brief.md`, AUDIENCE: the worldview the copy speaks from.
 3. `_docs/skill-reference/prompting-guide-2026.md`, PROMPTING: how to write t2i/i2v prompts (carries the {LOCK}/{STYLE} pattern).
-4. `_docs/skill-reference/biblechat-features.md`, ONLY when reaching past the default mechanism or unsure a feature exists. **Never invent a feature.**
+4. `_docs/skill-reference/biblechat-features.md`, ONLY when reaching past the default mechanism or unsure a feature exists. **It is the product truth: a feature exists only if it's in there.**
 
 The data shape needs no doc: the registries themselves are the checklists (read them, next section).
 
@@ -42,7 +41,7 @@ The data shape needs no doc: the registries themselves are the checklists (read 
 
 ## The flow — run in order
 
-> **Curator guardrail, applies to every pick-or-define step (persona · pain · mechanism · angle).** Before you create a new value: (1) **merge-check**: a flavor of an existing one (same felt thing / same demoable feature) → reuse or merge, never add; (2) **distinctness**: keep it only if it would show on screen visibly differently from its siblings; (3) **glanceable handle**: name it for what it is (`daily-plan`), not app jargon, plus a one-line definition. The database blocks duplicates by slug, but only YOU can catch a duplicate by meaning.
+> **Curator guardrail, applies to every pick-or-define step (persona · pain · mechanism · angle).** Before you create a new value: (1) **merge-check**: a flavor of an existing one (same felt thing / same demoable feature) → reuse or merge the existing one; (2) **distinctness**: keep it only if it would show on screen visibly differently from its siblings; (3) **glanceable handle**: name it for what it is in plain everyday words (`daily-plan`), plus a one-line definition. The database blocks duplicates by slug, but only YOU can catch a duplicate by meaning.
 
 ### 0. Read the box
 
@@ -54,7 +53,7 @@ Everything that exists: personas, pains, mechanisms, angles, vehicles, framework
 
 ### 1. PERSONA — pick or define
 
-Show the existing personas + propose the fit (or one new). New personas must be **grounded in real evidence** (user research, reviews, the audience brief), and the `evidence` field cites the source. Never invent an audience.
+Show the existing personas + propose the fit (or one new). New personas must be **grounded in real evidence** (user research, reviews, the audience brief), and the `evidence` field cites the source: every audience traces back to something someone actually observed.
 
 ```bash
 npx convex run registry:upsertPersona '{"slug":"overwhelmed-mom","gender":"woman","age":"late 20s to early 40s","context":"...","awareness":"problem-aware","evidence":"audience-product-brief.md: ..."}'
