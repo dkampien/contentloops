@@ -18,6 +18,7 @@ Draft ONE ad: pick the coordinate (who it's for, the pain, the feature, the angl
 - Preflight: `npm run ads -- pools`. Nothing to start; a failure usually means `AIRTABLE_TOKEN` is missing from `.env.local`.
 - **Read fresh before you write.** The operator may have edited cells on the board since you last looked. `npm run ads -- look` lists what changed since your last look; a verb's read is always live. Never write from remembered state.
 - **Command shapes:** link commands take `<entity>Slug` keys (`personaSlug`, `painSlug`, `mechanismSlug`). A bare `npm run ads` lists every command, and a wrong call errors with the expected shape.
+- **Big payloads (create-ad):** copy contains apostrophes, which break single-quoted shell JSON. Write the payload to a file and pass it as `@<path>`: `npm run ads -- create-ad @/path/to/payload.json`.
 - **Fixture data:** rows with a `smoke-` prefix are test fixtures, fake data for pipeline tests. Real values and real ads live on real rows; an ad linked to a fixture sits on made-up targeting.
 
 ## Invisible contract (how to talk to the operator, read this first)
