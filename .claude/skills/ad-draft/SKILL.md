@@ -89,8 +89,9 @@ npm run ads -- get-vehicle char-3p-drama
 npm run ads -- get-framework classic
 ```
 
-- **Vehicle** (how it's told): read its row BEFORE authoring; the `slots` array is your checklist and `perBeatSubSlots` your per-beat vocabulary. `char-3p-drama` = a character living the problem; `faceless-world` = reusable no-character visuals (each beat keeps the line's NOUNS + EMOTION, drops the narrative action; faceless people only).
+- **Vehicle** (how it's told): read its row BEFORE authoring; the `slots` array is your checklist and `perBeatSubSlots` your per-beat vocabulary. `char-3p-drama` = a character living the problem; `faceless-world` = reusable no-character visuals (each beat keeps the line's NOUNS + EMOTION, drops the narrative action; faceless people only); `parts-mix` = assembled from swappable parts (a real inserted hook + library beds + a generated close; no character, no narration).
 - **Framework** (the copy arc): its `roles` are the only legal beat roles. Default `classic` (hook · symptom · solution · result · cta).
+- **Template (check for one!):** `pools` lists templates; if the framework × vehicle pair you picked has one (e.g. `parts-mix-v1` = `hook-body-cta` × `parts-mix`), run `npm run ads -- get-template <slug>` and follow its `socketPolicy`, it says PER ROLE how the visual is filled (`generate` = write a t2i · `library` = reference a shelf asset · `insert` = reference a real inserted clip) and which word-home the line uses. The guards enforce it; a non-conforming create-ad is refused with the policy quoted.
 - **Format** `video` (default) / `image` / `image-carousel`. **Length band** `micro`/`short`/`mid`/`long`: a creative form band, never a seconds target; exact timing is derived from the measured VO at production.
 
 **EXPLODE? (vehicle).** Offer: tell this same story as other vehicles? Each = a variant declared after step 8 (new vehicle + rewritten visuals).
@@ -108,7 +109,11 @@ In beat prompts, write `{LOCK}` and `{STYLE}` where the character and treatment 
 
 ### 7. BEATS — write the script (Path A)
 
-Write the copy per CRAFT: raw pain in the hook (the angle expressed), symptom → solution on the real feature, talk like a real person. One beat per framework role (repeat a role for a longer band when the visuals genuinely differ). Each beat: `role`, `vo` (the spoken line), `t2i` (film still prompt; NEVER the word "storyboard", and no aspect words like "vertical", format is a generation parameter), `i2v` (motion only), `subSlots` (shape `[{"slot":"...","value":"..."}]`; only the per-beat vocabulary the vehicle declares, plus `title-card` on the CTA if wanted). **Never write a duration**; production sizes everything from the measured VO.
+**SHOP BEFORE YOU GENERATE.** Run `npm run ads -- shop` (filter: `'{"type":"clip","tags":["bed"]}'` or `'{"query":"..."}'`). If a shelf asset fits a beat, reference it with the beat's `"asset": "<its name>"` key instead of writing a t2i, a referenced beat costs $0 at production. Generate only what the shelf can't supply (and consider `promote-asset` afterward if the new clip passes the reuse test).
+
+**Word-homes (per-beat `delivery` subSlot, in plain words):** how the line reaches the viewer. `voiced` = a narrator speaks it (today's default on voiced vehicles) · `text` = nobody speaks; the line appears as on-screen captions and the footage sets the timing · `sync` = the person IN the clip says it (real or generated talking head); the `vo` field then holds the transcript of what the file says. Only set the subSlot when deviating from the vehicle's default (or when a template's policy requires it).
+
+Write the copy per CRAFT: raw pain in the hook (the angle expressed), symptom → solution on the real feature, talk like a real person. One beat per framework role (repeat a role for a longer band when the visuals genuinely differ). Each beat: `role`, `vo` (the spoken line), `t2i` (film still prompt; NEVER the word "storyboard", and no aspect words like "vertical", format is a generation parameter), `i2v` (motion only), `subSlots` (shape `[{"slot":"...","value":"..."}]`; only the per-beat vocabulary the vehicle declares, plus `title-card` on the CTA if wanted), optional `asset` (a shelf reference, above). **Never write a duration**; production sizes everything from the measured VO (voiced), the reading time (text), or the file itself (sync).
 
 ### 8. CREATE — one call, all or nothing
 
@@ -155,6 +160,8 @@ Print the VO arc (the ordered spoken lines) + the plain summary (who it's for ·
 - **A default female voice over a male protagonist sinks the ad.** Gender-match, always.
 - **You are the curator.** The database blocks duplicate slugs; only you block duplicates by meaning (merge-check, distinctness, glanceable handle).
 - **faceless-world discipline:** no identifiable faces (hands, silhouettes, from-behind); run the reuse test per beat (with the VO muted, would this clip sit under 5 other scripts' same-role lines?).
+- **Shelf references are never invalidated by edits** (only re-referenced via `use-asset` or a new `asset` key on a variant); a voice or character change re-generates generated assets but leaves references alone.
+- **Music can be referenced too:** `npm run ads -- use-asset '{"ad":"<slug>","slot":"musicAsset","asset":"<shelf track>"}'` after create; the music slotFill text is then just the fallback prompt.
 
 ## The hard gate
 

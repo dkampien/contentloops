@@ -50,11 +50,14 @@ The cost is mechanical, by what kind of slot changes:
 | music | execution, whole-ad | the music bed only |
 | a beat's vo line | copy | that beat's VO + its clip |
 | a beat's visual (t2i/i2v/subSlots) | diegetic, per-beat | that beat's still + clip |
-| character / treatment / anchor | diegetic, whole-ad | every still + clip (the cascade) |
+| **swap a PART (re-reference a shelf asset)** | diegetic, per-beat | **nothing, a relink is $0** |
+| character / treatment / anchor | diegetic, whole-ad | every GENERATED still + clip (the cascade) |
 | angle / persona / pain / mechanism | concept | whatever copy/visual edits express it |
-| vehicle / format / length | concept | every still + clip |
+| vehicle / format / length | concept | every GENERATED still + clip |
 
 Gender rule survives every change: **voice and character must stay gender-matched**.
+
+**The parts exception (load-bearing):** shelf REFERENCES (assets linked from the library) are never blanked by any cascade, blanking means "regenerate", and references were never generated. They change only by explicit re-reference. So on a parts-mix ad, "try a different hook" or "different bed under beat 2" is a $0 swap: in place via `use-asset` (idea status), or on a child via the beat edit's `"asset": "<shelf name>"` key with `changeSet: ["per-beat-visual"]`. `shop` lists what's on the shelf.
 
 ### 3a. Edit in place (status `idea` only)
 

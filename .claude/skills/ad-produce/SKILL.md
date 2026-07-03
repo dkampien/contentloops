@@ -36,11 +36,13 @@ Knobs, when needed:
 
 To force-regenerate a specific asset that exists but is bad: on an UNPRODUCED draft, `npm run ads -- update-beat` with the fixed prompt (it blanks the stale asset, and the next realize remakes just that); on a produced ad, `declare-variant` (a new cut, the honest path). Never hand-delete asset rows or links.
 
-**App bridge (show the real app on a beat):** record the bridge clip as that beat's clip BEFORE realizing; realize then skips generating it:
+**Use a shelf asset on a beat (parts):** the modern path is `use-asset`, it links a reusable library asset (shop with `npm run ads -- shop`) into the beat's clip/still slot before realizing; realize then skips generating it and the estimate prices it $0:
 
 ```bash
-npm run ads -- record-beat-asset '{"ad":"<slug>","order":<n>,"kind":"clip","location":"productions/app-bridges/<asset>.mp4"}'
+npm run ads -- use-asset '{"ad":"<slug>","order":<n>,"slot":"clip","asset":"library · <name>"}'
 ```
+
+(`record-beat-asset` still exists for recording NEW files the engine itself didn't make, but shelf reuse goes through use-asset so the guards check type + reusability.)
 
 ## 3 — Verify the cut
 
@@ -59,7 +61,7 @@ Hand the mp4 to the human. **Do not auto-proceed.** Posting is a separate human-
 ---
 
 **Gotchas:**
-- **VO-first, end to end.** There are no authored durations anywhere; clips and the cut are sized from the measured VO + breath. That is why VO exists before clips and why editing a beat's VO always re-times its clip.
+- **The container is per-beat now (word-homes).** A `voiced` beat is VO-first as always (clip sized to measured VO + breath). A `text` beat has no VO: its footage leads and the line burns as captions with reading-time pacing. A `sync` beat plays its referenced file's own audio (the words are IN the file; its transcription is cached beside the library file). Editing a voiced beat's VO still re-times its clip; editing a text beat's line just re-paces captions.
+- **The Never list is law at compose:** the voice is never cut or sped, the video never frozen/slowed/looped. A mismatch (footage shorter than its voice, sync on a silent file) REFUSES with the fix named; fix the draft, don't fight the engine.
 - **Never bypass the engine to "fix" state.** If the board and disk disagree, the board is the truth; re-run realize. `npm run ads -- lint <slug>` sweeps for structural damage after any hand edits.
-- **Voiceless beats are not composable yet** (compose will say so); every beat needs a VO line today.
 - Engine depth (models, params, failure modes): `_docs/core-docs/04_pipeline-engine.md` (mind its drift banner); prompt fixes: `_docs/skill-reference/prompting-guide-2026.md`.
