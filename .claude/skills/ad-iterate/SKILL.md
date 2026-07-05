@@ -57,6 +57,8 @@ The cost is mechanical, by what kind of slot changes:
 
 Gender rule survives every change: **voice and character must stay gender-matched**.
 
+**Pacing knobs (per-beat subSlots, $0 to change, re-render to apply):** `offset` = start N seconds into the beat's footage (on a consecutive same-file beat it deliberately cuts the merged segment in two); `break` = seconds of air after the beat instead of the default 0.6s breath. Edit via `update-beat` subSlots / a variant's beat edits. Caution: an offset on SYNC footage cuts its speech at that point, choose a cut point in the file's silence (check its cached `<clip>.timing.json`), never mid-word.
+
 **The parts exception (load-bearing):** shelf REFERENCES (assets linked from the library) are never blanked by any cascade, blanking means "regenerate", and references were never generated. They change only by explicit re-reference. So on a parts-mix ad, "try a different hook" or "different bed under beat 2" is a $0 swap: in place via `use-asset` (idea status), or on a child via the beat edit's `"asset": "<shelf name>"` key with `changeSet: ["per-beat-visual"]`. `shop` lists what's on the shelf.
 
 ### 3a. Edit in place (status `idea` only)
