@@ -59,6 +59,8 @@ Gender rule survives every change: **voice and character must stay gender-matche
 
 **Pacing knobs (per-beat subSlots, $0 to change, re-render to apply):** `offset` = start N seconds into the beat's footage (on a consecutive same-file beat it deliberately cuts the merged segment in two); `break` = seconds of air after the beat instead of the default 0.6s breath. Edit via `update-beat` subSlots / a variant's beat edits. Caution: an offset on SYNC footage cuts its speech at that point, choose a cut point in the file's silence (check its cached `<clip>.timing.json`), never mid-word.
 
+**A defect is a reroll, never a variant.** When an asset came out wrong (a glitched clip, a mangled hand, a mispronounced line) and nothing about the ad's meaning changes, `declare-variant` will refuse it (nothing differs, and the guard calls a no-diff declaration a lie). Route to `npm run ads -- reroll '{"ad":"<slug>","kind":"still|clip|vo|music","order":<n>}'`: it archives the bad take as a numbered `.take` file, blanks the link, and re-producing regenerates just that. Same ad, same slug, no child.
+
 **The parts exception (load-bearing):** shelf REFERENCES (assets linked from the library) are never blanked by any cascade, blanking means "regenerate", and references were never generated. They change only by explicit re-reference. So on a parts-mix ad, "try a different hook" or "different bed under beat 2" is a $0 swap: in place via `use-asset` (idea status), or on a child via the beat edit's `"asset": "<shelf name>"` key with `changeSet: ["per-beat-visual"]`. `shop` lists what's on the shelf.
 
 ### 3a. Edit in place (status `idea` only)

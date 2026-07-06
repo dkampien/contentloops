@@ -1,171 +1,184 @@
 ---
 name: ad-draft
-description: Phase 1 (PLAN) of the BibleChat ad pipeline. Turn a rough idea into a fully authored ad on the Airtable board (the single source of truth), ready for production. ZERO spend; ends at the script approval gate. Use whenever the user wants to start a NEW ad, plan an ad, write an ad script, or turn an idea/insight/pain-point into an ad concept, even if they don't say "draft". Trigger phrases: "draft an ad", "new ad", "write an ad for", "ad about", "ad-draft". Not for: changing an existing ad (ad-iterate), rendering to mp4 (ad-produce), decomposing an outside ad (ad-watch).
+description: Phase 1 (PLAN) of the BibleChat ad pipeline. Turn a rough idea into a fully authored ad on the Airtable board (the single source of truth), ready for production. ZERO spend; the board is written only on the operator's approval. Use whenever the user wants to start a NEW ad, plan an ad, write an ad script, or turn an idea/insight/pain-point into an ad concept, even if they don't say "draft". Trigger phrases: "draft an ad", "new ad", "write an ad for", "ad about", "ad-draft". Not for: changing an existing ad (ad-iterate), rendering to mp4 (ad-produce), decomposing an outside ad (ad-watch).
 argument-hint: <a rough idea, an audience, a pain point, or an existing ad's slug to sibling from>
 allowed-tools: Read, Write, Edit, Bash
 ---
 
-# ad-draft — PLAN: idea → an authored ad on the board (NO spend)
+# ad-draft: idea → an authored ad on the board (NO spend)
 
-Draft ONE ad: pick the coordinate (who it's for, the pain, the feature, the angle, the form) and write the script, then land it on the board with one `create-ad` call. **Zero paid generation happens here.** Bulk planning = run the flow once per ad.
+Draft ONE ad: pick who it's for, the pain, the feature, the angle, and the form; write the script; then land it on the board in one sweep. No money is spent in this phase. If the user asks for several ads, run the flow once per ad.
 
 **User input:** $ARGUMENTS
+
+## How this skill runs (read first)
+
+- **Decide, then land.** Steps 0 to 7 are conversation: read the board, propose, the operator picks. The board gets written only at the LAND step, after the operator approves what you proposed. Drafts iterate in the conversation, not on the board.
+- **One pick at a time.** Each step ends with a proposal and a recommendation, then stops for the operator's pick. Skip a step's question only when the operator's input already answered it.
+- **One vehicle per session.** A drafting session works one vehicle (several ads on it is fine). When a different vehicle comes up mid-session, land the current work and recommend a fresh session: an agent holding two vehicles' variable sets cross-contaminates them.
 
 ## Where things live
 
 - Run every command from `_projects/cloops-ads/` (the repo root).
-- **Airtable is the single source of truth.** The base ("cloops-ads") is a live board the operator watches and hand-edits. There is no beats.json and no local backend. You read and write ONLY through the guarded client: `npm run ads -- <command> '<json>'`. Never the raw Airtable API and never the Airtable MCP; the client carries the guards.
-- Preflight: `npm run ads -- pools`. Nothing to start; a failure usually means `AIRTABLE_TOKEN` is missing from `.env.local`.
-- **Read fresh before you write.** The operator may have edited cells on the board since you last looked. `npm run ads -- look` lists what changed since your last look; a verb's read is always live. Never write from remembered state.
-- **Command shapes:** link commands take `<entity>Slug` keys (`personaSlug`, `painSlug`, `mechanismSlug`). A bare `npm run ads` lists every command, and a wrong call errors with the expected shape.
-- **Big payloads (create-ad):** copy contains apostrophes, which break single-quoted shell JSON. Write the payload to a file and pass it as `@<path>`: `npm run ads -- create-ad @/path/to/payload.json`.
-- **Fixture data:** rows with a `smoke-` prefix are test fixtures, fake data for pipeline tests. Real values and real ads live on real rows; an ad linked to a fixture sits on made-up targeting.
+- **The ad lives on the Airtable board** (base "cloops-ads"), which the operator watches and may hand-edit live. Read and write ONLY through the guarded client: `npm run ads -- <command> '<json>'`. The raw Airtable API and the Airtable MCP bypass the guards; the client carries them, and its errors are written for you to self-correct.
+- Preflight: `npm run ads -- pools`. A failure usually means `AIRTABLE_TOKEN` is missing from `.env.local`.
+- **Read fresh before you act.** The operator may have edited cells since you last looked; `npm run ads -- look` lists what changed. Propose from live state, not remembered state.
+- **Command shapes:** link commands take `<entity>Slug` keys (`personaSlug`, `painSlug`, ...). A bare `npm run ads` lists every command, and a wrong call errors with the expected shape.
+- **Big payloads:** ad copy contains apostrophes, which break single-quoted shell JSON. Write the payload to a file and pass it as `@<path>`: `npm run ads -- create-ad @/path/to/payload.json`.
+- **Real rows only:** rows prefixed `smoke-` are test fixtures with made-up data; link ads to real rows.
 
-## Invisible contract (how to talk to the operator, read this first)
+## The contract with the operator
 
-The operator never needs to know the model. You reason with the full model internally (coordinate, variation/iteration, diegetic, the flow); what reaches the operator is plain.
+**The machinery stays invisible; the craft language is shared.** The operator is a creative strategist: talk persona, pain, angle, hook, look, voice. The system's internal logic (variation vs iteration, cost classes, changeSets, guards) is yours to reason with and never theirs to operate: they make creative calls, you translate to mechanics and report back only the consequences that matter (what it costs, what gets remade). When a pick is on the table, remind the operator what the thing means in one line (context = the circumstance, pain = the felt symptom, angle = the lens).
 
-- **Plain words only.** Say it in their words: who it's for · the angle · how it's told · a few versions · a tweak for later. The model's own vocabulary ("coordinate / targeting / variation / iteration / diegetic / changeSet / vehicle / slot fill") stays internal, in your reasoning.
-- **Pick together.** Go through the elements one at a time: propose options with a recommendation, the operator picks. Skip an element only when the operator already gave it.
-- **Print plainly.** At the approval gate, show the spoken lines + a one-line plain summary (who it's for · the angle · how it's told), not field names.
-
-## Load context first (these carry the craft, do not re-derive it)
+## Load the craft (it is not re-derived, it is loaded)
 
 All under `_projects/cloops-ads/`:
-1. `_docs/skill-reference/ad-copy-playbook.md`, CRAFT: Path A, the hook, the copy rules.
-2. `_docs/skill-reference/audience-product-brief.md`, AUDIENCE: the worldview the copy speaks from.
-3. `_docs/skill-reference/prompting-guide-2026.md`, PROMPTING: how to write t2i/i2v prompts (carries the {LOCK}/{STYLE} pattern).
-4. `_docs/skill-reference/biblechat-features.md`, ONLY when reaching past the default mechanism or unsure a feature exists. **It is the product truth: a feature exists only if it's in there.**
+1. `_docs/skill-reference/ad-copy-playbook.md`: how to write the copy (Path A, the hook, the rules).
+2. `_docs/skill-reference/audience-product-brief.md`: who we sell to, and the worldview the copy speaks from.
+3. `_docs/skill-reference/prompting-guide-2026.md`: how to write t2i/i2v prompts (the {LOCK}/{STYLE} pattern and the prompt rules).
 
-The data shape needs no doc: the registries themselves are the checklists (read them, next section).
+The product truth for features is the **Mechanisms table on the board**: a feature exists only if it is a row there, or the operator explicitly approves adding one.
+
+## The shape of an ad (the vocabulary you author with)
+
+- **Slot**: a named setting the VEHICLE declares; the ad fills it by writing a value (character, treatment, voice, music).
+- **Socket**: a per-role position a TEMPLATE constrains; filled by plugging footage in (generated, or referenced from the library).
+- **Shelf**: the reusable asset library (`productions/library/`); what sockets browse.
+
+In one line: the vehicle declares the slots, the template (when the framework × vehicle pair has one) constrains the sockets, and the beats fill everything.
 
 ---
 
-## The flow — run in order
+## The flow
 
-> **Curator guardrail, applies to every pick-or-define step (persona · pain · mechanism · angle).** Before you create a new value: (1) **merge-check**: a flavor of an existing one (same felt thing / same demoable feature) → reuse or merge the existing one; (2) **distinctness**: keep it only if it would show on screen visibly differently from its siblings; (3) **glanceable handle**: name it for what it is in plain everyday words (`daily-plan`), plus a one-line definition. The database blocks duplicates by slug, but only YOU can catch a duplicate by meaning.
+> **Curator guardrail, wherever a NEW registry value is proposed (persona, pain, mechanism, angle).** The guards refuse incomplete rows and duplicate slugs; only you can catch a duplicate by MEANING. Merge-check against the existing rows first (same felt thing, same feature: reuse or merge), and name the value in plain everyday words with a one-line definition. Know the trap: upserting an existing slug silently edits that row for every ad linking to it, so send an existing slug only when you mean to edit it.
 
-### 0. Read the box
+### 0. Read the board
 
 ```bash
 npm run ads -- pools
 ```
 
-Everything that exists: personas, pains, mechanisms, angles, vehicles, frameworks. You need to know what's there before you propose. Registries start sparse by design; growing them well is part of this skill.
+Every registry that exists: personas, pains, mechanisms, angles, vehicles, frameworks, templates. Know what is there before you propose. Growing the registries well is part of this skill.
 
-### 1. PERSONA — pick or define
+### 1. PERSONA: pick
 
-Show the existing personas + propose the fit (or one new). New personas must be **grounded in real evidence** (user research, reviews, the audience brief), and the `evidence` field cites the source: every audience traces back to something someone actually observed.
+Show the existing personas and propose the fit. **Picking is the normal path**: personas are defined upfront, grounded in evidence, and locked. Defining a new one mid-draft is the rare exception; it needs real evidence (user research, reviews, the audience brief) cited in its `evidence` field, and the operator's explicit go-ahead. Stop; the operator picks.
+
+### 2. PAIN: pick, or distill from evidence
+
+Read this persona's pains (`npm run ads -- pains-for-persona <slug>`) and propose plainly.
+
+- **A pain is the felt symptom**: what it feels like from the inside on a bad Tuesday, written the way the person would say it. Source material (quiz answers, reviews) usually describes a SITUATION ("my marriage is broken"); distill the feelings inside it (the guilt, the fear, the loneliness): each is a pain candidate, and the verbatim quote is its `evidence`.
+- **Classify, with your reasoning shown:** `universal` (anyone could feel it; keep the wording raw, the faith lens arrives later via the angle) or `faith-native` (the pain itself is faith-shaped and is its own angle).
+- **EXPLODE offer:** a persona usually carries several pains; offer running more than one, each as its own ad.
+
+Stop; the operator picks.
+
+### 3. MECHANISM: default it
+
+Default to the **habit-formation feature** (daily plan / personalized plans); the default stands without a stop. Reach past the default only when the moment itself is the story (a panic moment, a sleepless night). The honest test: **would the daily plan feel dishonest in the moment shown on screen?** If yes, pick the moment's feature from the Mechanisms table. Stop only when proposing a mechanism that is not yet on the board; the operator decides. **Sell the outcome, prove with the feature**: the copy leads with the benefit ("a calm two-minute start"); the feature is the on-screen proof.
+
+### 4. ANGLE: the lens (universal pains only)
+
+A faith-native pain is its own angle: skip this step, and know the guard refuses an angle on it. For a universal pain an angle is required, and it is not a separate scene: **the angle renders as the hook; beat 1's copy IS the angle expressed.**
+
+Angle rows are the shared lens pool, written **persona-neutral**: define the move without a persona's pronouns baked in ("permission to stop, instead of another demand"), plus one example hook line so the row is navigable (an expression of the lens, not the expression). Let reuse emerge; merge duplicates on contact.
+
+**EXPLODE offer:** try this pain from several angles? Each extra angle = a variant of this ad, declared after landing (see ad-iterate).
+
+Stop; the operator picks.
+
+### 5. FORM: vehicle · framework · format · length
+
+The vehicles ON THE BOARD are the menu; the skill carries no catalog. Read the picked vehicle's row before authoring anything:
 
 ```bash
-npm run ads -- upsert-persona '{"slug":"overwhelmed-mom","gender":"woman","age":"late 20s to early 40s","context":"...","awareness":"problem-aware","evidence":"audience-product-brief.md: ..."}'
+npm run ads -- get-vehicle <slug>
+npm run ads -- get-framework <slug>
 ```
 
-### 2. PAIN — pick or define (keep it RAW)
+Its `description` is the form's own guidance, its `slots` array is your fills checklist, `perBeatSubSlots` your per-beat vocabulary, `delivery` the words' default home.
 
-Read this persona's pains and propose (to the operator, in plain words, per the invisible contract; "show" never means dumping table rows):
+- **Vehicle** (how the story is told): match the operator's ask against the existing vehicles' descriptions. When nothing fits, say so plainly: that is a NEW form, and defining a vehicle is its own explicit, operator-gated move (`upsert-vehicle`), never a silent side effect of drafting.
+- **Framework** (the copy arc): its `roles` are the only legal beat roles.
+- **Template:** some framework × vehicle pairs have a template row that dictates, per role, how the visual is filled (`generate` / `library` / `insert`) and how the words are delivered. If your pair has one (`pools` lists them; `npm run ads -- get-template <slug>`), author to it: the guards enforce it and refuse a non-conforming ad with the policy quoted.
+- **Format:** `video` / `image` / `image-carousel`. Only `video` has an engine path today; an image ad can be drafted but not yet produced.
+- **Length band:** `micro`/`short`/`mid`/`long`. A creative form band, never a seconds target (real timing derives from the words at production). The band decides the beat structure: a longer band repeats roles.
 
-```bash
-npm run ads -- pains-for-persona overwhelmed-mom
-npm run ads -- link-persona-pain '{"personaSlug":"overwhelmed-mom","painSlug":"morning-overwhelm"}'
-```
+Stop; the operator picks the form.
 
-**Classify the pain: `universal` vs `faith-native`.** Keep universal pains raw (no faith line; that's the angle's job). A pain is the symptom she feels, never the resolution.
+### 6. FILLS: author what the vehicle declares
 
-### 3. MECHANISM — default it (it's near-constant)
+For each slot on the vehicle's checklist, author a value with the operator. **There are no house defaults**: every fill is authored for this ad (look at sibling ads when the operator wants continuity). The craft that holds across vehicles:
 
-Mechanism is near-determined by the pain: default to the **habit-formation / daily-return feature** (daily plan, streak, journey); it's what M12 rewards. Reach past the default only when the moment itself is the story (panic-button, chat, bedtime stories for a nighttime pain). The honest test: **would the daily plan feel dishonest in the moment shown on screen?** If yes, pick the moment's feature, and read `biblechat-features.md` first. **Sell the outcome, prove with the feature**: copy leads with the benefit ("a calm two-minute start"); the feature is the on-screen proof. Link it: `npm run ads -- link-pain-mechanism '{"painSlug":"...","mechanismSlug":"..."}'`.
+- Where the vehicle declares a `character`: write the one-sentence character lock, and pick a `voice` that **gender-matches it**. Where it declares a `treatment`: the one-sentence style bible.
+- In beat prompts, write `{LOCK}` and `{STYLE}` where the character and treatment belong; production expands them from the fills, so one swap restyles every prompt at once.
+- `per-beat-visual` is satisfied by the beats themselves, never authored as a fill. `caption` auto-derives from the words; skip it unless the operator wants a style override.
 
-### 4. ANGLE — the lens (skip for faith-native pains)
+### 7. BEATS: write the script
 
-**If the pain is faith-native, skip this step entirely**: the pain is its own angle, and `createAd` will reject an angle on it. For universal pains an angle is required. The angle is not a separate scene: **it renders as the hook**. Beat 1's copy IS the angle expressed.
+**The beats are the script: the framework's roles instantiated.** One beat per role, in order (classic = hook · symptom · solution · result · cta); a longer band repeats roles where the visuals genuinely differ.
 
-**EXPLODE? (angle, the main fan-out point).** Offer plainly: try this pain from several angles? Each extra angle = a **variant of the first ad** (declared after step 8 via `declare-variant` with the new angle + a rewritten hook; see ad-iterate). Curate the angle records centrally first (no dupes by meaning).
+Write the copy per the playbook: the raw pain in the hook (the angle expressed), symptom to solution on the real feature, talk like a real person, written for the band. Each beat carries:
 
-### 5. FORM — vehicle · framework · format · length
+- `role`: one of the framework's roles.
+- `vo`: THE WORDS, always, whatever their delivery.
+- `t2i`: the image prompt, per the prompting guide, with `{LOCK}`/`{STYLE}` placeholders.
+- `i2v`: motion only.
+- `subSlots`: only from the vehicle's per-beat vocabulary, plus `delivery` (the word-home override), which every vehicle accepts.
+- **Never author a duration.** Production sizes everything from the words' home: the measured VO when voiced, the reading time when text, the file itself when sync.
 
-```bash
-npm run ads -- get-vehicle char-3p-drama
-npm run ads -- get-framework classic
-```
+**Word-homes** (the per-beat `delivery` subSlot), when a template or the operator calls for a deviation from the vehicle's default: `voiced` = a narrator speaks the line · `text` = the line appears as on-screen captions · `sync` = the person in the clip says it (the `vo` then holds the transcript).
 
-- **Vehicle** (how it's told): read its row BEFORE authoring; the `slots` array is your checklist and `perBeatSubSlots` your per-beat vocabulary. `char-3p-drama` = a character living the problem; `faceless-world` = reusable no-character visuals (each beat keeps the line's NOUNS + EMOTION, drops the narrative action; faceless people only); `parts-mix` = assembled from swappable parts (a real inserted hook + library beds + a generated close; no character, no narration).
-- **Framework** (the copy arc): its `roles` are the only legal beat roles. Default `classic` (hook · symptom · solution · result · cta).
-- **Template (check for one!):** `pools` lists templates; if the framework × vehicle pair you picked has one (e.g. `parts-mix-v1` = `hook-body-cta` × `parts-mix`), run `npm run ads -- get-template <slug>` and follow its `socketPolicy`, it says PER ROLE how the visual is filled (`generate` = write a t2i · `library` = reference a shelf asset · `insert` = reference a real inserted clip) and which word-home the line uses. The guards enforce it; a non-conforming create-ad is refused with the policy quoted.
-- **Format** `video` (default) / `image` / `image-carousel`. **Length band** `micro`/`short`/`mid`/`long`: a creative form band, never a seconds target; exact timing is derived from the measured VO at production.
+**Referenced footage:** where the template's policy says `library` or `insert` for a role, the beat references a file instead of generating: `npm run ads -- shop` browses the shelf, and the beat's `"asset": "<name>"` key links it (a reference costs $0 at production, and later edits never invalidate it).
 
-**EXPLODE? (vehicle).** Offer: tell this same story as other vehicles? Each = a variant declared after step 8 (new vehicle + rewritten visuals).
+### 8. THE GATE: validate, print, stop
 
-### 6. FILLS — the whole-ad slots the vehicle declares
+First validate (the guards catch structure; you catch sense):
+- The pain classification is actually right: universal wording stays raw; a faith-native pain carries no angle.
+- **The angle is audible in beat 1**: read the hook against the angle's definition.
+- Where a character exists: the voice gender-matches it, and every beat prompt carries `{LOCK}`/`{STYLE}` instead of repeating the text.
+- The copy reads like a person talking, written for the band.
 
-For each slot in the vehicle's checklist, author the value:
-- `character`: the one-sentence character lock (PROMPTING guide pattern). **Only if the vehicle declares it.**
-- `treatment`: the one-sentence style bible (default claymation).
-- `voice`: an ElevenLabs voice name (default `Rachel`; common male: `Adam`). **Must gender-match the character.**
-- `music`: the music-bed prompt.
-- `per-beat-visual` is on the checklist but is **never a slotFill**: it is satisfied by the beats themselves (every beat's `t2i` non-empty). `caption` is optional and auto-derives from the VO; skip it.
+Then print the script for the operator: the ordered lines, each with how it reaches the viewer (spoken / on-screen / said in the clip), plus the plain summary: who it is for · the angle · how it is told · the look · the voice.
 
-In beat prompts, write `{LOCK}` and `{STYLE}` where the character and treatment belong; production expands them from these fills, so a later swap changes every prompt at once.
+**STOP. This is the approval gate. Nothing is written and nothing proceeds without the operator's explicit yes.** Offer a redirect: the whole arc, one line, a beat's visual, the tone.
 
-### 7. BEATS — write the script (Path A)
+### 9. LAND: one sweep, all the writes
 
-**SHOP BEFORE YOU GENERATE.** Run `npm run ads -- shop` (filter: `'{"type":"clip","tags":["bed"]}'` or `'{"query":"..."}'`). If a shelf asset fits a beat, reference it with the beat's `"asset": "<its name>"` key instead of writing a t2i, a referenced beat costs $0 at production. Generate only what the shelf can't supply (and consider `promote-asset` afterward if the new clip passes the reuse test).
+Only after approval does the board get touched, in one sweep:
 
-**Word-homes (per-beat `delivery` subSlot, in plain words):** how the line reaches the viewer. `voiced` = a narrator speaks it (today's default on voiced vehicles) · `text` = nobody speaks; the line appears as on-screen captions and the footage sets the timing · `sync` = the person IN the clip says it (real or generated talking head); the `vo` field then holds the transcript of what the file says. Only set the subSlot when deviating from the vehicle's default (or when a template's policy requires it).
+1. The registry upserts and links the settled picks need: `upsert-persona` / `upsert-pain` / `upsert-angle` / `upsert-mechanism`, then `link-persona-pain`, `link-pain-mechanism`.
+2. `create-ad`: the whole ad in one call; either everything lands or nothing does.
 
-Write the copy per CRAFT: raw pain in the hook (the angle expressed), symptom → solution on the real feature, talk like a real person. One beat per framework role (repeat a role for a longer band when the visuals genuinely differ). Each beat: `role`, `vo` (the spoken line), `t2i` (film still prompt; NEVER the word "storyboard", and no aspect words like "vertical", format is a generation parameter), `i2v` (motion only), `subSlots` (shape `[{"slot":"...","value":"..."}]`; only the per-beat vocabulary the vehicle declares, plus `title-card` on the CTA if wanted), optional `asset` (a shelf reference, above). **Never write a duration**; production sizes everything from the measured VO (voiced), the reading time (text), or the file itself (sync).
+Registry writes land one by one; `create-ad` is the atomic call. If `create-ad` fails after the upserts, nothing needs undoing: the rows are settled, approved values, and the fixed retry links straight to them.
 
-### 8. CREATE — one call, all or nothing
-
-```bash
-npm run ads -- create-ad '{
-  "slug": "calm-morning-1",
-  "persona": "overwhelmed-mom", "pain": "morning-overwhelm", "mechanism": "daily-plan",
-  "angle": "permission-to-pause",
-  "vehicle": "char-3p-drama", "framework": "classic", "format": "video", "length": "short",
+```json
+{
+  "slug": "<kebab-case, human-glanceable, permanent>",
+  "persona": "<persona slug>", "pain": "<pain slug>", "mechanism": "<mechanism slug>",
+  "angle": "<angle slug; universal pains only>",
+  "vehicle": "<vehicle slug>", "framework": "<framework slug>",
+  "format": "video", "length": "<band>",
   "slotFills": [
-    {"slot": "character", "value": "Maria, an early-30s mother with ..."},
-    {"slot": "treatment", "value": "Stop-motion claymation: ..."},
-    {"slot": "voice", "value": "Rachel"},
-    {"slot": "music", "value": "soft warm piano, hopeful"}
+    {"slot": "<a slot the vehicle declares>", "value": "<the authored fill>"}
   ],
   "beats": [
-    {"role": "hook", "vo": "...", "t2i": "Cinematic film still: {LOCK} ... {STYLE}", "i2v": "...", "subSlots": []},
-    {"role": "cta", "vo": "...", "t2i": "...", "i2v": "...", "subSlots": [{"slot": "title-card", "value": "BibleChat"}]}
+    {"role": "<a framework role>", "vo": "<the line>", "t2i": "<prompt with {LOCK}/{STYLE}>", "i2v": "<motion>", "subSlots": []},
+    {"role": "<the cta role>", "vo": "<the line>", "t2i": "<...>", "i2v": "<...>", "subSlots": []}
   ]
-}'
+}
 ```
 
-The slug is kebab-case, human-glanceable, and permanent. Either the whole ad lands or nothing does. **Guard errors are written for you**: they name the missing slot, the illegal role, the unresolved slug, and what IS valid. Read the error, fix the call, retry; do not work around a guard.
+**Guard errors are written for you**: they name the missing slot, the illegal role, the unresolved slug, and what IS valid. Read the error, fix the call, retry; never work around a guard.
 
-**EXPLODE? (hooks).** Offer: bank several openers on this ad? Each = `declare-variant` with `changeSet: ["copy"]` and a hook `vo` edit (see ad-iterate for the shape). Declared variants cost nothing and wait as `idea`. **Seam rule:** each opener must hand cleanly into the fixed symptom line.
+**EXPLODE offer (hooks):** bank several openers on the landed ad? Each is a `declare-variant` with `changeSet: ["copy"]` and a new hook `vo` (see ad-iterate); each opener must hand cleanly into the fixed symptom line. Declared variants cost nothing and wait as ideas.
 
-### 9. FEEDBACK GATE — stop for approval
+After landing, edits while the ad is still an `idea` go through `update-ad` / `update-beat` (they blank stale work automatically and report it). The operator may also edit board cells directly: run `look`, read what changed, and carry on from live state.
 
-Print the VO arc (the ordered spoken lines) + the plain summary (who it's for · the angle · how it's told · the look · the voice). **This is the no-spend approval gate.** Offer a redirect (whole arc / one line / a beat's visual / tone). Edits before production: fix in place with `update-beat` / `update-ad` (they work while the ad is still an idea and blank any stale assets), or `delete-ad` + re-create for a full redo. The operator may also just edit cells on the board; run `look`, read what changed, and carry on from the live state.
-
----
-
-## VALIDATE before createAd (the guards catch structure; you catch sense)
-
-- Pain classified universal vs faith-native; angle present only for universal (the guard enforces it, but know WHY: faith-native pains are their own angle).
-- Voice gender-matches the character.
-- Every beat prompt uses `{LOCK}`/`{STYLE}` rather than repeating the character/style text.
-- The copy reads like a person talking, written for the band, never to a seconds target.
-
-## Gotchas (learned the hard way, do not relearn)
-
-- **NEVER faith-flavor a universal pain.** Path A: raw pain; faith lives in the angle and lands in the hook.
-- **NEVER write "storyboard" in a t2i prompt**: the image model renders a literal multi-panel sheet. Say "film still".
-- **A default female voice over a male protagonist sinks the ad.** Gender-match, always.
-- **You are the curator.** The database blocks duplicate slugs; only you block duplicates by meaning (merge-check, distinctness, glanceable handle).
-- **faceless-world discipline:** no identifiable faces (hands, silhouettes, from-behind); run the reuse test per beat (with the VO muted, would this clip sit under 5 other scripts' same-role lines?).
-- **Shelf references are never invalidated by edits** (only re-referenced via `use-asset` or a new `asset` key on a variant); a voice or character change re-generates generated assets but leaves references alone.
-- **Music can be referenced too:** `npm run ads -- use-asset '{"ad":"<slug>","slot":"musicAsset","asset":"<shelf track>"}'` after create; the music slotFill text is then just the fallback prompt.
-
-## The hard gate
-
-**NEVER start production yourself. Nothing auto-proceeds.** On human approval, print the literal next command:
+**Production never starts from this skill.** On approval and landing, print the literal next command for the human:
 
 ```
 /ad-produce <slug>

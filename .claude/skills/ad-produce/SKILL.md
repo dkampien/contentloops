@@ -34,7 +34,11 @@ Knobs, when needed:
 - `FALLBACK=1 npm run realize -- <slug>`: photoreal treatments; the default i2v model blocks realistic-face input stills (E005), the fallback model accepts them. Claymation needs no flag.
 - `T2V=1`: text-to-video, no input stills at all (last resort for blocked content; fixed SEED for rough consistency).
 
-To force-regenerate a specific asset that exists but is bad: on an UNPRODUCED draft, `npm run ads -- update-beat` with the fixed prompt (it blanks the stale asset, and the next realize remakes just that); on a produced ad, `declare-variant` (a new cut, the honest path). Never hand-delete asset rows or links.
+When an asset exists but is bad, pick the fix by what went wrong:
+- **The prompt/line was wrong** (the asset faithfully rendered a bad instruction): fix the instruction. On an unproduced draft, `npm run ads -- update-beat` with the fixed prompt (it blanks the stale asset; the next realize remakes just that); on a produced ad that's a meaning change, so `declare-variant`.
+- **The output is defective** (glitched clip, mangled hand, mispronounced line; the instruction was fine): `npm run ads -- reroll '{"ad":"<slug>","kind":"still|clip|vo|music","order":<n>}'`. Same ad, no variant: it archives the bad take as `.take1`, blanks the link (plus the derived clip and the final cut), and the next realize regenerates just that. Works on idea and produced; refused on posted.
+
+Never hand-delete asset rows, links, or files.
 
 **Use a shelf asset on a beat (parts):** the modern path is `use-asset`, it links a reusable library asset (shop with `npm run ads -- shop`) into the beat's clip/still slot before realizing; realize then skips generating it and the estimate prices it $0:
 
@@ -56,7 +60,7 @@ The ad's status is now `produced` (the engine set it when the final landed); `np
 
 ## 4 — STOP for approval (the cut gate)
 
-Hand the mp4 to the human. **Do not auto-proceed.** Posting is a separate human-triggered step (when Meta wiring exists, it ends with `npm run ads -- mark-posted '{"slug":"<slug>","metaAdId":"..."}'`, which refuses without the Meta ad id). A bad cut routes to `/ad-iterate <slug>` (swap the weak cell as a variant).
+Hand the mp4 to the human. **Do not auto-proceed.** Posting is a separate human-triggered step (when Meta wiring exists, it ends with `npm run ads -- mark-posted '{"slug":"<slug>","metaAdId":"..."}'`, which refuses without the Meta ad id). Route a bad cut by what's wrong: a defective asset (the concept is fine, one output glitched) = `reroll` + re-realize, same ad; a weak cell (the concept needs a different hook/voice/visual) = `/ad-iterate <slug>`, a variant.
 
 ---
 
