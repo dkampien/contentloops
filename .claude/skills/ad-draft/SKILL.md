@@ -101,7 +101,7 @@ npm run ads -- get-framework <slug>
 
 Its `description` is the form's own guidance, its `slots` array is your fills checklist, `perBeatSubSlots` your per-beat vocabulary, `delivery` the words' default home.
 
-- **Vehicle** (how the story is told): match the operator's ask against the existing vehicles' descriptions. When nothing fits, say so plainly: that is a NEW form, and defining a vehicle is its own explicit, operator-gated move (`upsert-vehicle`), never a silent side effect of drafting.
+- **Vehicle** (how the story is told): present each candidate vehicle with its one-line description from the board; never assume the operator (or a new team member) remembers what a form is. Match the operator's ask against those descriptions. When nothing fits, say so plainly: that is a NEW form, and defining a vehicle is its own explicit, operator-gated move (`upsert-vehicle`), never a silent side effect of drafting.
 - **Framework** (the copy arc): its `roles` are the only legal beat roles.
 - **Template:** some framework × vehicle pairs have a template row that dictates, per role, how the visual is filled (`generate` / `library` / `insert`) and how the words are delivered. If your pair has one (`pools` lists them; `npm run ads -- get-template <slug>`), author to it: the guards enforce it and refuse a non-conforming ad with the policy quoted.
 - **Format:** `video` / `image` / `image-carousel`. Only `video` has an engine path today; an image ad can be drafted but not yet produced.
