@@ -1,15 +1,15 @@
 ---
 name: ad-iterate
-description: Phase 5 (ITERATE) of the BibleChat ad pipeline. Change an EXISTING ad without redrafting it: co-edit an unproduced draft in place (the operator edits board cells, you rewrite through the verbs), or derive copy-on-write variants: a new hook, a different voice or music, a restyled look, one beat's visual, a different angle or vehicle on the same story. Zero spend; realization routes through ad-produce. Use when an ad already exists (ours by slug, or an outside mp4 decomposed by ad-watch) and the user wants edits, another version, a variant, a batch of hooks, or to act on metrics. Triggers: "iterate on", "make a variant", "change the hook/voice/music/angle", "swap the look", "another cut of <slug>", "batch of hooks", "I edited the board". Not for: inventing a new ad from an idea (ad-draft), rendering (ad-produce), or restructuring the script arc (a new draft).
+description: Phase 5 (ITERATE) of the BibleChat ad pipeline. Change an EXISTING ad without redrafting it: co-edit an unproduced draft in place (the operator edits board cells, you rewrite through the verbs), or derive copy-on-write variants: a new hook, a different voice or music, a restyled look, one beat's visual, a shelf-file swap. A concept change (new angle, persona, pain, or vehicle on the same story) is triaged here too: the script work runs draft-style, then lands here as a child of the parent. Zero spend; realization routes through ad-produce. Use when an ad already exists (ours by slug, or an outside mp4 decomposed by ad-watch) and the user wants edits, another version, a variant, a batch of hooks, or to act on metrics. Triggers: "iterate on", "make a variant", "change the hook/voice/music/angle", "swap the look", "another cut of <slug>", "batch of hooks", "I edited the board". Not for: inventing a new ad from an idea (ad-draft) or rendering (ad-produce).
 argument-hint: <an existing ad slug, or an outside mp4 path/URL> [what to change]
 allowed-tools: Read, Write, Edit, Bash
 ---
 
-# ad-iterate — change an existing ad (NO spend)
+# ad-iterate: change an existing ad (NO spend)
 
 Two modes, picked by the ad's status:
-- **Status `idea` (not yet produced): edit in place.** `update-ad` / `update-beat` rewrite the draft directly; no variant needed. Any stale assets blank automatically.
-- **Status `produced`/`posted`: declare children.** Same ad, one or a few cells changed, via `declare-variant`. Declaring is free and instant; the child copies its parent's beats and **keeps the parent's produced assets wherever nothing changed**, so realizing it later spends only on the changed cells.
+- **Status `idea` (not yet produced): edit in place.** `update-ad` / `update-beat` rewrite the draft directly; no variant needed. Stale rows re-plan automatically (superseded takes archive, fresh planned rows appear, the verb reports them).
+- **Status `produced`/`posted`: declare children.** Same ad, one or a few cells changed, via `declare-variant`. Declaring is free and instant; the child copies its parent's beats and **keeps the parent's produced assets wherever nothing changed**, so realizing it later spends only on what changed. A child can also be declared on an `idea` parent, to bank options without touching it.
 
 This skill edits, declares, and routes; all spend happens in `ad-produce` behind its gate.
 
@@ -19,49 +19,46 @@ Run from `_projects/cloops-ads/`; every read/write goes through `npm run ads -- 
 
 ## The co-edit loop (the operator is on the board)
 
-The Airtable base is a live board the operator watches and edits by hand. When they say they changed something (or you suspect it): `npm run ads -- look` lists everything edited since your last look. Read the changed rows, respond to the *content* (better line? gender mismatch? cascade cost?), and write back through the verbs. **Never write from remembered state; read fresh first.** After any hand-edit session, `npm run ads -- lint <slug>` sweeps for broken structure the board could not block.
+The Airtable base is a live board the operator watches and edits by hand. When they say they changed something (or you suspect it): `npm run ads -- look` lists everything edited since your last look. Read the changed rows, respond to the *content* (better line? gender mismatch? cascade cost?), and write back through the verbs (a hand-edited cell doesn't re-plan its files; re-sending it through the verb does). **Never write from remembered state; read fresh first.** After any hand-edit session, `npm run ads -- lint <slug>` sweeps for broken structure the board could not block.
 
-## Variation vs iteration (you reason in it; the operator never hears it)
+## Variation vs iteration (the routing rule)
 
-Both are one verb here (`declare-variant`); the database derives the kind from what changed:
-- **Iteration**: realization-only changes (a hook line, voice, music, one beat's visual). Cheap laps on the same concept.
-- **Variation**: a coordinate pick changes (angle, persona, pain, mechanism, vehicle, format, length). A sibling concept, bigger reach.
+Both kinds of child land through one verb (`declare-variant`); the database derives the kind from the changeSet:
 
-**What does NOT fit a variant** (route to a fresh `ad-draft` instead): a different **framework** (the arc's roles change, which rewrites the script) or restructuring the beats (adding/removing/reordering). **The seam test decides edge cases:** if the new opener flows into the existing body, it's a hook variant; if the body must be rewritten to fit, it's a new draft.
+- **Iteration**: the concept untouched; execution changes (a hook line, voice, music, one beat's visual, a shelf-file swap). This skill handles it end to end.
+- **Variation**: a concept pick changes. A new pick rewrites the script through its new lens, and script work is draft's craft: run the script conversation draft-style (ad-draft's steps and its approval gate), then land it here as a child of the parent.
+
+**The structural line (mechanical, from the verb itself):** a variant keeps the parent's beat structure; the verb patches beats one-for-one and cannot add, remove, or re-role them. Any change that breaks the structure (a different framework, a longer band that adds beats, restructuring the arc) is a fresh `ad-draft`, not a variant: when an ask crosses that line, say so in plain words and propose the fresh draft yourself. Winning footage still carries over: `promote-asset` puts it on the shelf, and the new draft references it at $0. **The seam test decides the hook edge:** a new opener that flows into the existing body is a hook iteration; one that forces the body to be rewritten is a new draft.
 
 ## Talk to the operator plainly
 
-Not "diegetic / changeSet / cell". Say: a new hook · a different voice · swap the music · change how beat 2 looks · same story told without the character. **Name the cost in plain terms before declaring**: the verb's response tells you exactly what will be regenerated (below), and `npm run ads -- estimate <slug>` prices it; read those out, never guess.
+Not "changeSet / in-the-pixels / re-plan". Say: a new hook · a different voice · swap the music · change how beat 2 looks · same story told without the character. **Name the cost in plain terms before declaring**: the verb's response splits the child's sheet into `inherited` (free, reused from the parent) and `planned` (to buy), and `npm run ads -- estimate <child-slug>` prices the planned; read those out, never guess.
 
 ## The flow
 
 ### 1. Get the base
 
-- **Ours:** `npm run ads -- get-ad <slug>`. Note its status (`idea` = edit in place; `produced`/`posted` = declare a child) and its beats (order + role + vo).
-- **Outside mp4/URL:** invoke the **ad-watch** skill first to decompose it into a spec, then draft OUR version of it via ad-draft (an outside ad has no board row to child from). Iterate only works on our rows.
+- **Ours:** `npm run ads -- get-ad <slug>`. Note its status (`idea` = edit in place; `produced`/`posted` = declare a child) and its beats (order + role + vo + visual).
+- **Outside mp4/URL:** invoke **ad-watch** first: it decomposes the ad and lands it on the board like any authored ad (borrowed files as sheet rows, inferred picks). Changes then route through this skill normally. Decompose first, then offer changes; never offer a change menu for an ad that isn't decomposed yet.
 
-### 2. Pick the change; know its cost class
+### 2. Pick the change; know its cost
 
-The cost is mechanical, by what kind of slot changes:
+The cost is mechanical, by what kind of cell changes (this is the iteration side; a concept change is a variation and routes per the rule above):
 
-| change | class | what regenerates |
+| change | stamp | what re-plans |
 |---|---|---|
-| voice | execution, whole-ad | all VO + all clips (clips are sized to the VO) |
-| music | execution, whole-ad | the music bed only |
-| a beat's vo line | copy | that beat's VO + its clip |
-| a beat's visual (t2i/i2v/subSlots) | diegetic, per-beat | that beat's still + clip |
-| **swap a PART (re-reference a shelf asset)** | diegetic, per-beat | **nothing, a relink is $0** |
-| character / treatment / anchor | diegetic, whole-ad | every GENERATED still + clip (the cascade) |
-| angle / persona / pain / mechanism | concept | whatever copy/visual edits express it |
-| vehicle / format / length | concept | every GENERATED still + clip |
+| voice | on-top, whole-ad | all VO + the videos sized to it |
+| music | on-top, whole-ad | the music bed only |
+| a beat's `vo` line | copy, per-beat | that beat's VO + its video |
+| a beat's `visual` | in-the-pixels, per-beat | that beat's still + video |
+| **swap a shelf reference** | reference, per-beat | **nothing; a relink is $0** |
+| character / treatment / anchor | in-the-pixels, whole-ad | every GENERATED still + video (the cascade) |
 
-Gender rule survives every change: **voice and character must stay gender-matched**.
+The gender rule survives every change: **voice and character must stay gender-matched**.
 
-**Pacing knobs (per-beat subSlots, $0 to change, re-render to apply):** `offset` = start N seconds into the beat's footage (on a consecutive same-file beat it deliberately cuts the merged segment in two); `break` = seconds of air after the beat instead of the default 0.6s breath. Edit via `update-beat` subSlots / a variant's beat edits. Caution: an offset on SYNC footage cuts its speech at that point, choose a cut point in the file's silence (check its cached `<clip>.timing.json`), never mid-word.
+**A defect is a reroll, never a variant.** When an asset came out wrong (a glitched video, a mangled hand, a mispronounced line) and nothing about the ad's meaning changes, `declare-variant` will refuse it (nothing differs, and the guard calls a no-diff declaration a lie). Route to `npm run ads -- reroll '{"ad":"<slug>","kind":"still|video|vo|music","order":<n>}'` (a bad FINAL cut is ad-produce's redo, not an asset defect): the bad take archives (the file renamed `.takeN`, its row and spend stay as history), a fresh planned row appears, everything built from it re-plans too, and re-producing regenerates just that. Same ad, same slug, no child.
 
-**A defect is a reroll, never a variant.** When an asset came out wrong (a glitched clip, a mangled hand, a mispronounced line) and nothing about the ad's meaning changes, `declare-variant` will refuse it (nothing differs, and the guard calls a no-diff declaration a lie). Route to `npm run ads -- reroll '{"ad":"<slug>","kind":"still|clip|vo|music","order":<n>}'`: it archives the bad take as a numbered `.take` file, blanks the link, and re-producing regenerates just that. Same ad, same slug, no child.
-
-**The parts exception (load-bearing):** shelf REFERENCES (assets linked from the library) are never blanked by any cascade, blanking means "regenerate", and references were never generated. They change only by explicit re-reference. So on a parts-mix ad, "try a different hook" or "different bed under beat 2" is a $0 swap: in place via `use-asset` (idea status), or on a child via the beat edit's `"asset": "<shelf name>"` key with `changeSet: ["per-beat-visual"]`. `shop` lists what's on the shelf.
+**The reference exception (load-bearing):** shelf REFERENCES are never touched by any cascade: re-planning means "regenerate", and references were never generated. They change only by explicit re-reference. So on a reference-mix ad, "try a different hook clip" or "a different bed" is a $0 swap: in place via `use-asset` (idea status), or on a child via the beat edit's `"asset": "<shelf name>"` key (it folds into the `copy` changeSet). `shop` lists what's on the shelf.
 
 ### 3a. Edit in place (status `idea` only)
 
@@ -70,9 +67,9 @@ npm run ads -- update-beat '{"ad":"calm-morning-1","order":0,"vo":"the new opene
 npm run ads -- update-ad '{"slug":"calm-morning-1","voice":"Adam"}'
 ```
 
-`update-beat` takes `vo`/`t2i`/`i2v`/`subSlots`; `update-ad` takes the whole-ad fills (`character`/`treatment`/`voice`/`music`/`caption`) plus `anchor`/`notes`. Both blank any stale assets and report what they blanked. Coordinate picks (persona/pain/vehicle/...) are NOT editable in place: that is a different concept, so it is `declare-variant` or `delete-ad` + re-draft.
+`update-beat` takes `vo`/`visual`/`delivery`/`prompts` (still, motion); `update-ad` takes the whole-ad fills (`character`/`treatment`/`voice`/`music`) plus `anchor`/`notes`. Both re-plan any stale rows and report them. Concept picks (persona/pain/vehicle/...) are NOT editable in place: that is a variation; route per the rule above.
 
-### 3b. Declare a child (produced/posted parents, or banking options)
+### 3b. Declare a child (any parent status; banking options is normal)
 
 ```bash
 npm run ads -- declare-variant '{
@@ -83,26 +80,25 @@ npm run ads -- declare-variant '{
 }'
 ```
 
-- `edits` shapes: `picks` (any coordinate dim, by slug), `slotFills` (merged by slot name), `anchor`, `beats` (sparse, addressed by `order`; each may change `vo`, `t2i`, `i2v`, `subSlots`).
-- **`changeSet` must declare exactly what actually differs**, from the vocabulary the error lists (the 8 coordinate dims, the slot names, `anchor`, `copy`). Structural fallout counts: switching to a faith-native pain auto-drops the angle, so declare `["pain","angle"]`. If you mis-declare, the guard error lists the true diff set; copy it and retry.
-- The response returns `blanked` counts (stills/clips/voAssets/music), your cost readout. Follow with `npm run ads -- estimate <child-slug>` for dollars.
+- `edits` shapes: `picks` (any concept dim, by slug), `slotFills` (merged by slot name), `anchor`, `beats` (sparse, addressed by `order`; each may change `vo`, `visual`, `delivery`, `prompts`, `asset`).
+- **`changeSet` must declare exactly what actually differs**, from the vocabulary the error lists (the 8 concept dims, the four fills `character`/`treatment`/`voice`/`music`, `anchor`, `copy`). Structural fallout counts: switching to a faith-native pain auto-drops the angle, so declare `["pain","angle"]`. If you mis-declare, the guard error lists the true diff set; copy it and retry.
+- The response returns the child's `sheet` split: `inherited` (free, reused from the parent) and `planned` (to buy). Follow with `npm run ads -- estimate <child-slug>` for dollars.
 - Declared children sit at `status: idea` costing nothing. **Batching is the point**: declare several hooks at once (each its own child; hold everything else fixed so the batch tests ONE cell), but keep the batch divergent, near-identical variants cannibalize each other's reach.
 
 ### 4. Plan, or realize now?
 
 - **Plan:** stop here. The variants wait as ideas. This is how you bank a hook batch before committing.
-- **Realize:** needs the parent **produced** (assets to reuse) and crosses the spend gate. Print the plain summary (what changes, what it re-makes, the estimate) and the literal command for the human:
+- **Realize:** crosses the spend gate. No precondition on the parent: a child of an unproduced parent simply has nothing to inherit, and the estimate prices accordingly. Print the plain summary (what changes, what it re-makes, the estimate) and the literal command for the human:
 
 ```
 /ad-produce <child-slug>
 ```
 
-**Metrics-driven picks (when Meta data exists):** weak 2s/6s views → the hook; weak mid-watch → the body beats; weak CTR → the cta. Read the metric, point at the cell, declare the batch.
+**Metrics-driven picks (when Meta data exists):** weak 2s/6s views → the hook; weak 25%/50% watch-through → the body beats; weak CTR → the cta. Read the metric, point at the cell, declare the batch.
 
 ## Gotchas
 
 - **Never generate, never write files, never start ad-produce yourself.** Declare and route.
 - **A posted ad is immutable**; its children are the way forward.
 - **Don't re-send unchanged values** in edits: the guard treats declared-but-identical as a lie ("nothing actually differs"). Send only the deltas.
-- **A vehicle switch auto-drops fills the new vehicle doesn't declare, but NOT per-beat subSlots**; if the guard rejects a beat's subSlots against the new vehicle, edit those beats in the same call.
-- Depth on the why-split and batch thinking: `_docs/core-docs/03_variation-and-iteration.md` (mind any drift banners).
+- **A vehicle switch re-checks the fills** against the new vehicle's checklist; the guard names anything missing or illegal, fix the fills in the same call.
